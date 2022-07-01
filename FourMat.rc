@@ -99,6 +99,8 @@ END
 
 IDB_LIST                BITMAP                  "res\\IDB_LIST.BMP"
 
+IDB_BITMAP2             BITMAP                  "res\\explorer.bmp"
+
 #endif    // 한국어(대한민국) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -370,6 +372,23 @@ BEGIN
         MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
         MENUITEM "&Windows...",                 ID_WINDOW_MANAGER
     END
+    POPUP "ImageProcessing"
+    BEGIN
+        POPUP "Affine Transform"
+        BEGIN
+            MENUITEM "Symmetry",                    ID_AFFINETRANSFORM_SYMMETRY
+            MENUITEM "Rotation",                    ID_AFFINETRANSFORM_ROTATION
+            MENUITEM "Transformation",              ID_AFFINETRANSFORM_TRANSFORMATION
+            MENUITEM "Slice",                       ID_AFFINETRANSFORM_SLICE
+            MENUITEM "Scaling",                     ID_AFFINETRANSFORM_SCALING
+        END
+        POPUP "Filtering"
+        BEGIN
+            MENUITEM "Remove Noise",                ID_FILTERING_REMOVENOISE32862
+            MENUITEM "Brightness",                  ID_FILTERING_BRIGHTNESS32863
+            MENUITEM "Contrast",                    ID_FILTERING_CONTRAST32864
+        END
+    END
     POPUP "&Help"
     BEGIN
         MENUITEM "&About DrawClient...",        ID_APP_ABOUT
@@ -509,7 +528,7 @@ END
 
 3 TEXTINCLUDE 
 BEGIN
-    "#include ""res\\drawclient.rc2""  // non-App Studio edited resources\r\n"
+    "#include ""res\\FourMat.rc2""  // non-App Studio edited resources\r\n"
     "\r\n"
     "#include ""afxres.rc""  // Standard components\r\n"
     "#include ""afxprint.rc""  // printing/print preview resources\r\n"

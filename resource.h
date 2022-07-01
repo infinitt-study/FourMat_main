@@ -69,6 +69,7 @@
 #define IDB_BITMAP1                     139
 #define IDB_LIST                        139
 #define IDD_HISTORY_FORM                140
+#define IDB_BITMAP2                     142
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -111,15 +112,38 @@
 #define ID_OBJECT_PROPERTIES            32838
 #define ID_OBJECT_NOLINE                32839
 #define ID_OBJECT_STYLES                32840
-
-#define ID_DRAW_TEST               50000
+#define ID_MULTIWINDOW                  32841
+#define ID_MULTIWINDOW32842             32842
+#define ID_MULTIVIEW_DOUBLEVIEW         32843
+#define ID_MULTIVIEW_TRIPLEVIEW         32844
+#define ID_MULTIVIEW_AFFINE             32845
+#define ID_IMAGEPROCESSING_AFFINE       32846
+#define ID_IMAGEPROCESSING_FILTERING    32847
+#define ID_AFFINETRANFORM_SYMMETRY      32848
+#define ID_AFFINETRANFORM_ROTATION      32849
+#define ID_AFFINETRANFORM_TRANSFORMATION 32850
+#define ID_AFFINETRANFORM_SLICE         32851
+#define ID_AFFINETRANFORM_SCALING       32852
+#define ID_AFFINETRANFORM_SLICE32853    32853
+#define ID_FILTERING_REMOVENOISE        32854
+#define ID_FILTERING_BRIGHTNESS         32855
+#define ID_FILTERING_CONTRAST           32856
+#define ID_AFFINETRANSFORM_SYMMETRY     32857
+#define ID_AFFINETRANSFORM_ROTATION     32858
+#define ID_AFFINETRANSFORM_TRANSFORMATION 32859
+#define ID_AFFINETRANSFORM_SLICE        32860
+#define ID_AFFINETRANSFORM_SCALING      32861
+#define ID_FILTERING_REMOVENOISE32862   32862
+#define ID_FILTERING_BRIGHTNESS32863    32863
+#define ID_FILTERING_CONTRAST32864      32864
+#define ID_DRAW_TEST                    50000
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        142
-#define _APS_NEXT_COMMAND_VALUE         32841
+#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_COMMAND_VALUE         32865
 #define _APS_NEXT_CONTROL_VALUE         132
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

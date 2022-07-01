@@ -1809,6 +1809,7 @@
     <ResourceCompile Include="FourMat.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\explorer.bmp" />
     <Image Include="RES\FourMat.ICO" />
     <Image Include="res\IDB_LIST.BMP" />
     <Image Include="res\main.bmp" />

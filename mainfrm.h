@@ -107,6 +107,7 @@ private:
 	void InitMainButton();
 	void InitHomeCategory();
 	void InitViewCategory();
+	void InitImageProcessingCategory();
 	void InitTabButtons();
 
 	void AddContextTab_Format();

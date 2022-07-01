@@ -324,6 +324,7 @@ BOOL CMainFrame::CreateRibbonBar()
 
 	InitHomeCategory();
 	InitViewCategory();
+	InitImageProcessingCategory();
 	InitTabButtons();
 
 	AddContextTab_Format();
@@ -488,6 +489,7 @@ void CMainFrame::InitViewCategory()
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Window\nzw"), m_PanelImages.ExtractIcon(5));
 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_WINDOW_NEW, _T("New Window\nn"), 0, 0));
+	
 
 	CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton(ID_WINDOWS_MENU, _T("Switch Windows\ns"), 1, 1);
 	pBtnWindows->SetMenu(IDR_WINDOWS_MENU, TRUE);
@@ -499,6 +501,27 @@ void CMainFrame::InitViewCategory()
 	pPanelWindow->EnableLaunchButton(ID_WINDOW_MANAGER, 1, _T("W"));
 #endif // ENABLE_RIBBON_LAUNCH_BUTTON
 }
+
+void CMainFrame::InitImageProcessingCategory()
+{
+	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory(_T("&ImageProcessing"), IDB_RIBBON_VIEWSMALL, IDB_RIBBON_VIEWLARGE);
+
+	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Affine Transformation\nzw"), m_PanelImages.ExtractIcon(6));
+
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"))); // 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("rotation\ng"))); //90,-90, 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSFORMATION, _T("Transformation\ng"))); 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SLICE, _T("Slice\ng"))); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SCALING, _T("Scaling\ng"))); 
+
+
+	pPanelWindow = pCategory->AddPanel(_T("Filtering\nzw"), m_PanelImages.ExtractIcon(7));
+
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_REMOVENOISE, _T("Remove Noise\nn"), 0, 0)); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_BRIGHTNESS, _T("Brightness\nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_CONTRAST, _T("Contrast\nn"), 0, 0));
+}
+
 
 void CMainFrame::InitTabButtons()
 {
