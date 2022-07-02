@@ -60,16 +60,26 @@
 #define IDC_LIST1                       131
 #define IDC_LIST_HISTORY                131
 #define IDB_RIBBON_FORMATLARGE          132
+#define IDC_BUTTON1                     132
 #define IDB_RIBBON_FORMATSMALL          133
+#define IDC_BUTTON2                     133
 #define IDB_LINEWEIGHT                  134
+#define IDC_BUTTON3                     134
 #define IDD_LINEWEIGHT                  135
+#define IDC_BUTTON4                     135
 #define IDB_STYLES                      136
+#define IDC_BUTTON5                     136
 #define IDD_DIALOG1                     137
 #define IDD_SEARCH_FORM                 137
+#define IDC_BUTTON6                     137
+#define IDC_SLIDER1                     137
+#define IDC_BUTTON7                     138
 #define IDB_BITMAP1                     139
 #define IDB_LIST                        139
 #define IDD_HISTORY_FORM                140
 #define IDB_BITMAP2                     142
+#define IDD_AFFINETRANSFORM_SLICE       143
+#define IDD_MultiImage                  145
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -136,15 +146,17 @@
 #define ID_FILTERING_REMOVENOISE32862   32862
 #define ID_FILTERING_BRIGHTNESS32863    32863
 #define ID_FILTERING_CONTRAST32864      32864
+#define ID_FILTERING_HISTOGRAM          32865
+#define ID_FILTERING_TOGRAYSCALE        32866
 #define ID_DRAW_TEST                    50000
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32865
-#define _APS_NEXT_CONTROL_VALUE         132
+#define _APS_NEXT_RESOURCE_VALUE        147
+#define _APS_NEXT_COMMAND_VALUE         32867
+#define _APS_NEXT_CONTROL_VALUE         138
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
