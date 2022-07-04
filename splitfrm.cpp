@@ -49,7 +49,7 @@ BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	//}}AFX_MSG_MAP
 
 
-	ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
+	
 END_MESSAGE_MAP()
 
 void CSplitFrame::OnFilePrint ()

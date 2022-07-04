@@ -1393,7 +1393,9 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="CRotation.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
+    <ClCompile Include="CSlice.cpp" />
     <ClCompile Include="drawdoc.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1757,13 +1759,16 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="CTransformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CHistoryView.h" />
     <ClInclude Include="CListCtrlEx.h" />
     <ClInclude Include="cntritem.h" />
+    <ClInclude Include="CRotation.h" />
     <ClInclude Include="CSearchFileView.h" />
+    <ClInclude Include="CSlice.h" />
     <ClInclude Include="drawdoc.h" />
     <ClInclude Include="drawobj.h" />
     <ClInclude Include="drawtool.h" />
@@ -1781,6 +1786,7 @@
     <ClInclude Include="summinfo.h" />
     <ClInclude Include="summpage.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="CTransformation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.htm">

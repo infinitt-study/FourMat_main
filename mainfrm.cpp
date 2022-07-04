@@ -461,7 +461,7 @@ void CMainFrame::InitHomeCategory()
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_ELLIPSE, _T("Ellipse\ne"), 11));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_POLYGON, _T("Polygon\ny"), 12));
 
-	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_TEST, _T("test\ny"), 13));
+	//pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_TEST, _T("test\ny"), 13));
 
 	// Create "Arrange" panel
 	CMFCRibbonPanel* pPanelArrange = pCategory->AddPanel(_T("Arrange\nzj"), m_PanelImages.ExtractIcon(3));
@@ -508,7 +508,7 @@ void CMainFrame::InitImageProcessingCategory()
 
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Affine Transformation\nzw"), m_PanelImages.ExtractIcon(6));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"),0,0)); // 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"),0,0)); //
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("rotation\ng"), 0, 0)); //90,-90, 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSFORMATION, _T("Transformation\ng"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SLICE, _T("Slice\ng"), 0, 0)); //dlg
@@ -710,9 +710,9 @@ void CMainFrame::UpdateUI(CDrawView* pCurrView)
 	m_wndStatusBar.UpdateWindow();
 }
 
-void CMainFrame::UpdateContextTab(CDrawView* pCurrView)
+void CMainFrame::UpdateContextTab(CDrawView* pCurrView)  // 
 {
-	bool bEnable = pCurrView->m_selection.GetCount() > 0;
+	bool bEnable = pCurrView->m_selection.GetCount() > 0; //m_selection : typedef CTypedPtrList<CObList, CDrawObj*> CDrawObjList; 수가  0 보다 많을때 
 
 	SetRibbonContextCategory(bEnable ? ID_FORMAT_CONTEXT_TAB : 0);
 
@@ -724,7 +724,7 @@ void CMainFrame::UpdateContextTab(CDrawView* pCurrView)
 
 void CMainFrame::UpdateStatusBarCountPane(int nID, CString strText, int nCount)
 {
-	CMFCRibbonBaseElement* pPane = m_wndStatusBar.FindByID(nID);
+	CMFCRibbonBaseElement* pPane = m_wndStatusBar.FindByID(nID); // ribbonpanel 메뉴에 있는 모든 아이디 가져오기 
 	if (pPane != NULL)
 	{
 		if (nCount == 0)
@@ -751,12 +751,12 @@ void CMainFrame::UpdateContextTabFromObject(CDrawObjList& list)
 		return;
 	}
 
-	COLORREF clrFill = (COLORREF)-1;
+	COLORREF clrFill = (COLORREF)-1; //-1 은 왜? 
 	COLORREF clrLine = (COLORREF)-1;
 	int nLineWeight  = -1;
 	if (count == 1)
 	{
-		CDrawObj* pObj = list.GetHead();
+		CDrawObj* pObj = list.GetHead(); // 객체 리스트  중에  해당하는것을 바꿀수 있는지, 연결할 수 있는지 확인 
 		if (pObj->CanChangeFillColor() && pObj->IsEnableFill())
 		{
 			clrFill = pObj->GetFillColor();
@@ -822,7 +822,7 @@ void CMainFrame::UpdateContextTabFromObject(CDrawObjList& list)
 	m_wndRibbonBar.RedrawWindow();
 }
 
-void CMainFrame::CreateDocumentColors()
+void CMainFrame::CreateDocumentColors() // 태블릿에 있는 컬러  설정  
 {
 	typedef struct
 	{
@@ -833,10 +833,10 @@ void CMainFrame::CreateDocumentColors()
 
 	int i = 0;
 	int nNumColours = 0;
-
+	//theme color 
 	static ColorTableEntry colorsMain [] =
 	{
-		{ RGB(255, 255, 255), _T("White, Background 1") },
+		{ RGB(255, 255, 255), _T("White, Background 1") }, // 색과 그에 해당하는 컬러 이름 
 		{ RGB(0, 0, 0), _T("Black, Text 1") },
 		{ RGB(238, 236, 225), _T("Tan, Background 2") },
 		{ RGB(31, 73, 125), _T("Dark Blue, Text 2") },
@@ -847,8 +847,8 @@ void CMainFrame::CreateDocumentColors()
 		{ RGB(75, 172, 198), _T("Aqua, Accent 5") },
 		{ RGB(245, 150, 70), _T("Orange, Accent 6") }
 	};
-
-	static ColorTableEntry colorsAdditional [] =
+	// 태블릿 내에 있는 컬러 설정 
+	static ColorTableEntry colorsAdditional [] = 
 	{
 		{ RGB(242, 242, 242), _T("White, Background 1, Darker 5%") },
 		{ RGB(127, 127, 127), _T("Black, Text 1, Lighter 50%") },
@@ -901,7 +901,7 @@ void CMainFrame::CreateDocumentColors()
 		{ RGB(31, 86, 99), _T("Aqua, Accent 5, Darker 50%") },
 		{ RGB(126, 77, 42), _T("Orange, Accent 6, Darker 50%") },
 	};
-
+	//Standard color 
 	static ColorTableEntry colorsStandard [] =
 	{
 		{ RGB(200, 15, 18), _T("Dark Red") },
@@ -915,7 +915,7 @@ void CMainFrame::CreateDocumentColors()
 		{ RGB(0, 36, 95), _T("Black") },
 		{ RGB(114, 50, 157), _T("Purple") },
 	};
-
+	// 각 컬러와 이름을 배치 하는것  
 	m_lstMainColors.RemoveAll();
 	nNumColours = sizeof(colorsMain) / sizeof(ColorTableEntry);
 
@@ -944,7 +944,7 @@ void CMainFrame::CreateDocumentColors()
 	};
 }
 
-COLORREF CMainFrame::GetColorFromColorButton(int nButtonID)
+COLORREF CMainFrame::GetColorFromColorButton(int nButtonID) // 컬러 버튼에서  실제 객체의 컬러 연결  
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -966,7 +966,7 @@ COLORREF CMainFrame::GetColorFromColorButton(int nButtonID)
 	return clr;
 }
 
-int CMainFrame::GetWeightFromLineWeight(int nButtonID)
+int CMainFrame::GetWeightFromLineWeight(int nButtonID) // 펜 두께 연결 
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -987,7 +987,7 @@ int CMainFrame::GetWeightFromLineWeight(int nButtonID)
 	return weight;
 }
 
-BOOL CMainFrame::GetStyleFromStyles(XStyle& style)
+BOOL CMainFrame::GetStyleFromStyles(XStyle& style) // line color랑  fill color 연결  
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -1014,14 +1014,14 @@ void CMainFrame::OnDummy()
 {
 }
 
-LRESULT CMainFrame::OnHighlightRibbonListItem(WPARAM wp, LPARAM lp)
+LRESULT CMainFrame::OnHighlightRibbonListItem(WPARAM wp, LPARAM lp) // ID 에 대한 활성화 되면 그거 실행> 
 {
 	int nIndex = (int) wp;
 
 	CMFCRibbonBaseElement* pElem = (CMFCRibbonBaseElement*) lp;
 	ASSERT_VALID(pElem);
 
-	const UINT uiCommand = pElem->GetID();
+	const UINT uiCommand = pElem->GetID(); // ui command id 를 받아 오는것 이다 .
 
 	CFrameWnd* pFrame = GetActiveFrame();
 	if (pFrame == NULL)
@@ -1108,7 +1108,7 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 	if (uiCategoryID != 0)
 	{
 		CMFCRibbonCategory* pActivaTab = m_wndRibbonBar.GetActiveCategory();
-		if (pActivaTab != NULL && pActivaTab->GetContextID() == uiCategoryID)
+		if (pActivaTab != NULL && pActivaTab->GetContextID() == uiCategoryID) // id 와 context id 랑 같으면 연결  
 		{
 			return;
 		}
@@ -1118,7 +1118,8 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 
 	if (uiCategoryID != 0)
 	{
-		m_wndRibbonBar.ShowContextCategories(uiCategoryID);
+		m_wndRibbonBar.ShowContextCategories(uiCategoryID);  //지정된 ID를 가진 컨텍스트 범주를 표시하거나 숨깁니다.
+
 		bRecalc = TRUE;
 	}
 
@@ -1131,11 +1132,14 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 	}
 }
 
-void CMainFrame::ActivateRibbonContextCategory(UINT uiCategoryID)
+void CMainFrame::ActivateRibbonContextCategory(UINT uiCategoryID) //리본 표시줄 플래그 = 0->  uiCategoryID 컨텍스트 범주를 활성화
 {
-	if (m_wndRibbonBar.GetHideFlags() == 0)
+	if (m_wndRibbonBar.GetHideFlags() == 0) //표시되는 리본 표시줄의 양을 나타내는 플래그를 검색합니다.
+
 	{
-		m_wndRibbonBar.ActivateContextCategory(uiCategoryID);
+		m_wndRibbonBar.ActivateContextCategory(uiCategoryID); // 이미 표시된 컨텍스트 범주를 활성화합니다.
+
+
 	}
 }
 
@@ -1146,7 +1150,8 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	//m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
-	return CMDIFrameWndEx::OnCreateClient(lpcs, pContext);
+	return CMDIFrameWndEx::OnCreateClient(lpcs, pContext); //프레임에 대한 클라이언트 창을 만듭니다.
+
 }
 
 //void CMainFrame::SwitchView(int nID)
