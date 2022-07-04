@@ -4,7 +4,8 @@
 #include "stdafx.h"
 #include "FourMat.h"
 #include "CSearchFileView.h"
-
+#include "splitfrm.h"
+#include "CHistoryView.h"
 
 // CSearchFileView
 
@@ -38,6 +39,7 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSearchFileView, CFormView)
     ON_BN_CLICKED(IDC_BUTTON_START, &CSearchFileView::OnClickedButtonStart)
     ON_BN_CLICKED(IDC_BUTTON_STOP, &CSearchFileView::OnClickedButtonStop)
+    ON_BN_CLICKED(IDC_BUTTON_SINGLE, &CSearchFileView::OnClickedButtonSingle)
 END_MESSAGE_MAP()
 
 
@@ -65,6 +67,9 @@ void CSearchFileView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
+
+    CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
+    pSplitFrame->SetSearchFileView(this);
 
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -246,4 +251,36 @@ void CSearchFileView::OnClickedButtonStop()
 {
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
     m_bStop = TRUE;
+}
+
+
+void CSearchFileView::OnClickedButtonSingle()
+{
+    // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+    const int nCount = m_lstResult.GetItemCount();
+    CString strImageName;
+
+    int nRow;
+    for (int i = nCount - 1; i >= 0; --i) {
+        if (m_lstResult.GetCheck(i)) {
+            strImageName = m_lstResult.GetItemText(i, 0);
+            nRow = i;
+            break;
+        }
+    }
+    if (strImageName.IsEmpty()) {
+        AfxMessageBox(_T("이미지를 선택해 주세요"));
+        return;
+    }
+
+    //뷰 스위칭
+    CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+
+    //pSplitFrame->m_strTmpPath = m_strFileLocation + "\\" + strImageName + "\\*.*";
+
+    //CHistoryView* pView = (CHistoryView*)pSplitFrame->GetActiveView();
+    //pView->m_strPath = m_strFileLocation + "\\" + strImageName + "\\*.*";
+    //pView->Invalidate(TRUE);
+
+    pSplitFrame->SwitchView(VIEWID_HISTORY);
 }

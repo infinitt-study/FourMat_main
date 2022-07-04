@@ -14,8 +14,8 @@ using namespace std;
 
 IMPLEMENT_DYNCREATE(CHistoryView, CFormView)
 
-CHistoryView::CHistoryView()
-	: CFormView(IDD_HISTORY_FORM)
+CHistoryView::CHistoryView(CString strTmp)
+	: CFormView(IDD_HISTORY_FORM), m_strPath(strTmp)
 {
 
 }
@@ -31,6 +31,7 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
+	ON_BN_CLICKED(IDOK, &CHistoryView::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -78,11 +79,12 @@ void CHistoryView::OnInitialUpdate()
 
 	//폴더 내 파일목록 조회
 	string path = CT2CA(m_strPath);
+	//string path = "res\\*.*";
 
 	struct _finddata_t fd;	intptr_t handle;
 	if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
-		cout << "No file in directory!" << endl;
-		MessageBox(_T("파일 없음"));
+		//cout << "No file in directory!" << endl;
+		//MessageBox(_T("파일 없음"));
 		return;
 	}
 
@@ -99,4 +101,12 @@ void CHistoryView::OnInitialUpdate()
 
 	} while (_findnext(handle, &fd) == 0);
 	_findclose(handle);
+}
+
+#include "splitfrm.h"
+void CHistoryView::OnBnClickedOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+	pSplitFrame->SwitchView(VIEWID_DRAW);
 }

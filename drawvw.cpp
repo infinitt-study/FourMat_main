@@ -22,6 +22,7 @@
 #include "drawobj.h"
 #include "drawtool.h"
 #include "mainfrm.h"
+#include "splitfrm.h"
 
 #include "LineWeightDlg.h"
 
@@ -229,32 +230,30 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 	}
 }
 
-void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)  // CPrintInfo : Cprintinfo -> 인쇄 프린트에 대한 정보를 가져 온다. 
+void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 {
 	CScrollView::OnPrepareDC(pDC, pInfo);
 
-	/*
-	OnDraw화면 표시를 위해 OnPrint멤버 함수가 호출되기 전과 인쇄 또는 인쇄 미리 보기 중에 각 페이지에 대해 멤버 함수가 호출 되기 전에 프레임워크에서 호출됩니다 .*/
 	// mapping mode is MM_ANISOTROPIC
 	// these extents setup a mode similar to MM_LOENGLISH
 	// MM_LOENGLISH is in .01 physical inches
 	// these extents provide .01 logical inches
 
-	pDC->SetMapMode(MM_ANISOTROPIC); /*논리 단위는 축이 임의로 조정된 임의의 단위에 매핑됩니다. SetWindowExtEx 및 SetViewportExtEx 함수를 사용 하여 단위, 방향 및 배율을 지정합니다.*/
+	pDC->SetMapMode(MM_ANISOTROPIC);
 
-	float zoom = 1; // zoom 정도 초기화 
+	float zoom = 1;
 	if (nullptr == pInfo) {
 		zoom = 1.5f;
 	}
 
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom); //	뷰포트의 x 및 y 익스텐트 집합입니다.
-	pDC->SetWindowExt(100, -100); //디바이스 컨텍스트와 연결된 창의 x 및 y 익스텐트 집합입니다.
+	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
+	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx, GetDocument()->GetSize().cy }; //이 함수를 호출하여 뷰의 문서에 대한 포인터를 가져옵니다.
+	CPoint ptOrg{ GetDocument()->GetSize().cx, GetDocument()->GetSize().cy };
 
 	// ptOrg is in logical coordinates
-	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y); //현재 창 원본의 좌표를 기준으로 창 원본을 수정합니다.
+	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -272,7 +271,7 @@ BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 	return TRUE;
 }
 
-void CDrawView::OnDraw(CDC* pDC) 
+void CDrawView::OnDraw(CDC* pDC)
 {
 	CDrawDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -484,6 +483,9 @@ void CDrawView::DrawGrid(CDC* pDC)
 
 void CDrawView::OnInitialUpdate()
 {
+	//CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
+	//pSplitFrame->SetDrawView(this);
+
 	CSize size = GetDocument()->GetSize();
 	CClientDC dc(NULL);
 	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100);

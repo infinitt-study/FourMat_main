@@ -222,8 +222,12 @@ void CDrawDoc::Remove(CDrawObj* pObj)
 #ifndef SHARED_HANDLERS
 	// call remove for each view so that the view can remove from m_selection
 	pos = GetFirstViewPosition();
-	while (pos != NULL)
-		((CDrawView*)GetNextView(pos))->Remove(pObj);
+	while (pos != NULL) {
+		CView* pView = GetNextView(pos);
+		if (pView->IsKindOf(RUNTIME_CLASS(CDrawView))) {
+			((CDrawView*)pView)->Remove(pObj);
+		}
+	}
 #endif
 }
 
@@ -266,8 +270,12 @@ void CDrawDoc::ComputePageSize()
 	{
 		m_size = new_size;
 		POSITION pos = GetFirstViewPosition();
-		while (pos != NULL)
-			((CDrawView*)GetNextView(pos))->SetPageSize(m_size);
+		while (pos != NULL) {
+			CView* pView = GetNextView(pos);
+			if (pView->IsKindOf(RUNTIME_CLASS(CDrawView))) {
+				((CDrawView*)pView)->SetPageSize(m_size);
+			}
+		}
 	}
 #endif
 }

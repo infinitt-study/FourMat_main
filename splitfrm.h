@@ -22,6 +22,7 @@
 #define VIEWID_DEFAULT AFX_IDW_PANE_FIRST
 #define VIEWID_SEARCH AFX_IDW_PANE_FIRST + 10
 #define VIEWID_HISTORY AFX_IDW_PANE_FIRST + 20
+#define VIEWID_DRAW AFX_IDW_PANE_FIRST + 30
 
 class CSplitFrame : public CMDIChildWndEx
 {
@@ -48,12 +49,25 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 
+	CView* m_pDrawView;
 	CView* m_pWndHistoryView;
 	CView* m_pWndSearchFileView;
+	
+public:
+	CString m_strTmpPath;
 
+
+public:
+	//void SetDrawView(CView* pView) {
+	//	m_pDrawView = pView;
+	//}
+	void SetSearchFileView(CView* pView) {
+		m_pWndSearchFileView = pView;
+	}
 
 	void SwitchView(int nID);
 	void OnDrawTest();
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 

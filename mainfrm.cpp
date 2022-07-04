@@ -508,7 +508,7 @@ void CMainFrame::InitImageProcessingCategory()
 
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Affine Transformation\nzw"), m_PanelImages.ExtractIcon(6));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"),0,0)); //
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"),0,0)); // 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("rotation\ng"), 0, 0)); //90,-90, 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSFORMATION, _T("Transformation\ng"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SLICE, _T("Slice\ng"), 0, 0)); //dlg
@@ -710,9 +710,9 @@ void CMainFrame::UpdateUI(CDrawView* pCurrView)
 	m_wndStatusBar.UpdateWindow();
 }
 
-void CMainFrame::UpdateContextTab(CDrawView* pCurrView)  // 
+void CMainFrame::UpdateContextTab(CDrawView* pCurrView)
 {
-	bool bEnable = pCurrView->m_selection.GetCount() > 0; //m_selection : typedef CTypedPtrList<CObList, CDrawObj*> CDrawObjList; ¼ö°¡  0 º¸´Ù ¸¹À»¶§ 
+	bool bEnable = pCurrView->m_selection.GetCount() > 0;
 
 	SetRibbonContextCategory(bEnable ? ID_FORMAT_CONTEXT_TAB : 0);
 
@@ -724,7 +724,7 @@ void CMainFrame::UpdateContextTab(CDrawView* pCurrView)  //
 
 void CMainFrame::UpdateStatusBarCountPane(int nID, CString strText, int nCount)
 {
-	CMFCRibbonBaseElement* pPane = m_wndStatusBar.FindByID(nID); // ribbonpanel ¸Þ´º¿¡ ÀÖ´Â ¸ðµç ¾ÆÀÌµð °¡Á®¿À±â 
+	CMFCRibbonBaseElement* pPane = m_wndStatusBar.FindByID(nID);
 	if (pPane != NULL)
 	{
 		if (nCount == 0)
@@ -751,12 +751,12 @@ void CMainFrame::UpdateContextTabFromObject(CDrawObjList& list)
 		return;
 	}
 
-	COLORREF clrFill = (COLORREF)-1; //-1 Àº ¿Ö? 
+	COLORREF clrFill = (COLORREF)-1;
 	COLORREF clrLine = (COLORREF)-1;
 	int nLineWeight  = -1;
 	if (count == 1)
 	{
-		CDrawObj* pObj = list.GetHead(); // °´Ã¼ ¸®½ºÆ®  Áß¿¡  ÇØ´çÇÏ´Â°ÍÀ» ¹Ù²Ü¼ö ÀÖ´ÂÁö, ¿¬°áÇÒ ¼ö ÀÖ´ÂÁö È®ÀÎ 
+		CDrawObj* pObj = list.GetHead();
 		if (pObj->CanChangeFillColor() && pObj->IsEnableFill())
 		{
 			clrFill = pObj->GetFillColor();
@@ -822,7 +822,7 @@ void CMainFrame::UpdateContextTabFromObject(CDrawObjList& list)
 	m_wndRibbonBar.RedrawWindow();
 }
 
-void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤  
+void CMainFrame::CreateDocumentColors()
 {
 	typedef struct
 	{
@@ -833,10 +833,10 @@ void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤
 
 	int i = 0;
 	int nNumColours = 0;
-	//theme color 
+
 	static ColorTableEntry colorsMain [] =
 	{
-		{ RGB(255, 255, 255), _T("White, Background 1") }, // »ö°ú ±×¿¡ ÇØ´çÇÏ´Â ÄÃ·¯ ÀÌ¸§ 
+		{ RGB(255, 255, 255), _T("White, Background 1") },
 		{ RGB(0, 0, 0), _T("Black, Text 1") },
 		{ RGB(238, 236, 225), _T("Tan, Background 2") },
 		{ RGB(31, 73, 125), _T("Dark Blue, Text 2") },
@@ -847,8 +847,8 @@ void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤
 		{ RGB(75, 172, 198), _T("Aqua, Accent 5") },
 		{ RGB(245, 150, 70), _T("Orange, Accent 6") }
 	};
-	// ÅÂºí¸´ ³»¿¡ ÀÖ´Â ÄÃ·¯ ¼³Á¤ 
-	static ColorTableEntry colorsAdditional [] = 
+
+	static ColorTableEntry colorsAdditional [] =
 	{
 		{ RGB(242, 242, 242), _T("White, Background 1, Darker 5%") },
 		{ RGB(127, 127, 127), _T("Black, Text 1, Lighter 50%") },
@@ -901,7 +901,7 @@ void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤
 		{ RGB(31, 86, 99), _T("Aqua, Accent 5, Darker 50%") },
 		{ RGB(126, 77, 42), _T("Orange, Accent 6, Darker 50%") },
 	};
-	//Standard color 
+
 	static ColorTableEntry colorsStandard [] =
 	{
 		{ RGB(200, 15, 18), _T("Dark Red") },
@@ -915,7 +915,7 @@ void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤
 		{ RGB(0, 36, 95), _T("Black") },
 		{ RGB(114, 50, 157), _T("Purple") },
 	};
-	// °¢ ÄÃ·¯¿Í ÀÌ¸§À» ¹èÄ¡ ÇÏ´Â°Í  
+
 	m_lstMainColors.RemoveAll();
 	nNumColours = sizeof(colorsMain) / sizeof(ColorTableEntry);
 
@@ -944,7 +944,7 @@ void CMainFrame::CreateDocumentColors() // ÅÂºí¸´¿¡ ÀÖ´Â ÄÃ·¯  ¼³Á¤
 	};
 }
 
-COLORREF CMainFrame::GetColorFromColorButton(int nButtonID) // ÄÃ·¯ ¹öÆ°¿¡¼­  ½ÇÁ¦ °´Ã¼ÀÇ ÄÃ·¯ ¿¬°á  
+COLORREF CMainFrame::GetColorFromColorButton(int nButtonID)
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -966,7 +966,7 @@ COLORREF CMainFrame::GetColorFromColorButton(int nButtonID) // ÄÃ·¯ ¹öÆ°¿¡¼­  ½Ç
 	return clr;
 }
 
-int CMainFrame::GetWeightFromLineWeight(int nButtonID) // Ææ µÎ²² ¿¬°á 
+int CMainFrame::GetWeightFromLineWeight(int nButtonID)
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -987,7 +987,7 @@ int CMainFrame::GetWeightFromLineWeight(int nButtonID) // Ææ µÎ²² ¿¬°á
 	return weight;
 }
 
-BOOL CMainFrame::GetStyleFromStyles(XStyle& style) // line color¶û  fill color ¿¬°á  
+BOOL CMainFrame::GetStyleFromStyles(XStyle& style)
 {
 	CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
 
@@ -1014,14 +1014,14 @@ void CMainFrame::OnDummy()
 {
 }
 
-LRESULT CMainFrame::OnHighlightRibbonListItem(WPARAM wp, LPARAM lp) // ID ¿¡ ´ëÇÑ È°¼ºÈ­ µÇ¸é ±×°Å ½ÇÇà> 
+LRESULT CMainFrame::OnHighlightRibbonListItem(WPARAM wp, LPARAM lp)
 {
 	int nIndex = (int) wp;
 
 	CMFCRibbonBaseElement* pElem = (CMFCRibbonBaseElement*) lp;
 	ASSERT_VALID(pElem);
 
-	const UINT uiCommand = pElem->GetID(); // ui command id ¸¦ ¹Þ¾Æ ¿À´Â°Í ÀÌ´Ù .
+	const UINT uiCommand = pElem->GetID();
 
 	CFrameWnd* pFrame = GetActiveFrame();
 	if (pFrame == NULL)
@@ -1037,6 +1037,7 @@ LRESULT CMainFrame::OnHighlightRibbonListItem(WPARAM wp, LPARAM lp) // ID ¿¡ ´ëÇ
 
 	ASSERT_VALID(pDoc);
 
+	//
 	CDrawView* pView = DYNAMIC_DOWNCAST(CDrawView, pFrame->GetActiveView());
 	if (pView == NULL)
 	{
@@ -1108,7 +1109,7 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 	if (uiCategoryID != 0)
 	{
 		CMFCRibbonCategory* pActivaTab = m_wndRibbonBar.GetActiveCategory();
-		if (pActivaTab != NULL && pActivaTab->GetContextID() == uiCategoryID) // id ¿Í context id ¶û °°À¸¸é ¿¬°á  
+		if (pActivaTab != NULL && pActivaTab->GetContextID() == uiCategoryID)
 		{
 			return;
 		}
@@ -1118,8 +1119,7 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 
 	if (uiCategoryID != 0)
 	{
-		m_wndRibbonBar.ShowContextCategories(uiCategoryID);  //ÁöÁ¤µÈ ID¸¦ °¡Áø ÄÁÅØ½ºÆ® ¹üÁÖ¸¦ Ç¥½ÃÇÏ°Å³ª ¼û±é´Ï´Ù.
-
+		m_wndRibbonBar.ShowContextCategories(uiCategoryID);
 		bRecalc = TRUE;
 	}
 
@@ -1132,14 +1132,11 @@ void CMainFrame::SetRibbonContextCategory(UINT uiCategoryID)
 	}
 }
 
-void CMainFrame::ActivateRibbonContextCategory(UINT uiCategoryID) //¸®º» Ç¥½ÃÁÙ ÇÃ·¡±× = 0->  uiCategoryID ÄÁÅØ½ºÆ® ¹üÁÖ¸¦ È°¼ºÈ­
+void CMainFrame::ActivateRibbonContextCategory(UINT uiCategoryID)
 {
-	if (m_wndRibbonBar.GetHideFlags() == 0) //Ç¥½ÃµÇ´Â ¸®º» Ç¥½ÃÁÙÀÇ ¾çÀ» ³ªÅ¸³»´Â ÇÃ·¡±×¸¦ °Ë»öÇÕ´Ï´Ù.
-
+	if (m_wndRibbonBar.GetHideFlags() == 0)
 	{
-		m_wndRibbonBar.ActivateContextCategory(uiCategoryID); // ÀÌ¹Ì Ç¥½ÃµÈ ÄÁÅØ½ºÆ® ¹üÁÖ¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
-
-
+		m_wndRibbonBar.ActivateContextCategory(uiCategoryID);
 	}
 }
 
@@ -1150,8 +1147,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	//m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
-	return CMDIFrameWndEx::OnCreateClient(lpcs, pContext); //ÇÁ·¹ÀÓ¿¡ ´ëÇÑ Å¬¶óÀÌ¾ðÆ® Ã¢À» ¸¸µì´Ï´Ù.
-
+	return CMDIFrameWndEx::OnCreateClient(lpcs, pContext);
 }
 
 //void CMainFrame::SwitchView(int nID)

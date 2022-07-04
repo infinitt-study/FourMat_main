@@ -49,9 +49,6 @@
     <ClCompile Include="summpage.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CSlice.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CFileFindEx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -61,13 +58,7 @@
     <ClCompile Include="CListCtrlEx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CRotation.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CSearchFileView.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="CTransformation.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -135,16 +126,7 @@
     <ClInclude Include="CListCtrlEx.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CRotation.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CSearchFileView.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CTransformation.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CSlice.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

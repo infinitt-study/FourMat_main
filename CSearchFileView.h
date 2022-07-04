@@ -46,6 +46,7 @@ public:
 	void SearFile(CString strStartFolder);
 	afx_msg void OnClickedButtonStart();
 	afx_msg void OnClickedButtonStop();
+	afx_msg void OnClickedButtonSingle();
 };
 
 

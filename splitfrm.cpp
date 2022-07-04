@@ -11,6 +11,8 @@
 
 #include "stdafx.h"
 #include "FourMat.h"
+#include "drawdoc.h"
+#include "drawvw.h"
 #include "splitfrm.h"
 
 #ifdef _DEBUG
@@ -25,14 +27,13 @@ IMPLEMENT_DYNCREATE(CSplitFrame, CMDIChildWndEx)
 
 CSplitFrame::CSplitFrame()
 {
-	m_pWndSearchFileView = new CSearchFileView();
+	m_pDrawView = new CDrawView();
+//	m_pWndSearchFileView = new CSearchFileView();
 	m_pWndHistoryView = new CHistoryView();
 }
 
 CSplitFrame::~CSplitFrame()
 {
-	delete m_pWndSearchFileView;
-	delete m_pWndHistoryView;
 }
 
 //BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
@@ -49,7 +50,8 @@ BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	//}}AFX_MSG_MAP
 
 
-	
+	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 void CSplitFrame::OnFilePrint ()
@@ -73,10 +75,14 @@ void CSplitFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck (m_dockManager.IsPrintPreviewValid ());
 }
 
+#include "CHistoryView.h"
 void CSplitFrame::SwitchView(int nID)
 {
 	CView* pOldView = GetActiveFrame()->GetActiveView();
 	CView* pNewView = NULL;
+
+	//
+	//CHistoryView* pHistoryView = NULL;
 
 	switch (nID)
 	{
@@ -86,8 +92,14 @@ void CSplitFrame::SwitchView(int nID)
 
 	case VIEWID_HISTORY:
 		pNewView = (CView*)m_pWndHistoryView;
+		//pHistoryView = (CHistoryView*)m_pWndHistoryView;
+		//pHistoryView->m_strPath = _T("res\\*.*");
+		//pHistoryView->Invalidate(TRUE);
 		break;
 
+	case VIEWID_DRAW:
+		pNewView = (CView*)m_pDrawView;
+		break;
 	}
 
 	if (pNewView)
@@ -106,15 +118,31 @@ void CSplitFrame::SwitchView(int nID)
 
 void CSplitFrame::OnDrawTest()
 {
-	SwitchView(VIEWID_SEARCH);
+	SwitchView(VIEWID_DRAW);
 }
 
 
 BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-	m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
+	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
+//	m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
-	return CMDIChildWndEx::OnCreateClient(lpcs, pContext);
+	BOOL bResult = CMDIChildWndEx::OnCreateClient(lpcs, pContext);
+
+	if (bResult) {
+		//SwitchView(VIEWID_SEARCH);
+	}
+	return bResult;
+}
+
+
+int CSplitFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CMDIChildWndEx::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+
+	return 0;
 }

@@ -9,7 +9,7 @@ class CHistoryView : public CFormView
 	DECLARE_DYNCREATE(CHistoryView)
 
 public:
-	CHistoryView();           // 동적 만들기에 사용되는 protected 생성자입니다.
+	CHistoryView(CString strTmp = NULL);           // 동적 만들기에 사용되는 protected 생성자입니다.
 	virtual ~CHistoryView();
 
 public:
@@ -33,6 +33,7 @@ public:
 	CString m_strPath;
 
 	virtual void OnInitialUpdate();
+	afx_msg void OnBnClickedOk();
 };
 
 

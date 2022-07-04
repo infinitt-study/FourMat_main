@@ -15,13 +15,13 @@
 #define HINT_UPDATE_SELECTION   2
 #define HINT_DELETE_SELECTION   3
 
-class CDrawObj; // 전방위 선언 : 포인터를 이용하여 접근 가능하다. 
+class CDrawObj;
 
 class CDrawView : public CScrollView
 {
 	friend class CDrawObjFriend;
 
-protected: // create from serialization only
+public:
 	CDrawView();
 	DECLARE_DYNCREATE(CDrawView)
 
@@ -101,7 +101,7 @@ public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual void OnActivateView(BOOL bActivate, CView* pActiveView, CView* pDeactiveView);
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
-	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo); // 궁금한거 : 문서 모양에 대한  확대 축소인지 그 상태로 저장이 되는건지 
+	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo);
 	virtual BOOL OnScrollBy(CSize sizeScroll, BOOL bDoScroll);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	void DrawGrid(CDC* pDC);

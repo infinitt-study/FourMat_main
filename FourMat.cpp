@@ -17,6 +17,7 @@
 #include "drawdoc.h"
 #include "drawvw.h"
 #include "splitfrm.h"
+#include "CSearchFileView.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -102,7 +103,11 @@ BOOL CDrawApp::InitInstance()
 	//  serve as the connection between documents, frame windows and views.
 
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_DRAWCLTYPE, RUNTIME_CLASS(CDrawDoc), RUNTIME_CLASS(CSplitFrame), RUNTIME_CLASS(CDrawView));
+	pDocTemplate = new CMultiDocTemplate(IDR_DRAWCLTYPE, 
+		RUNTIME_CLASS(CDrawDoc), 
+		RUNTIME_CLASS(CSplitFrame), 
+		//
+		RUNTIME_CLASS(CSearchFileView));
 	pDocTemplate->SetContainerInfo(IDR_DRAWCLTYPE_CNTR_IP);
 	AddDocTemplate(pDocTemplate);
 
