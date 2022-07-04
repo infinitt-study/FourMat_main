@@ -94,6 +94,10 @@ protected:
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
 
+public:
+	CString m_strFolderPath;
+	CString m_strFilePath;
+
 protected:
 	//{{AFX_MSG(CDrawDoc)
 	afx_msg void OnViewPaperColor();

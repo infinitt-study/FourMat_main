@@ -201,4 +201,7 @@ protected:
 
 private:
 	COLORREF GetColorFromColorButton(int nButtonID);
+
+public:
+	CString m_strPath;
 };

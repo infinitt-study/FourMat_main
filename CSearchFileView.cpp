@@ -253,23 +253,23 @@ void CSearchFileView::OnClickedButtonStop()
     m_bStop = TRUE;
 }
 
-
+#include "drawdoc.h"
 void CSearchFileView::OnClickedButtonSingle()
 {
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
     const int nCount = m_lstResult.GetItemCount();
-    CString strImageName;
+    CString strFolderName;
 
     int nRow;
     for (int i = nCount - 1; i >= 0; --i) {
         if (m_lstResult.GetCheck(i)) {
-            strImageName = m_lstResult.GetItemText(i, 0);
+            strFolderName = m_lstResult.GetItemText(i, 0);
             nRow = i;
             break;
         }
     }
-    if (strImageName.IsEmpty()) {
-        AfxMessageBox(_T("이미지를 선택해 주세요"));
+    if (strFolderName.IsEmpty()) {
+        AfxMessageBox(_T("폴더를 선택해 주세요"));
         return;
     }
 
@@ -281,6 +281,10 @@ void CSearchFileView::OnClickedButtonSingle()
     //CHistoryView* pView = (CHistoryView*)pSplitFrame->GetActiveView();
     //pView->m_strPath = m_strFileLocation + "\\" + strImageName + "\\*.*";
     //pView->Invalidate(TRUE);
+
+    CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+    pDrawDoc->m_strFolderPath = m_strFileLocation + "\\" + strFolderName;
+    pDrawDoc->UpdateAllViews(NULL, 1000);  //1000은 폴더 경로
 
     pSplitFrame->SwitchView(VIEWID_HISTORY);
 }

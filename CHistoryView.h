@@ -34,6 +34,8 @@ public:
 
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedOk();
+	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	void FolderSearch();
 };
 
 

@@ -186,6 +186,8 @@ void CDrawView::InvalObj(CDrawObj* pObj)
 
 void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 {
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
 	switch (lHint)
 	{
 	case HINT_UPDATE_WINDOW:    // redraw entire window
@@ -224,8 +226,13 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		((CMainFrame*)AfxGetMainWnd())->UpdateUI(this);
 		break;
 
+	case 1001:
+		m_strPath = pDrawDoc->m_strFilePath;
+		AfxMessageBox(m_strPath);
+		break;
+
 	default:
-		ASSERT(FALSE);
+		//ASSERT(FALSE);
 		break;
 	}
 }

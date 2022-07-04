@@ -8,6 +8,7 @@
 #include <iostream>
 #include <io.h>
 #include <string.h>
+#include "drawdoc.h"
 using namespace std;
 
 // CHistoryView
@@ -54,7 +55,6 @@ void CHistoryView::Dump(CDumpContext& dc) const
 
 // CHistoryView 메시지 처리기
 
-
 void CHistoryView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
@@ -77,9 +77,85 @@ void CHistoryView::OnInitialUpdate()
 	m_lstHistory.InsertColumn(0, _T("이름"), LVCFMT_LEFT, 200);
 	m_lstHistory.InsertColumn(1, _T("일자"), LVCFMT_LEFT, 100);
 
+	//체크박스 추가
+	DWORD dwExStyle = m_lstHistory.GetExtendedStyle();
+	m_lstHistory.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+
+
+	////폴더 내 파일목록 조회
+	//string path = CT2CA(m_strPath);
+	////string path = "res\\*.*";
+
+	//struct _finddata_t fd;	intptr_t handle;
+	//if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
+	//	//cout << "No file in directory!" << endl;
+	//	//MessageBox(_T("파일 없음"));
+	//	return;
+	//}
+
+	//int nRow = 0;
+	//do
+	//{
+	//	//if (strstr(fd.name, ".bmp") != NULL || strstr(fd.name, ".png") != NULL) {
+	//	//	m_lstHistory.InsertItem(nRow, fd.name, 0);
+	//	//	nRow++;
+	//	//}
+	//	m_lstHistory.InsertItem(nRow, fd.name, 0);
+	//	nRow++;
+
+
+	//} while (_findnext(handle, &fd) == 0);
+	//_findclose(handle);
+}
+
+#include "splitfrm.h"
+void CHistoryView::OnBnClickedOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const int nCount = m_lstHistory.GetItemCount();
+	CString strFileName;
+
+	int nRow;
+	for (int i = nCount - 1; i >= 0; --i) {
+		if (m_lstHistory.GetCheck(i)) {
+			strFileName = m_lstHistory.GetItemText(i, 0);
+			nRow = i;
+			break;
+		}
+	}
+	if (strFileName.IsEmpty()) {
+		AfxMessageBox(_T("파일을 선택해 주세요"));
+		return;
+	}
+
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
+	pDrawDoc->UpdateAllViews(NULL, 1001);  //1001은 파일 경로
+	
+
+	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+	pSplitFrame->SwitchView(VIEWID_DRAW);
+}
+
+void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
+	switch (lHint)
+	{
+	case 1000:
+		m_strPath = pDrawDoc->m_strFolderPath + +"\\*.*";
+		AfxMessageBox(m_strPath);
+		FolderSearch();
+		break;
+	}
+}
+
+void CHistoryView::FolderSearch()
+{
 	//폴더 내 파일목록 조회
 	string path = CT2CA(m_strPath);
-	//string path = "res\\*.*";
 
 	struct _finddata_t fd;	intptr_t handle;
 	if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
@@ -98,15 +174,6 @@ void CHistoryView::OnInitialUpdate()
 		m_lstHistory.InsertItem(nRow, fd.name, 0);
 		nRow++;
 
-
 	} while (_findnext(handle, &fd) == 0);
 	_findclose(handle);
-}
-
-#include "splitfrm.h"
-void CHistoryView::OnBnClickedOk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-	pSplitFrame->SwitchView(VIEWID_DRAW);
 }
