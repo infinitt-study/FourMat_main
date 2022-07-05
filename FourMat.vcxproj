@@ -1364,7 +1364,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CAddNoiseDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
+    <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
@@ -1767,7 +1769,9 @@
     <ClCompile Include="CTranslationDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAddNoiseDlg.h" />
     <ClInclude Include="CAffineTransform.h" />
+    <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
     <ClInclude Include="CHistoryView.h" />

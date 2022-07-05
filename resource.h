@@ -112,9 +112,15 @@
 #define IDC_DIFFUSION_LAMBDA            155
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
+#define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158
+#define IDC_NOISE_RADIO2                158
+#define IDC_NOISE_AMOUNT                159
+#define IDC_SPIN_AMOUNT                 160
+#define IDC_SIGMA_EDIT                  161
 #define IDD_DIALOG2                     162
 #define IDD_FEATUREEXTRACTION_BLUR      162
+#define IDC_SIGMA_SLIDER                162
 #define IDD_AFFINETRANSFORM_SCALING     164
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
@@ -198,7 +204,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32876
-#define _APS_NEXT_CONTROL_VALUE         157
+#define _APS_NEXT_CONTROL_VALUE         163
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
