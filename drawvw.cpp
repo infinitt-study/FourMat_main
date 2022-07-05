@@ -116,9 +116,11 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
 	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
 	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawView::OnAffinetransformSlice)
-	ON_COMMAND(ID_AFFINETRANFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
+	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawView::OnAffinetransformMirror)
+
 	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
 	ON_WM_MOUSEHWHEEL()
+	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1874,10 +1876,7 @@ void CDrawView::OnAffinetransformSlice()
 
 }
 
-void CDrawView::OnAffinetransformSymmetry()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
+
 
 #include "CTranslationDlg.h"
 void CDrawView::OnAffinetransformTranslation()
@@ -1919,5 +1918,28 @@ void CDrawView::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 	
 
 
+
+}
+
+void CDrawView::OnAffinetransformMirror()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppMirror(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
+
+}
+
+
+void CDrawView::OnAffinetransformFlip()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 
 }

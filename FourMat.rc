@@ -683,11 +683,12 @@ BEGIN
     BEGIN
         POPUP "Affine Transform"
         BEGIN
-            MENUITEM "Symmetry",                    ID_AFFINETRANFORM_SYMMETRY
             MENUITEM "Rotation",                    ID_AFFINETRANFORM_ROTATION
             MENUITEM "Translation",                 ID_AFFINETRANFORM_TRANSLATION
             MENUITEM "Slice",                       ID_AFFINETRANFORM_SLICE
             MENUITEM "Scaling",                     ID_AFFINETRANFORM_SCALING
+            MENUITEM "Mirror",                      ID_AFFINETRANFORM_MIRROR
+            MENUITEM "Flip",                        ID_AFFINETRANSFORM_FLIP
         END
         POPUP "Filtering"
         BEGIN
@@ -696,6 +697,13 @@ BEGIN
             MENUITEM "Contrast",                    ID_FILTERING_CONTRAST
             MENUITEM "To gray scale",               ID_FILTERING_TOGRAYSCALE
             MENUITEM "Histogram",                   ID_FILTERING_HISTOGRAM
+        END
+        POPUP "FeatureExtraction"
+        BEGIN
+            MENUITEM "Blur",                        ID_FEATUREEXTRACTION_BLUR
+            MENUITEM "Sharpening",                  ID_FEATUREEXTRACTION_SHARPENING
+            MENUITEM "Add Noise",                   ID_FEATUREEXTRACTION_ADDNOISE
+            MENUITEM "Reduce Noise",                ID_FEATUREEXTRACTION_REDUCENOISE
         END
     END
     POPUP "&Help"
