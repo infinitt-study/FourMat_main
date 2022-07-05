@@ -10,6 +10,7 @@
 #include <string.h>
 #include "drawdoc.h"
 #include "drawvw.h"
+#include <vector>
 using namespace std;
 
 // CHistoryView
@@ -132,8 +133,8 @@ void CHistoryView::OnBnClickedOk()
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
-	
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
+
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
 	pSplitFrame->SwitchView(VIEWID_DRAW);
@@ -161,8 +162,8 @@ void CHistoryView::FolderSearch()
 
 	struct _finddata_t fd;	intptr_t handle;
 	if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
-		//cout << "No file in directory!" << endl;
-		//MessageBox(_T("파일 없음"));
+		cout << "No file in directory!" << endl;
+		MessageBox(_T("파일 없음"));
 		return;
 	}
 
@@ -180,7 +181,7 @@ void CHistoryView::FolderSearch()
 	_findclose(handle);
 }
 
-#include <vector>
+
 void CHistoryView::OnClickedButtonMulti()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -202,9 +203,12 @@ void CHistoryView::OnClickedButtonMulti()
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
 
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-	pSplitFrame->SwitchView(VIEWID_DRAW);
+
+	//
+	//
+	pSplitFrame->SwitchView(VIEWID_MULTIDRAW);
 }
