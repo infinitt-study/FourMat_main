@@ -216,4 +216,5 @@ public:
 	afx_msg void OnAffinetransformSlice();
 	afx_msg void OnAffinetransformSymmetry();
 	afx_msg void OnAffinetransformTranslation();
+	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 };

@@ -683,11 +683,11 @@ BEGIN
     BEGIN
         POPUP "Affine Transform"
         BEGIN
-            MENUITEM "Symmetry",                    ID_AFFINETRANSFORM_SYMMETRY
-            MENUITEM "Rotation",                    ID_AFFINETRANSFORM_ROTATION
-            MENUITEM "Translation",                 ID_AFFINETRANSFORM_TRANSLATION
-            MENUITEM "Slice",                       ID_AFFINETRANSFORM_SLICE
-            MENUITEM "Scaling",                     ID_AFFINETRANSFORM_SCALING
+            MENUITEM "Symmetry",                    ID_AFFINETRANFORM_SYMMETRY
+            MENUITEM "Rotation",                    ID_AFFINETRANFORM_ROTATION
+            MENUITEM "Translation",                 ID_AFFINETRANFORM_TRANSLATION
+            MENUITEM "Slice",                       ID_AFFINETRANFORM_SLICE
+            MENUITEM "Scaling",                     ID_AFFINETRANFORM_SCALING
         END
         POPUP "Filtering"
         BEGIN

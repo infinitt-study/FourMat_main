@@ -102,15 +102,15 @@ BOOL CRotationDlg::OnInitDialog()
 
 void CRotationDlg::OnEnSetfocusAngle()
 {
-	m_nRotate = 3;
-	UpdateData(FALSE);
+	/*m_nRotate = 3;
+	UpdateData(FALSE);*/
 }
 
 
 
 void CRotationDlg::OnBnClickedRotateUser()
 {
-	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ANGLE);
+	/*CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ANGLE);
 	pEdit->SetSel(0, -1);
-	pEdit->SetFocus();
+	pEdit->SetFocus();*/
 }
