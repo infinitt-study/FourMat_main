@@ -1364,6 +1364,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CBrightnessContrastDlg.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
     <ClCompile Include="CListCtrlEx.cpp" />
@@ -1763,6 +1764,7 @@
     <ClCompile Include="CTranslationDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CBrightnessContrastDlg.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CHistoryView.h" />
     <ClInclude Include="CListCtrlEx.h" />

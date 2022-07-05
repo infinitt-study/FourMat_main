@@ -71,6 +71,7 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CScalingDlg.cpp" />
+    <ClCompile Include="CBrightnessContrastDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -149,6 +150,7 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CScalingDlg.h" />
+    <ClInclude Include="CBrightnessContrastDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

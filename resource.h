@@ -95,6 +95,7 @@
 #define IDC_EDIT3                       144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
+#define IDC_CONTRAST_SLIDER             145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -107,7 +108,10 @@
 #define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
 #define IDC_BUTTON_MULTI                154
+#define IDC_BRIGHTNESS_SLIDER           155
 #define IDD_FILTERING_WINDOW_LEVEL      156
+#define IDC_BRIGHTNESS_EDIT             156
+#define IDC_CONTRAST_EDIT               157
 #define IDD_HISTOGRAM                   158
 #define IDD_DIALOG2                     162
 #define IDD_AFFINETRANSFORM_SCALING     164
@@ -188,7 +192,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        167
 #define _APS_NEXT_COMMAND_VALUE         32870
-#define _APS_NEXT_CONTROL_VALUE         155
+#define _APS_NEXT_CONTROL_VALUE         158
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

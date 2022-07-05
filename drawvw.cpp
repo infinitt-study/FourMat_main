@@ -1780,10 +1780,15 @@ void CDrawView::ResetPreviewState()
 }
 
 
-
+#include"CBrightnessContrastDlg.h"
 void CDrawView::OnFilteringBrightness()
 {
-	
+	CBrightnessContrastDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		AfxMessageBox("123");
+	}
 }
 
 
