@@ -113,11 +113,14 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
-	ON_COMMAND(ID_AFFINETRANSFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
-	ON_COMMAND(ID_AFFINETRANSFORM_SCALING, &CDrawView::OnAffinetransformScaling)
-	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
-	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
-	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
+	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
+	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawView::OnAffinetransformSlice)
+	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawView::OnAffinetransformMirror)
+
+	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+	ON_WM_MOUSEHWHEEL()
+	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -267,7 +270,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx, GetDocument()->GetSize().cy };
+	CPoint ptOrg{ GetDocument()->GetSize().cx/2, GetDocument()->GetSize().cy/2 };
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
@@ -1858,10 +1861,8 @@ void CDrawView::OnAffinetransformScaling()
 		}
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 			TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"), _T("3차 회선 보간법") };
-			AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로
-			크기: % d, 보간법 : % s"),
-			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
-			Interpolation]);
+			AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),
+			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_nInterpolation]);
 		AfxNewBitmap(dib);
 	}*/
 
@@ -1872,12 +1873,10 @@ void CDrawView::OnAffinetransformSlice()
 {
 	CSliceDlg dlg;
 
+
 }
 
-void CDrawView::OnAffinetransformSymmetry()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
+
 
 #include "CTranslationDlg.h"
 void CDrawView::OnAffinetransformTranslation()
@@ -1893,5 +1892,54 @@ void CDrawView::OnAffinetransformTranslation()
 		AfxNewBitmap(dib);*/
 	}
 
+
+}
+
+
+void CDrawView::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	//// 이 기능을 사용하려면 Windows Vista 이상이 있어야 합니다.
+	//// _WIN32_WINNT 기호는 0x0600보다 크거나 같아야 합니다.
+	//// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	//if ((nFlags & MK_CONTROL) != MK_CONTROL)
+	//	return CScrollView::OnMouseHWheel(nFlags, zDelta, pt);
+
+	//if (zDelta < 0)
+	//{
+	//	
+	//}
+	//else
+	//{
+
+	//}
+	//RedrawWindow();
+
+	//return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+	
+
+
+
+}
+
+void CDrawView::OnAffinetransformMirror()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppMirror(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
+
+}
+
+
+void CDrawView::OnAffinetransformFlip()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 
 }

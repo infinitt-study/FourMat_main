@@ -525,15 +525,17 @@ CDrawRect::CDrawRect(const CRect& position)
 	ASSERT_VALID(this);
 
 	m_nShape = rectangle;
-	m_roundness.x = 30;
-	m_roundness.y = 30;
+	m_roundness.x = 16;
+	m_roundness.y = 16;
 }
 
 CDrawRect::CDrawRect(const CRect& position,
 	BOOL bPen,
 	const LOGPEN& logpen,
 	BOOL bBrush,
-	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) {
+	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) , m_nShape(rectangle), m_roundness(16,16) {
+
+
 }
 
 
