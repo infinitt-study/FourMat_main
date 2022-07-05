@@ -78,6 +78,7 @@
 #define IDC_NEW_SX                      138
 #define IDC_SLIDER3                     138
 #define IDC_SLIDER2                     138
+#define IDC_LEVEL_SLIDER                138
 #define IDB_BITMAP1                     139
 #define IDB_LIST                        139
 #define IDC_EDIT2                       139
@@ -92,7 +93,9 @@
 #define IDD_AFFINETRANSFORM_SLICE       143
 #define IDC_EDIT1                       143
 #define IDC_ANGLE                       143
+#define IDC_WINDOW_EDIT                 143
 #define IDC_EDIT3                       144
+#define IDC_LEVEL_EDIT                  144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
 #define IDC_CONTRAST_SLIDER             145
@@ -112,9 +115,12 @@
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_BRIGHTNESS_EDIT             156
 #define IDC_CONTRAST_EDIT               157
-#define IDD_HISTOGRAM                   158
+#define IDC_GRAY_SLIDER                 160
+#define IDC_GRAY_EDIT                   161
 #define IDD_DIALOG2                     162
+#define IDC_WINDOW_SLIDER               162
 #define IDD_AFFINETRANSFORM_SCALING     164
+#define IDD_HISTOGRAM                   167
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -190,9 +196,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        167
+#define _APS_NEXT_RESOURCE_VALUE        169
 #define _APS_NEXT_COMMAND_VALUE         32870
-#define _APS_NEXT_CONTROL_VALUE         158
+#define _APS_NEXT_CONTROL_VALUE         163
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

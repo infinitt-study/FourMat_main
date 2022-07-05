@@ -109,7 +109,6 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
-	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
@@ -1791,15 +1790,16 @@ void CDrawView::OnFilteringBrightness()
 	}
 }
 
-
-void CDrawView::OnFilteringContrast()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-
+#include "CHistogramDlg.h"
 void CDrawView::OnFilteringHistogram()
 {
+	CHistogramDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		AfxMessageBox("123");
+	}
+
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -1809,9 +1809,16 @@ void CDrawView::OnFilteringRemovenoise()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include "CGrayDlg.h"
 void CDrawView::OnFilteringTograyscale()
 {
+
+	CGrayDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		AfxMessageBox("123");
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 #include "CRotationDlg.h"
@@ -1909,8 +1916,15 @@ void CDrawView::OnFilteringInverse()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include "CWindowDlg.h"
 void CDrawView::OnFilteringWindowlevel()
 {
+
+	CWindowDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		AfxMessageBox("123");
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

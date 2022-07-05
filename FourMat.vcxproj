@@ -1366,6 +1366,8 @@
   <ItemGroup>
     <ClCompile Include="CBrightnessContrastDlg.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
+    <ClCompile Include="CGrayDlg.cpp" />
+    <ClCompile Include="CHistogramDlg.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
     <ClCompile Include="CListCtrlEx.cpp" />
     <ClCompile Include="cntritem.cpp">
@@ -1398,6 +1400,7 @@
     <ClCompile Include="CScalingDlg.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
     <ClCompile Include="CSliceDlg.cpp" />
+    <ClCompile Include="CWindowDlg.cpp" />
     <ClCompile Include="drawdoc.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1766,6 +1769,8 @@
   <ItemGroup>
     <ClInclude Include="CBrightnessContrastDlg.h" />
     <ClInclude Include="CFileFindEx.h" />
+    <ClInclude Include="CGrayDlg.h" />
+    <ClInclude Include="CHistogramDlg.h" />
     <ClInclude Include="CHistoryView.h" />
     <ClInclude Include="CListCtrlEx.h" />
     <ClInclude Include="cntritem.h" />
@@ -1773,6 +1778,7 @@
     <ClInclude Include="CScalingDlg.h" />
     <ClInclude Include="CSearchFileView.h" />
     <ClInclude Include="CSliceDlg.h" />
+    <ClInclude Include="CWindowDlg.h" />
     <ClInclude Include="drawdoc.h" />
     <ClInclude Include="drawobj.h" />
     <ClInclude Include="drawtool.h" />
