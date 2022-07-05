@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CFileFindEx.h"
-
+//줄기테스트 0705
 CFileFindEx::CFileFindEx(void) {
 }
 CFileFindEx::~CFileFindEx(void) {
