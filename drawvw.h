@@ -216,4 +216,6 @@ public:
 	afx_msg void OnAffinetransformSlice();
 	afx_msg void OnAffinetransformSymmetry();
 	afx_msg void OnAffinetransformTranslation();
+	afx_msg void OnFilteringInverse();
+	afx_msg void OnFilteringWindowlevel();
 };

@@ -118,6 +118,8 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
 	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
 	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawView::OnFilteringInverse)
+	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawView::OnFilteringWindowlevel)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1894,4 +1896,16 @@ void CDrawView::OnAffinetransformTranslation()
 	}
 
 
+}
+
+
+void CDrawView::OnFilteringInverse()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFilteringWindowlevel()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
