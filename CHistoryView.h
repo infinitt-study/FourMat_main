@@ -36,6 +36,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 	void FolderSearch();
+	afx_msg void OnClickedButtonMulti();
 };
 
 

@@ -6,7 +6,8 @@
 #include "CSearchFileView.h"
 #include "splitfrm.h"
 #include "CHistoryView.h"
-
+#include "drawdoc.h"
+#include "drawvw.h"
 // CSearchFileView
 
 IMPLEMENT_DYNCREATE(CSearchFileView, CFormView)
@@ -39,7 +40,7 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSearchFileView, CFormView)
     ON_BN_CLICKED(IDC_BUTTON_START, &CSearchFileView::OnClickedButtonStart)
     ON_BN_CLICKED(IDC_BUTTON_STOP, &CSearchFileView::OnClickedButtonStop)
-    ON_BN_CLICKED(IDC_BUTTON_SINGLE, &CSearchFileView::OnClickedButtonSingle)
+    ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonSingle)
 END_MESSAGE_MAP()
 
 
@@ -253,7 +254,6 @@ void CSearchFileView::OnClickedButtonStop()
     m_bStop = TRUE;
 }
 
-#include "drawdoc.h"
 void CSearchFileView::OnClickedButtonSingle()
 {
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -284,7 +284,7 @@ void CSearchFileView::OnClickedButtonSingle()
 
     CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
     pDrawDoc->m_strFolderPath = m_strFileLocation + "\\" + strFolderName;
-    pDrawDoc->UpdateAllViews(NULL, 1000);  //1000은 폴더 경로
+    pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);  //1000은 폴더 경로
 
     pSplitFrame->SwitchView(VIEWID_HISTORY);
 }

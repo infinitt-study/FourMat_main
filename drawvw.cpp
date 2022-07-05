@@ -236,7 +236,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		((CMainFrame*)AfxGetMainWnd())->UpdateUI(this);
 		break;
 
-	case 1001:
+	case HINT_UPDATE_FULEPATH:
 		m_strPath = pDrawDoc->m_strFilePath;
 		AfxMessageBox(m_strPath);
 		break;

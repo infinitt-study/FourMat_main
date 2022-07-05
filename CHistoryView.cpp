@@ -9,6 +9,7 @@
 #include <io.h>
 #include <string.h>
 #include "drawdoc.h"
+#include "drawvw.h"
 using namespace std;
 
 // CHistoryView
@@ -33,6 +34,7 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
 	ON_BN_CLICKED(IDOK, &CHistoryView::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
 END_MESSAGE_MAP()
 
 
@@ -130,7 +132,7 @@ void CHistoryView::OnBnClickedOk()
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
-	pDrawDoc->UpdateAllViews(NULL, 1001);  //1001은 파일 경로
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
 	
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
@@ -144,7 +146,7 @@ void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
 
 	switch (lHint)
 	{
-	case 1000:
+	case HINT_UPDATE_FOLDERPATH:
 		m_strPath = pDrawDoc->m_strFolderPath + +"\\*.*";
 		AfxMessageBox(m_strPath);
 		FolderSearch();
@@ -176,4 +178,33 @@ void CHistoryView::FolderSearch()
 
 	} while (_findnext(handle, &fd) == 0);
 	_findclose(handle);
+}
+
+#include <vector>
+void CHistoryView::OnClickedButtonMulti()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const int nCount = m_lstHistory.GetItemCount();
+	vector<CString> strFileName;
+
+	int nRow;
+	for (int i = nCount - 1; i >= 0; --i) {
+		if (m_lstHistory.GetCheck(i)) {
+			strFileName.push_back(m_lstHistory.GetItemText(i, 0));
+			nRow = i;
+		}
+	}
+	if (strFileName.size() != 2) {
+		AfxMessageBox(_T("두 개의 파일을 선택해 주세요"));
+		return;
+	}
+
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
+
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
+
+
+	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+	pSplitFrame->SwitchView(VIEWID_DRAW);
 }

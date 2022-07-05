@@ -56,6 +56,7 @@
 #define IDC_LIST_RESULT                 129
 #define IDB_STATUSBAR_1                 130
 #define IDC_BUTTON_SINGLE               130
+#define IDC_BUTTON_FOLDER_SELECT        130
 #define IDB_STATUSBAR_2                 131
 #define IDC_LIST1                       131
 #define IDC_LIST_HISTORY                131
@@ -105,6 +106,7 @@
 #define IDC_SPIN_WIDTH                  152
 #define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
+#define IDC_BUTTON_MULTI                154
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDD_HISTOGRAM                   158
 #define IDD_DIALOG2                     162
@@ -169,7 +171,6 @@
 #define ID_FILTERING_CONTRAST           32856
 #define ID_AFFINETRANSFORM_SYMMETRY     32857
 #define ID_AFFINETRANSFORM_ROTATION     32858
-//#define ID_AFFINETRANSFORM_TRANSLATION 32859
 #define ID_AFFINETRANSFORM_SLICE        32860
 #define ID_AFFINETRANSFORM_SCALING      32861
 #define ID_FILTERING_REMOVENOISE32862   32862
@@ -185,7 +186,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        167
 #define _APS_NEXT_COMMAND_VALUE         32868
-#define _APS_NEXT_CONTROL_VALUE         154
+#define _APS_NEXT_CONTROL_VALUE         155
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
