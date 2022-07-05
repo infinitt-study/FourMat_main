@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 //#include "drawvw.h"
-// CSlice 대화 상자
+// CSliceDlg 대화 상자
 
-class CSlice : public CDialogEx
+class CSliceDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CSlice)
+	DECLARE_DYNAMIC(CSliceDlg)
 
 public:
-	CSlice(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CSlice();
+	CSliceDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CSliceDlg();
 
 	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

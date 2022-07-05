@@ -525,8 +525,8 @@ CDrawRect::CDrawRect(const CRect& position)
 	ASSERT_VALID(this);
 
 	m_nShape = rectangle;
-	m_roundness.x = 16;
-	m_roundness.y = 16;
+	m_roundness.x = 30;
+	m_roundness.y = 30;
 }
 
 CDrawRect::CDrawRect(const CRect& position,

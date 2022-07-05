@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 
-// CRotation 대화 상자
+// CRotationDlg 대화 상자
 
-class CRotation : public CDialogEx
+class CRotationDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CRotation)
+	DECLARE_DYNAMIC(CRotationDlg)
 
 public:
-	CRotation(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CRotation();
+	CRotationDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CRotationDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -24,4 +24,6 @@ public:
 	int m_nRotate;
 	float m_fAngle;
 	virtual BOOL OnInitDialog();
+	afx_msg void OnEnSetfocusAngle();
+	afx_msg void OnBnClickedRotateUser();
 };

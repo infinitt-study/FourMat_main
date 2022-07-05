@@ -204,4 +204,14 @@ private:
 
 public:
 	CString m_strPath;
+	afx_msg void OnFilteringBrightness();
+	afx_msg void OnFilteringContrast();
+	afx_msg void OnFilteringHistogram();
+	afx_msg void OnFilteringRemovenoise();
+	afx_msg void OnFilteringTograyscale();
+	afx_msg void OnAffinetransformRotation();
+	afx_msg void OnAffinetransformScaling();
+	afx_msg void OnAffinetransformSlice();
+	afx_msg void OnAffinetransformSymmetry();
+	afx_msg void OnAffinetransformTranslation();
 };

@@ -108,6 +108,16 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
+	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
+	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
+	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
+	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
+	ON_COMMAND(ID_AFFINETRANSFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
+	ON_COMMAND(ID_AFFINETRANSFORM_SCALING, &CDrawView::OnAffinetransformScaling)
+	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
+	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
+	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1767,3 +1777,121 @@ void CDrawView::ResetPreviewState()
 	m_PreviewState.RemoveAll();
 }
 
+
+
+void CDrawView::OnFilteringBrightness()
+{
+	
+}
+
+
+void CDrawView::OnFilteringContrast()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFilteringHistogram()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFilteringRemovenoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFilteringTograyscale()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+#include "CRotationDlg.h"
+void CDrawView::OnAffinetransformRotation()
+{
+	CRotationDlg dlg;
+	//if (dlg.DoModal == IDOK)   // 다이얼로그가 종료될 때 반환되는 값을 검사, OK 버튼으로 종료되었을 경우 IDOK를 반환
+
+	//{
+	//	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+	//		IppByteImage imgDst;
+	//	switch (dlg.m_nRotate)
+	//	{
+	//	case 0: IppRotate90(imgSrc, imgDst); break;
+	//	case 1: IppRotate180(imgSrc, imgDst); break;
+	//	case 2: IppRotate270(imgSrc, imgDst); break;
+	//	case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+	//	}
+	//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+	//		TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
+	//	if (dlg.m_nRotate != 3)
+	//		AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+	//}
+
+	//else
+	//{
+	//	AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
+	//	AfxNewBitmap(dib);
+	//}
+}
+
+#include "CScalingDlg.h"
+void CDrawView::OnAffinetransformScaling()
+{
+	CScalingDlg dlg;
+
+	/*dlg.m_nOldWidth = m_Dib.GetWidth();
+	dlg.m_nOldHeight = m_Dib.GetHeight();
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		switch (dlg.m_nInterpolation)
+		{
+		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
+			ht); break;
+		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
+			ght); break;
+		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
+			t); break;
+		}
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"), _T("3차 회선 보간법") };
+			AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로
+			크기: % d, 보간법 : % s"),
+			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
+			Interpolation]);
+		AfxNewBitmap(dib);
+	}*/
+
+}
+
+#include "CSliceDlg.h"
+void CDrawView::OnAffinetransformSlice()
+{
+	CSliceDlg dlg;
+
+}
+
+void CDrawView::OnAffinetransformSymmetry()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include "CTranslationDlg.h"
+void CDrawView::OnAffinetransformTranslation()
+{
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
+		AfxNewBitmap(dib);*/
+	}
+
+
+}

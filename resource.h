@@ -82,6 +82,7 @@
 #define IDC_EDIT2                       139
 #define IDC_NEW_SY                      139
 #define IDC_ROTATE90                    139
+#define IDC_NEW_HEIGHT                  139
 #define IDD_HISTORY_FORM                140
 #define IDC_ROTATE180                   140
 #define IDC_ROTATE270                   141
@@ -93,12 +94,21 @@
 #define IDC_EDIT3                       144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
-#define IDD_AFFINETRANSFORM_TRANSFORMATION 147
+#define IDD_AFFINETRANSFORM_TRANSLATION 147
+#define IDC_SPIN_HEIGHT                 147
+#define IDC_INTERPOLATION               148
 #define IDD_AFFINETRANSFORM_ROTATION    149
+#define IDC_OLD_WIDTH                   149
+#define IDC_OLD_HEIGHT                  150
+#define IDC_NEW_WIDTH                   151
 #define IDD_FILTERING_BRIGHTNESS        152
+#define IDC_SPIN_WIDTH                  152
+#define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDD_HISTOGRAM                   158
+#define IDD_DIALOG2                     162
+#define IDD_AFFINETRANSFORM_SCALING     164
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -150,7 +160,7 @@
 #define ID_IMAGEPROCESSING_FILTERING    32847
 #define ID_AFFINETRANFORM_SYMMETRY      32848
 #define ID_AFFINETRANFORM_ROTATION      32849
-#define ID_AFFINETRANFORM_TRANSFORMATION 32850
+#define ID_AFFINETRANFORM_TRANSLATION   32850
 #define ID_AFFINETRANFORM_SLICE         32851
 #define ID_AFFINETRANFORM_SCALING       32852
 #define ID_AFFINETRANFORM_SLICE32853    32853
@@ -159,7 +169,7 @@
 #define ID_FILTERING_CONTRAST           32856
 #define ID_AFFINETRANSFORM_SYMMETRY     32857
 #define ID_AFFINETRANSFORM_ROTATION     32858
-#define ID_AFFINETRANSFORM_TRANSFORMATION 32859
+//#define ID_AFFINETRANSFORM_TRANSLATION 32859
 #define ID_AFFINETRANSFORM_SLICE        32860
 #define ID_AFFINETRANSFORM_SCALING      32861
 #define ID_FILTERING_REMOVENOISE32862   32862
@@ -167,14 +177,15 @@
 #define ID_FILTERING_CONTRAST32864      32864
 #define ID_FILTERING_HISTOGRAM          32865
 #define ID_FILTERING_TOGRAYSCALE        32866
+#define ID_AFFINETRANSFORM_TRANSLATION  32867
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        160
-#define _APS_NEXT_COMMAND_VALUE         32867
-#define _APS_NEXT_CONTROL_VALUE         147
+#define _APS_NEXT_RESOURCE_VALUE        167
+#define _APS_NEXT_COMMAND_VALUE         32868
+#define _APS_NEXT_CONTROL_VALUE         154
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
