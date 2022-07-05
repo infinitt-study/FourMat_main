@@ -72,6 +72,9 @@ CDrawDoc::CDrawDoc()
 	m_paperColorLast = m_paperColor = RGB(255, 255, 255);
 	m_pSummInfo = NULL;
 	ComputePageSize();
+
+	m_strFolderPath.Empty();
+	m_strFilePath.Empty();
 }
 
 CDrawDoc::~CDrawDoc()

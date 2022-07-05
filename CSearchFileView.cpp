@@ -80,9 +80,9 @@ void CSearchFileView::OnInitialUpdate()
 
 	// InsertColumn() : 리스트 컨트롤의 필드에 입력하는 함수
 	m_lstResult.InsertColumn(0, "이름", LVCFMT_LEFT, 150);
-	m_lstResult.InsertColumn(1, "위치", LVCFMT_LEFT, 150);
+	m_lstResult.InsertColumn(1, "위치", LVCFMT_LEFT, 200);
 	m_lstResult.InsertColumn(2, "크기(byte)", LVCFMT_RIGHT, 80);
-	m_lstResult.InsertColumn(3, "생성날짜", LVCFMT_CENTER, 80);
+	m_lstResult.InsertColumn(3, "생성날짜", LVCFMT_CENTER, 150);
 
     //체크박스 추가
     DWORD dwExStyle = m_lstResult.GetExtendedStyle();
@@ -284,7 +284,7 @@ void CSearchFileView::OnClickedButtonSingle()
 
     CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
     pDrawDoc->m_strFolderPath = m_strFileLocation + "\\" + strFolderName;
-    pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);  //1000은 폴더 경로
+    pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);
 
     pSplitFrame->SwitchView(VIEWID_HISTORY);
 }

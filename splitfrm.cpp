@@ -28,7 +28,7 @@ IMPLEMENT_DYNCREATE(CSplitFrame, CMDIChildWndEx)
 CSplitFrame::CSplitFrame()
 {
 	m_pDrawView = new CDrawView();
-//	m_pWndSearchFileView = new CSearchFileView();
+	//m_pWndSearchFileView = new CSearchFileView();
 	m_pWndHistoryView = new CHistoryView();
 }
 
@@ -100,6 +100,18 @@ void CSplitFrame::SwitchView(int nID)
 	case VIEWID_DRAW:
 		pNewView = (CView*)m_pDrawView;
 		break;
+		
+	case VIEWID_MULTIDRAW:
+		// 3번뜸
+		// 이 코드가 맞나
+		//pNewView = (CView*)m_wndSplitter.GetActivePane();
+
+		//
+		//
+		pNewView = (CView*)m_wndSplitter.GetPane(0,0);
+		m_wndSplitter.ShowWindow(SW_SHOW);
+		Invalidate(TRUE);
+		break;
 	}
 
 	if (pNewView)
@@ -110,26 +122,45 @@ void CSplitFrame::SwitchView(int nID)
 		pOldView->SetDlgCtrlID(nID);
 
 		pNewView->SetDlgCtrlID(AFX_IDW_PANE_FIRST);
-		pNewView->ShowWindow(SW_SHOW);
+		pNewView->ShowWindow(SW_SHOW);	
 		GetActiveFrame()->SetActiveView(pNewView);
 		GetActiveFrame()->RecalcLayout();
 	}
 }
 
-void CSplitFrame::OnDrawTest()
-{
-	SwitchView(VIEWID_DRAW);
-}
+//void CSplitFrame::OnDrawTest()
+//{
+//	SwitchView(VIEWID_DRAW);
+//}
 
 
 BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	//width height
+	//
+	m_wndSplitter.CreateStatic(this, 1, 2);
+	
+	CRect rect;
+	this->GetClientRect(rect);
+	m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
+	m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
+	m_wndSplitter.ShowWindow(SW_HIDE);
+
+
 	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
-//	m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
+	//m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
+	//m_wndSplitter.ShowWindow(SW_SHOW);
+
 	BOOL bResult = CMDIChildWndEx::OnCreateClient(lpcs, pContext);
+
+
+	
+	
+
 
 	if (bResult) {
 		//SwitchView(VIEWID_SEARCH);
@@ -142,7 +173,6 @@ int CSplitFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIChildWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
 
 	return 0;
 }
