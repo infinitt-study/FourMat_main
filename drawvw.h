@@ -218,4 +218,8 @@ public:
 	afx_msg void OnAffinetransformTranslation();
 	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnAffinetransformFlip();
+	afx_msg void OnFeatureextractionAddnoise();
+	afx_msg void OnFeatureextractionBlur();
+	afx_msg void OnFeatureextractionReducenoise();
+	afx_msg void OnFeatureextractionSharpening();
 };

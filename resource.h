@@ -95,6 +95,8 @@
 #define IDC_EDIT3                       144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
+#define IDC_EDIT4                       145
+#define IDC_DIFFUSION_K                 145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -107,10 +109,15 @@
 #define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
 #define IDC_BUTTON_MULTI                154
+#define IDC_DIFFUSION_LAMBDA            155
 #define IDD_FILTERING_WINDOW_LEVEL      156
+#define IDC_DIFFUSION_ITER              156
 #define IDD_HISTOGRAM                   158
 #define IDD_DIALOG2                     162
+#define IDD_FEATUREEXTRACTION_BLUR      162
 #define IDD_AFFINETRANSFORM_SCALING     164
+#define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -189,9 +196,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        167
+#define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32876
-#define _APS_NEXT_CONTROL_VALUE         155
+#define _APS_NEXT_CONTROL_VALUE         157
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

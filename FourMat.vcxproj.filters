@@ -79,6 +79,10 @@
     <ClCompile Include="CFilter.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CImprovement.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CReduceNoise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -171,6 +175,10 @@
     <ClInclude Include="CFilter.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CImprovement.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CReduceNoise.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

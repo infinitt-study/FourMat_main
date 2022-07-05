@@ -121,6 +121,10 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
 	ON_WM_MOUSEHWHEEL()
 	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
+	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawView::OnFeatureextractionAddnoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawView::OnFeatureextractionBlur)
+	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawView::OnFeatureextractionReducenoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawView::OnFeatureextractionSharpening)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1884,6 +1888,8 @@ void CDrawView::OnAffinetransformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		AfxMessageBox("123");
+
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 		IppByteImage imgDst;
 		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
@@ -1942,4 +1948,28 @@ void CDrawView::OnAffinetransformFlip()
 		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 
+}
+
+
+void CDrawView::OnFeatureextractionAddnoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFeatureextractionBlur()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFeatureextractionReducenoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawView::OnFeatureextractionSharpening()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
