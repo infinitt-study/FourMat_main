@@ -104,4 +104,20 @@ protected:
 	afx_msg void OnFileSummaryInfo();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnAffinetranformMirror();
+	afx_msg void OnAffinetranformRotation();
+	afx_msg void OnAffinetranformScaling();
+	afx_msg void OnAffinetranformSlice();
+	afx_msg void OnAffinetranformTranslation();
+	afx_msg void OnAffinetransformFlip();
+	afx_msg void OnFeatureextractionAddnoise();
+	afx_msg void OnFeatureextractionBlur();
+	afx_msg void OnFeatureextractionReducenoise();
+	afx_msg void OnFeatureextractionSharpening();
+	afx_msg void OnFilteringBrightness();
+	afx_msg void OnFilteringContrast();
+	afx_msg void OnFilteringRemovenoise();
+	afx_msg void OnFilteringTograyscale();
+	afx_msg void OnFilteringHistogram();
 };

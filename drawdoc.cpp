@@ -58,6 +58,21 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SEND_MAIL, OnUpdateFileSendMail)
 #endif
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawDoc::OnAffinetranformMirror)
+	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawDoc::OnAffinetranformRotation)
+	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawDoc::OnAffinetranformScaling)
+	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawDoc::OnAffinetranformSlice)
+	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawDoc::OnAffinetranformTranslation)
+	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawDoc::OnAffinetransformFlip)
+	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawDoc::OnFeatureextractionAddnoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawDoc::OnFeatureextractionBlur)
+	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnFeatureextractionReducenoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
+	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
+	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawDoc::OnFilteringContrast)
+	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
+	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -702,3 +717,97 @@ void CDrawDoc::SetSearchContents(const CString& value)
 }
 
 #endif
+
+
+void CDrawDoc::OnAffinetranformMirror()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include "CRotationDlg.h"
+void CDrawDoc::OnAffinetranformRotation()
+{
+	CRotationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		
+	}
+}
+
+
+void CDrawDoc::OnAffinetranformScaling()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnAffinetranformSlice()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnAffinetranformTranslation()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnAffinetransformFlip()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionAddnoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionBlur()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionReducenoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionSharpening()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringBrightness()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringContrast()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringRemovenoise()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringTograyscale()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringHistogram()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}

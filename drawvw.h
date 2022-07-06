@@ -206,20 +206,20 @@ private:
 
 public:
 	CString m_strPath;
-	afx_msg void OnFilteringBrightness();
-	afx_msg void OnFilteringContrast();
-	afx_msg void OnFilteringHistogram();
-	afx_msg void OnFilteringRemovenoise();
-	afx_msg void OnFilteringTograyscale();
-	afx_msg void OnAffinetransformRotation();
-	afx_msg void OnAffinetransformScaling();
-	afx_msg void OnAffinetransformSlice();
-	afx_msg void OnAffinetransformMirror();
-	afx_msg void OnAffinetransformTranslation();
+//	afx_msg void OnFilteringBrightness();
+//	afx_msg void OnFilteringContrast();
+//	afx_msg void OnFilteringHistogram();
+//	afx_msg void OnFilteringRemovenoise();
+//	afx_msg void OnFilteringTograyscale();
+//	afx_msg void OnAffinetransformRotation();
+//	afx_msg void OnAffinetransformScaling();
+//	afx_msg void OnAffinetransformSlice();
+//	afx_msg void OnAffinetransformMirror();
+//	afx_msg void OnAffinetransformTranslation();
 	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnAffinetransformFlip();
-	afx_msg void OnFeatureextractionAddnoise();
-	afx_msg void OnFeatureextractionBlur();
-	afx_msg void OnFeatureextractionReducenoise();
-	afx_msg void OnFeatureextractionSharpening();
+//	afx_msg void OnAffinetransformFlip();
+//	afx_msg void OnFeatureextractionAddnoise();
+//	afx_msg void OnFeatureextractionBlur();
+//	afx_msg void OnFeatureextractionReducenoise();
+//	afx_msg void OnFeatureextractionSharpening();
 };
