@@ -108,17 +108,24 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
-	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
-	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
-	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
-	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
-	ON_COMMAND(ID_AFFINETRANSFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
-	ON_COMMAND(ID_AFFINETRANSFORM_SCALING, &CDrawView::OnAffinetransformScaling)
-	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
-	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
-	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
-	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawView::OnFilteringInverse)
-	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawView::OnFilteringWindowlevel)
+//	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
+//	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
+//	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
+//	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
+//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
+//	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
+//	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
+//	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawView::OnAffinetransformSlice)
+//	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawView::OnAffinetransformMirror)
+
+//	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+	ON_WM_MOUSEHWHEEL()
+//	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawView::OnFeatureextractionAddnoise)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawView::OnFeatureextractionBlur)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawView::OnFeatureextractionReducenoise)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawView::OnFeatureextractionSharpening)
+
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -263,12 +270,12 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = 1.5f;
 	}
-
+	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx, GetDocument()->GetSize().cy };
+	CPoint ptOrg{ GetDocument()->GetSize().cx/2, GetDocument()->GetSize().cy/2 };
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
@@ -1779,152 +1786,74 @@ void CDrawView::ResetPreviewState()
 }
 
 
-#include"CBrightnessContrastDlg.h"
-void CDrawView::OnFilteringBrightness()
-{
-	CBrightnessContrastDlg dlg;
 
-	if (dlg.DoModal() == IDOK)
-	{
-		AfxMessageBox("123");
-	}
-}
-
-#include "CHistogramDlg.h"
-void CDrawView::OnFilteringHistogram()
-{
-	CHistogramDlg dlg;
-
-	if (dlg.DoModal() == IDOK)
-	{
-		AfxMessageBox("123");
-	}
-
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CDrawView::OnFilteringRemovenoise()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-#include "CGrayDlg.h"
-void CDrawView::OnFilteringTograyscale()
-{
-
-	CGrayDlg dlg;
-
-	if (dlg.DoModal() == IDOK)
-	{
-		AfxMessageBox("123");
-	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-#include "CRotationDlg.h"
-void CDrawView::OnAffinetransformRotation()
-{
-	CRotationDlg dlg;
-	//if (dlg.DoModal == IDOK)   // ´ÙÀÌ¾ó·Î±×°¡ Á¾·áµÉ ¶§ ¹İÈ¯µÇ´Â °ªÀ» °Ë»ç, OK ¹öÆ°À¸·Î Á¾·áµÇ¾úÀ» °æ¿ì IDOK¸¦ ¹İÈ¯
-
-	//{
-	//	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-	//		IppByteImage imgDst;
-	//	switch (dlg.m_nRotate)
-	//	{
-	//	case 0: IppRotate90(imgSrc, imgDst); break;
-	//	case 1: IppRotate180(imgSrc, imgDst); break;
-	//	case 2: IppRotate270(imgSrc, imgDst); break;
-	//	case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
-	//	}
-	//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-	//		TCHAR* rotate[] = { _T("90µµ"), _T("180µµ"), _T("270µµ") };
-	//	if (dlg.m_nRotate != 3)
-	//		AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %s"), GetTitle(), rotate[dlg.m_nRotate]);
-	//}
-
-	//else
-	//{
-	//	AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %4.2fµµ"), GetTitle(), dlg.m_fAngle);
-	//	AfxNewBitmap(dib);
-	//}
-}
-
-#include "CScalingDlg.h"
-void CDrawView::OnAffinetransformScaling()
-{
-	CScalingDlg dlg;
-
-	/*dlg.m_nOldWidth = m_Dib.GetWidth();
-	dlg.m_nOldHeight = m_Dib.GetHeight();
-	if (dlg.DoModal() == IDOK)
-	{
-		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		switch (dlg.m_nInterpolation)
-		{
-		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
-			ht); break;
-		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
-			ght); break;
-		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
-			t); break;
-		}
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			TCHAR* interpolation[] = { _T("ÃÖ±Ù¹æ ÀÌ¿ô º¸°£¹ı"), _T("¾ç¼±Çü º¸°£¹ı"), _T("3Â÷ È¸¼± º¸°£¹ı") };
-			AfxPrintInfo(_T("[Å©±â º¯È¯] ÀÔ·Â ¿µ»ó: %s, , »õ °¡·Î Å©±â: %d, »õ ¼¼·Î
-			Å©±â: % d, º¸°£¹ı : % s"),
-			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
-			Interpolation]);
-		AfxNewBitmap(dib);
-	}*/
-
-}
-
-#include "CSliceDlg.h"
-void CDrawView::OnAffinetransformSlice()
-{
-	CSliceDlg dlg;
-
-}
-
-void CDrawView::OnAffinetransformSymmetry()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
 
 #include "CTranslationDlg.h"
-void CDrawView::OnAffinetransformTranslation()
+//void CDrawView::OnAffinetransformTranslation()
+//{
+//	CTranslationDlg dlg;
+//	if (dlg.DoModal() == IDOK)
+//	{
+//		AfxMessageBox("123");
+//
+//		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+//		IppByteImage imgDst;
+//		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+//		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+//		AfxPrintInfo(_T("[ì´ë™ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, ê°€ë¡œ ì´ë™: %d, ì„¸ë¡œ ì´ë™: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
+//		AfxNewBitmap(dib);*/
+//	}
+//
+//
+//}
+
+
+void CDrawView::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	CTranslationDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[ÀÌµ¿ º¯È¯] ÀÔ·Â ¿µ»ó: %s, °¡·Î ÀÌµ¿: %d, ¼¼·Î ÀÌµ¿: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
-		AfxNewBitmap(dib);*/
-	}
+	//// ì´ ê¸°ëŠ¥ì„ ì‚¬ìš©í•˜ë ¤ë©´ Windows Vista ì´ìƒì´ ìˆì–´ì•¼ í•©ë‹ˆë‹¤.
+	//// _WIN32_WINNT ê¸°í˜¸ëŠ” 0x0600ë³´ë‹¤ í¬ê±°ë‚˜ ê°™ì•„ì•¼ í•©ë‹ˆë‹¤.
+	//// TODO: ì—¬ê¸°ì— ë©”ì‹œì§€ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€ ë°/ë˜ëŠ” ê¸°ë³¸ê°’ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
+	//if ((nFlags & MK_CONTROL) != MK_CONTROL)
+	//	return CScrollView::OnMouseHWheel(nFlags, zDelta, pt);
+
+	//if (zDelta < 0)
+	//{
+	//	
+	//}
+	//else
+	//{
+
+	//}
+	//RedrawWindow();
+
+	//return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+	
+
 
 
 }
 
+//void CDrawView::OnAffinetransformMirror()
+//{
+//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+//		IppByteImage imgDst;
+//	IppMirror(imgSrc, imgDst);
+//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+//		AfxPrintInfo(_T("[ì¢Œìš° ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+//	AfxNewBitmap(dib);*/
+//
+//}
 
-void CDrawView::OnFilteringInverse()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
 
-#include "CWindowDlg.h"
-void CDrawView::OnFilteringWindowlevel()
-{
+//void CDrawView::OnAffinetransformFlip()
+//{
+//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+//		IppByteImage imgDst;
+//	IppFlip(imgSrc, imgDst);
+//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+//		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+//	AfxNewBitmap(dib);*/
+//
+//}
 
-	CWindowDlg dlg;
 
-	if (dlg.DoModal() == IDOK)
-	{
-		AfxMessageBox("123");
-	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}

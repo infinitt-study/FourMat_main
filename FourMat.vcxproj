@@ -1368,7 +1368,13 @@
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CGrayDlg.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
+    <ClCompile Include="CAddNoiseDlg.cpp" />
+    <ClCompile Include="CAffineTransform.cpp" />
+    <ClCompile Include="CBlurDlg.cpp" />
+    <ClCompile Include="CFileFindEx.cpp" />
+    <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
+    <ClCompile Include="CImprovement.cpp" />
     <ClCompile Include="CListCtrlEx.cpp" />
     <ClCompile Include="cntritem.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1396,6 +1402,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
+    <ClCompile Include="CReduceNoise.cpp" />
     <ClCompile Include="CRotationDlg.cpp" />
     <ClCompile Include="CScalingDlg.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
@@ -1771,9 +1778,16 @@
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CGrayDlg.h" />
     <ClInclude Include="CHistogramDlg.h" />
+    <ClInclude Include="CAddNoiseDlg.h" />
+    <ClInclude Include="CAffineTransform.h" />
+    <ClInclude Include="CBlurDlg.h" />
+    <ClInclude Include="CFileFindEx.h" />
+    <ClInclude Include="CFilter.h" />
     <ClInclude Include="CHistoryView.h" />
+    <ClInclude Include="CImprovement.h" />
     <ClInclude Include="CListCtrlEx.h" />
     <ClInclude Include="cntritem.h" />
+    <ClInclude Include="CReduceNoise.h" />
     <ClInclude Include="CRotationDlg.h" />
     <ClInclude Include="CScalingDlg.h" />
     <ClInclude Include="CSearchFileView.h" />
@@ -1784,11 +1798,13 @@
     <ClInclude Include="drawtool.h" />
     <ClInclude Include="drawvw.h" />
     <ClInclude Include="FourMat.h" />
+    <ClInclude Include="ImageAccess.h" />
     <ClInclude Include="LineWeightDlg.h" />
     <ClInclude Include="mainfrm.h" />
     <ClInclude Include="propset.h" />
     <ClInclude Include="rectdlg.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RGBBYTE.h" />
     <ClInclude Include="RibbonListButton.h" />
     <ClInclude Include="splitfrm.h" />
     <ClInclude Include="statpage.h" />

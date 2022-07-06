@@ -502,17 +502,21 @@ void CMainFrame::InitViewCategory()
 #endif // ENABLE_RIBBON_LAUNCH_BUTTON
 }
 
+
+
 void CMainFrame::InitImageProcessingCategory()
 {
 	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory(_T("&ImageProcessing"), IDB_RIBBON_VIEWSMALL, IDB_RIBBON_VIEWLARGE);
 
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Affine Transformation\nzw"), m_PanelImages.ExtractIcon(6));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SYMMETRY, _T("symmetry\ng"),0,0)); // 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("rotation\ng"), 0, 0)); //90,-90, 
+
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("Rotation\ng"), 0, 0)); //90,-90, 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSLATION, _T("Translation\ng"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SLICE, _T("Slice\ng"), 0, 0)); //dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SCALING, _T("Scaling\ng"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_MIRROR, _T("Mirror\ng"), 0, 0)); // 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANSFORM_FLIP, _T("Flip\ng"), 0, 0)); // 
 
 
 	pPanelWindow = pCategory->AddPanel(_T("Filtering\nzw"), m_PanelImages.ExtractIcon(7));
@@ -523,6 +527,15 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_TOGRAYSCALE, _T("To gray scale\nn"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_WINDOWLEVEL, _T("Window Level\nn"), 0, 0)); // dlg
+
+
+	pPanelWindow = pCategory->AddPanel(_T("FeatureExtraction\nzw"), m_PanelImages.ExtractIcon(7));
+
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_BLUR, _T("Blur\nn"), 0, 0)); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_SHARPENING, _T("Sharpening\nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_ADDNOISE, _T("Add Noise\nn"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_REDUCENOISE, _T("Reduce Noise\nn"), 0, 0)); // dlg
+	
 
 }
 

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -98,7 +98,10 @@
 #define IDC_LEVEL_EDIT                  144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
+
 #define IDC_CONTRAST_SLIDER             145
+#define IDC_EDIT4                       500
+#define IDC_DIFFUSION_K                 500
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -121,6 +124,22 @@
 #define IDC_WINDOW_SLIDER               162
 #define IDD_AFFINETRANSFORM_SCALING     164
 #define IDD_HISTOGRAM                   167
+#define IDC_DIFFUSION_LAMBDA            600
+#define IDD_FILTERING_WINDOW_LEVEL      601
+#define IDC_DIFFUSION_ITER              602
+#define IDC_NOISE_RADIO1                603
+#define IDD_HISTOGRAM                   604
+#define IDC_NOISE_RADIO2                605
+#define IDC_NOISE_AMOUNT                606
+#define IDC_SPIN_AMOUNT                 607
+#define IDC_SIGMA_EDIT                  608
+#define IDD_DIALOG2                     609
+#define IDD_FEATUREEXTRACTION_BLUR      609
+#define IDC_SIGMA_SLIDER                610
+#define IDD_AFFINETRANSFORM_SCALING     611
+#define IDD_FEATUREEXTRACTION_REDUCENOISE 612
+#define IDD_FEATUREEXTRACTION_ADDNOISE  613
+
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -170,7 +189,6 @@
 #define ID_MULTIVIEW_AFFINE             32845
 #define ID_IMAGEPROCESSING_AFFINE       32846
 #define ID_IMAGEPROCESSING_FILTERING    32847
-#define ID_AFFINETRANFORM_SYMMETRY      32848
 #define ID_AFFINETRANFORM_ROTATION      32849
 #define ID_AFFINETRANFORM_TRANSLATION   32850
 #define ID_AFFINETRANFORM_SLICE         32851
@@ -179,7 +197,6 @@
 #define ID_FILTERING_REMOVENOISE        32854
 #define ID_FILTERING_BRIGHTNESS         32855
 #define ID_FILTERING_CONTRAST           32856
-#define ID_AFFINETRANSFORM_SYMMETRY     32857
 #define ID_AFFINETRANSFORM_ROTATION     32858
 #define ID_AFFINETRANSFORM_SLICE        32860
 #define ID_AFFINETRANSFORM_SCALING      32861
@@ -191,13 +208,22 @@
 #define ID_AFFINETRANSFORM_TRANSLATION  32867
 #define ID_FILTERING_INVERSE            32868
 #define ID_FILTERING_WINDOWLEVEL        32869
+#define ID_AFFINETRANFORM_MIRROR        40000
+#define ID_AFFINETRANSFORM_FLIP         32870
+#define ID_IMAGEPROCESSING_FEATUREEXTRACTION 32871
+#define ID_FEATUREEXTRACTION_BLUR       32872
+#define ID_FEATUREEXTRACTION_SHARPENING 32873
+#define ID_FEATUREEXTRACTION_ADDNOISE   32874
+#define ID_FEATUREEXTRACTION_REDUCENOISE 32875
+
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        169
-#define _APS_NEXT_COMMAND_VALUE         32870
+
+#define _APS_NEXT_RESOURCE_VALUE        171
+#define _APS_NEXT_COMMAND_VALUE         32876
 #define _APS_NEXT_CONTROL_VALUE         163
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
