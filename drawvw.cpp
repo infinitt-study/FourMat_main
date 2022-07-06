@@ -266,14 +266,15 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	float zoom = 1;
 	if (nullptr == pInfo) {
-		zoom = 1.5f;
+		zoom = 1.0f;
 	}
 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx, GetDocument()->GetSize().cy };
+	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
+
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
@@ -339,19 +340,28 @@ void CDrawView::OnDraw(CDC* pDC)
 	brush.UnrealizeObject();
 	pDrawDC->FillRect(client, &brush);
 
-	/*if (!pDC->IsPrinting() && m_bGrid)
-		DrawGrid(pDrawDC);*/
+	if (!pDC->IsPrinting() && m_bGrid)
+		DrawGrid(pDrawDC);
 	// 그리드출력하는 부분(누가 위로 올라갈지 결정해서 변경)
-
+		//우선 첫번째 그림만 가져옴
 	/*SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height,
 		memDC, 0, 0, SRCCOPY);*/
 	BITMAPINFO& bmi = pDoc->m_bmi;
+	//SCROLLINFO scrollInfo1;
+	//SCROLLINFO scrollInfo2;
+	//GetScrollInfo(SB_HORZ, &scrollInfo1, SIF_ALL);
+	//GetScrollInfo(SB_VERT, &scrollInfo2, SIF_ALL);
+	//CPoint leftTop = { scrollInfo1.nPos, scrollInfo2.nPos };
+	CPoint leftTop = { 0, 0 };
+	ClientToDoc(leftTop);
+
 	const int width = bmi.bmiHeader.biWidth;
-	const int height = bmi.bmiHeader.biHeight;
-	
-	//우선 첫번째 그림만 가져옴
-	SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height, 0, 0, 0,
-		height, pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
+	const int height = abs(bmi.bmiHeader.biHeight);
+
+	//SetDIBitsToDevice(pDrawDC->m_hDC, 
+	//	leftTop.x, leftTop.y, width, height,
+	//	0, 0, 0, height, 
+	//	pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
 
 	pDoc->Draw(pDrawDC, this);
 
@@ -363,6 +373,7 @@ void CDrawView::OnDraw(CDC* pDC)
 		dc.SetViewportOrg(0, 0);
 		dc.SetWindowOrg(0,0);
 		dc.SetMapMode(MM_TEXT);
+
 		pDC->BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dc, 0, 0, SRCCOPY);
 		dc.SelectObject(pOldBitmap);
 	}
