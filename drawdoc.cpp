@@ -31,7 +31,7 @@
 #endif
 
 #include "propkey.h"
-
+#include "splitfrm.h"
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -77,6 +77,7 @@ CDrawDoc::CDrawDoc()
 CDrawDoc::~CDrawDoc()
 {
 	OnUnloadHandler();
+	//m_listData.clear();
 }
 
 void CDrawDoc::OnUnloadHandler()
@@ -359,6 +360,45 @@ void CDrawDoc::SetPreviewColor(COLORREF clr)
 	m_paperColor = clr == -1 ? m_paperColorLast : clr;
 	UpdateAllViews(NULL);
 }
+
+void CDrawDoc::LoadDicom() {
+
+	//DicomImage* m_pImage = new DicomImage(m_strFilePath);
+	DicomImage* m_pImage = new DicomImage(_T("C:\\Users\\mylap\\Desktop\\dicom\\IncludeDCMTK\\MRBRAIN.DCM"));
+
+	m_listData.clear();
+	// m_listData 기존 메모리 해제하기
+	// 소멸자에 대해서도 메모리 해제 코드 추가하기
+
+	if (m_pImage) {
+		const int width = (int)m_pImage->getWidth();
+		const int height = (int)m_pImage->getHeight();
+		void* data = nullptr;
+
+		// bitmapinfo로 변환
+		if (m_pImage->createWindowsDIB(data, width * height, 0, 24) && data) //24bytes
+		{
+			
+			m_bmi = { sizeof(BITMAPINFO) };
+			//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
+			m_bmi.bmiHeader.biWidth = width;
+			m_bmi.bmiHeader.biHeight = -height;
+			m_bmi.bmiHeader.biPlanes = 1;
+			m_bmi.bmiHeader.biBitCount = 24;
+			m_bmi.bmiHeader.biCompression = BI_RGB;
+			//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+
+			m_listData.push_back(data);
+		}
+
+		delete[] static_cast <char*> (data);
+		data = nullptr;
+
+		UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
+	}
+	delete m_pImage;
+}
+
 
 //BOOL CDrawDoc::CanCloseFrame(CFrameWnd* pFrame)
 //{

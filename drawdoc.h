@@ -98,6 +98,13 @@ public:
 	CString m_strFolderPath;
 	CString m_strFilePath;
 
+	void LoadDicom();
+	//DicomImage* m_pImage; // 따로 지우기
+	BITMAPINFO m_bmi;
+
+	//std::vector<BITMAPINFO> m_listBitmap;
+	std::vector<void*> m_listData;
+
 protected:
 	//{{AFX_MSG(CDrawDoc)
 	afx_msg void OnViewPaperColor();

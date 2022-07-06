@@ -132,7 +132,7 @@ void CHistoryView::OnBnClickedOk()
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);  //1001은 파일 경로
 	
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
@@ -202,7 +202,7 @@ void CHistoryView::OnClickedButtonMulti()
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
 
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FULEPATH);  //1001은 파일 경로
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);  //1001은 파일 경로
 
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();

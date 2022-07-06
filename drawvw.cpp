@@ -236,11 +236,17 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		((CMainFrame*)AfxGetMainWnd())->UpdateUI(this);
 		break;
 
-	case HINT_UPDATE_FULEPATH:
-		m_strPath = pDrawDoc->m_strFilePath;
+	case HINT_UPDATE_FILEPATH:
+		m_strPath = pDrawDoc->m_strFilePath; // 필요없음
 		AfxMessageBox(m_strPath);
+
+		pDrawDoc->LoadDicom();
 		break;
 
+	case HINT_LAOD_DICOMIMAGE:
+		Invalidate(FALSE);
+		//Invalidate();// 화면을 무효화하기
+		break;
 	default:
 		//ASSERT(FALSE);
 		break;
@@ -333,8 +339,19 @@ void CDrawView::OnDraw(CDC* pDC)
 	brush.UnrealizeObject();
 	pDrawDC->FillRect(client, &brush);
 
-	if (!pDC->IsPrinting() && m_bGrid)
-		DrawGrid(pDrawDC);
+	/*if (!pDC->IsPrinting() && m_bGrid)
+		DrawGrid(pDrawDC);*/
+	// 그리드출력하는 부분(누가 위로 올라갈지 결정해서 변경)
+
+	/*SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height,
+		memDC, 0, 0, SRCCOPY);*/
+	BITMAPINFO& bmi = pDoc->m_bmi;
+	const int width = bmi.bmiHeader.biWidth;
+	const int height = bmi.bmiHeader.biHeight;
+	
+	//우선 첫번째 그림만 가져옴
+	SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height, 0, 0, 0,
+		height, pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
 
 	pDoc->Draw(pDrawDC, this);
 
