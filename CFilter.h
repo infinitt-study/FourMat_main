@@ -17,3 +17,4 @@ void IppNoiseSaltNPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
 void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst);
 void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambda, float k, int iter);
 
+

@@ -1926,12 +1926,12 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void CDrawView::OnAffinetransformFlip()
-{
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppFlip(imgSrc, imgDst);
-	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);*/
-}
+//void CDrawView::OnAffinetransformFlip()
+//{
+//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+//		IppByteImage imgDst;
+//	IppFlip(imgSrc, imgDst);
+//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+//		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
+//	AfxNewBitmap(dib);*/
+//}

@@ -85,6 +85,10 @@
     <ClCompile Include="CReduceNoise.cpp" />
     <ClCompile Include="CAddNoiseDlg.cpp" />
     <ClCompile Include="CBlurDlg.cpp" />
+    <ClCompile Include="CBrightnessDlg.cpp" />
+    <ClCompile Include="CGrayDlg.cpp" />
+    <ClCompile Include="CWindowLevel.cpp" />
+    <ClCompile Include="CHistogramDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -183,6 +187,10 @@
     <ClInclude Include="CReduceNoise.h" />
     <ClInclude Include="CAddNoiseDlg.h" />
     <ClInclude Include="CBlurDlg.h" />
+    <ClInclude Include="CBrightnessDlg.h" />
+    <ClInclude Include="CGrayDlg.h" />
+    <ClInclude Include="CWindowLevel.h" />
+    <ClInclude Include="CHistogramDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

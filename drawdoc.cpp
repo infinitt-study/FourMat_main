@@ -72,7 +72,9 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawDoc::OnFilteringContrast)
 	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
+	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -798,32 +800,69 @@ void CDrawDoc::OnFeatureextractionSharpening()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include "CBrightnessDlg.h"
 void CDrawDoc::OnFilteringBrightness()
 {
+
+	CBrightnessDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 
 void CDrawDoc::OnFilteringContrast()
 {
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 
 void CDrawDoc::OnFilteringRemovenoise()
 {
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
 {
+	CGrayDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include "CHistogramDlg.h"
 void CDrawDoc::OnFilteringHistogram()
 {
+	CHistogramDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include"CWindowLevel.h"
+void CDrawDoc::OnFilteringWindowlevel()
+{
+	CWindowLevel dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
