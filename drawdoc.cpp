@@ -363,8 +363,8 @@ void CDrawDoc::SetPreviewColor(COLORREF clr)
 
 void CDrawDoc::LoadDicom() {
 
-	//DicomImage* m_pImage = new DicomImage(m_strFilePath);
-	DicomImage* m_pImage = new DicomImage(_T("D:\\dicom-image-sample\\MRBRAIN.DCM"));
+	DicomImage* m_pImage = new DicomImage(m_strFilePath);
+	//DicomImage* m_pImage = new DicomImage(_T("C:\\Users\\mylap\\Desktop\\dicom\\IncludeDCMTK\\MRBRAIN.DCM"));
 
 	m_listData.clear();
 	// m_listData 기존 메모리 해제하기

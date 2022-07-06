@@ -344,11 +344,7 @@ void CDrawView::OnDraw(CDC* pDC)
 		DrawGrid(pDrawDC);
 	// 그리드출력하는 부분(누가 위로 올라갈지 결정해서 변경)
 		//우선 첫번째 그림만 가져옴
-	/*SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height,
-		memDC, 0, 0, SRCCOPY);*/
 	BITMAPINFO& bmi = pDoc->m_bmi;
-	CPoint leftTop = { 0, 0 };
-	ClientToDoc(leftTop);
 
 	const int width = bmi.bmiHeader.biWidth;
 	const int height = abs(bmi.bmiHeader.biHeight);
