@@ -123,7 +123,7 @@ void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
 	{
 	case HINT_UPDATE_FOLDERPATH:
 		m_strPath = pDrawDoc->m_strFolderPath + +"\\*.*";
-		AfxMessageBox(m_strPath);
+		//AfxMessageBox(m_strPath);
 		FolderSearch();
 		break;
 	}

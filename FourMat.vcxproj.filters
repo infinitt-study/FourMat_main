@@ -82,9 +82,15 @@
     <ClCompile Include="CImprovement.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CReduceNoise.cpp" />
-    <ClCompile Include="CAddNoiseDlg.cpp" />
-    <ClCompile Include="CBlurDlg.cpp" />
+    <ClCompile Include="CAddNoiseDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlurDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CReduceNoise.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -180,9 +186,15 @@
     <ClInclude Include="CImprovement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CReduceNoise.h" />
-    <ClInclude Include="CAddNoiseDlg.h" />
-    <ClInclude Include="CBlurDlg.h" />
+    <ClInclude Include="CAddNoiseDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlurDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CReduceNoise.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">
