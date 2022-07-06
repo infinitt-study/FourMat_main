@@ -15,7 +15,7 @@
 #define HINT_UPDATE_SELECTION   2
 #define HINT_DELETE_SELECTION   3
 #define HINT_UPDATE_FOLDERPATH	4
-#define HINT_UPDATE_FULEPATH	5
+#define HINT_UPDATE_FILEPATH	5
 
 class CDrawObj;
 
@@ -224,4 +224,15 @@ public:
 //	afx_msg void OnFeatureextractionReducenoise();
 //	afx_msg void OnFeatureextractionSharpening();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
+};
+
+class CLeftDrawView : public CDrawView
+{
+
+};
+
+class CRightDrawView : public CDrawView
+{
+
 };

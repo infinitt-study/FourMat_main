@@ -244,7 +244,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		((CMainFrame*)AfxGetMainWnd())->UpdateUI(this);
 		break;
 
-	case HINT_UPDATE_FULEPATH:
+	case HINT_UPDATE_FILEPATH:
 		m_strPath = pDrawDoc->m_strFilePath;
 		AfxMessageBox(m_strPath);
 		break;
@@ -270,7 +270,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = 1.5f;
 	}
-	//¸â¹ö º¯¼ö ctrl flag : 
+	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
 	pDC->SetWindowExt(100, -100);
 
@@ -1792,7 +1792,7 @@ void CDrawView::ResetPreviewState()
 //void CDrawView::OnAffinetransformRotation()
 //{
 //	CRotationDlg dlg;
-//	//if (dlg.DoModal == IDOK)   // ´ÙÀÌ¾ó·Î±×°¡ Á¾·áµÉ ¶§ ¹İÈ¯µÇ´Â °ªÀ» °Ë»ç, OK ¹öÆ°À¸·Î Á¾·áµÇ¾úÀ» °æ¿ì IDOK¸¦ ¹İÈ¯
+//	//if (dlg.DoModal == IDOK)   // ë‹¤ì´ì–¼ë¡œê·¸ê°€ ì¢…ë£Œë  ë•Œ ë°˜í™˜ë˜ëŠ” ê°’ì„ ê²€ì‚¬, OK ë²„íŠ¼ìœ¼ë¡œ ì¢…ë£Œë˜ì—ˆì„ ê²½ìš° IDOKë¥¼ ë°˜í™˜
 //
 //	//{
 //	//	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
@@ -1805,14 +1805,14 @@ void CDrawView::ResetPreviewState()
 //	//	case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
 //	//	}
 //	//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//	//		TCHAR* rotate[] = { _T("90µµ"), _T("180µµ"), _T("270µµ") };
+//	//		TCHAR* rotate[] = { _T("90ë„"), _T("180ë„"), _T("270ë„") };
 //	//	if (dlg.m_nRotate != 3)
-//	//		AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+//	//		AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %s"), GetTitle(), rotate[dlg.m_nRotate]);
 //	//}
 //
 //	//else
 //	//{
-//	//	AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %4.2fµµ"), GetTitle(), dlg.m_fAngle);
+//	//	AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %4.2fë„"), GetTitle(), dlg.m_fAngle);
 //	//	AfxNewBitmap(dib);
 //	//}
 //}
@@ -1838,8 +1838,8 @@ void CDrawView::ResetPreviewState()
 //			t); break;
 //		}
 //		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//			TCHAR* interpolation[] = { _T("ÃÖ±Ù¹æ ÀÌ¿ô º¸°£¹ı"), _T("¾ç¼±Çü º¸°£¹ı"), _T("3Â÷ È¸¼± º¸°£¹ı") };
-//			AfxPrintInfo(_T("[Å©±â º¯È¯] ÀÔ·Â ¿µ»ó: %s, , »õ °¡·Î Å©±â: %d, »õ ¼¼·ÎÅ©±â: % d, º¸°£¹ı : % s"),
+//			TCHAR* interpolation[] = { _T("ìµœê·¼ë°© ì´ì›ƒ ë³´ê°„ë²•"), _T("ì–‘ì„ í˜• ë³´ê°„ë²•"), _T("3ì°¨ íšŒì„  ë³´ê°„ë²•") };
+//			AfxPrintInfo(_T("[í¬ê¸° ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, , ìƒˆ ê°€ë¡œ í¬ê¸°: %d, ìƒˆ ì„¸ë¡œí¬ê¸°: % d, ë³´ê°„ë²• : % s"),
 //			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_nInterpolation]);
 //		AfxNewBitmap(dib);
 //	}*/
@@ -1868,7 +1868,7 @@ void CDrawView::ResetPreviewState()
 //		IppByteImage imgDst;
 //		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
 //		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[ÀÌµ¿ º¯È¯] ÀÔ·Â ¿µ»ó: %s, °¡·Î ÀÌµ¿: %d, ¼¼·Î ÀÌµ¿: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
+//		AfxPrintInfo(_T("[ì´ë™ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, ê°€ë¡œ ì´ë™: %d, ì„¸ë¡œ ì´ë™: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
 //		AfxNewBitmap(dib);*/
 //	}
 //
@@ -1884,10 +1884,11 @@ void CDrawView::ResetPreviewState()
 //		IppByteImage imgDst;
 //	IppMirror(imgSrc, imgDst);
 //	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[ÁÂ¿ì ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+//		AfxPrintInfo(_T("[ì¢Œìš° ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 //	AfxNewBitmap(dib);*/
 //
 //}
+
 
 
 //void CDrawView::OnAffinetransformFlip()
@@ -1896,7 +1897,7 @@ void CDrawView::ResetPreviewState()
 //		IppByteImage imgDst;
 //	IppFlip(imgSrc, imgDst);
 //	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[»óÇÏ ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+//		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 //	AfxNewBitmap(dib);*/
 //
 //}
@@ -1923,5 +1924,14 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	RedrawWindow();
 		
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+}
 
+void CDrawView::OnAffinetransformFlip()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 }

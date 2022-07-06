@@ -1365,8 +1365,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CAddNoiseDlg.cpp" />
-    <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBlurDlg.cpp" />
+    <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
