@@ -1865,15 +1865,12 @@ void CDrawView::OnAffinetransformScaling()
 			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_nInterpolation]);
 		AfxNewBitmap(dib);
 	}*/
-
 }
 
 #include "CSliceDlg.h"
 void CDrawView::OnAffinetransformSlice()
 {
 	CSliceDlg dlg;
-
-
 }
 
 
@@ -1891,8 +1888,6 @@ void CDrawView::OnAffinetransformTranslation()
 		AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
 		AfxNewBitmap(dib);*/
 	}
-
-
 }
 
 
@@ -1915,10 +1910,6 @@ void CDrawView::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)
 	//RedrawWindow();
 
 	//return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-	
-
-
-
 }
 
 void CDrawView::OnAffinetransformMirror()
@@ -1929,7 +1920,6 @@ void CDrawView::OnAffinetransformMirror()
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
-
 }
 
 
@@ -1941,5 +1931,4 @@ void CDrawView::OnAffinetransformFlip()
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
-
 }

@@ -102,12 +102,6 @@ void CSplitFrame::SwitchView(int nID)
 		break;
 		
 	case VIEWID_MULTIDRAW:
-		// 3번뜸
-		// 이 코드가 맞나
-		//pNewView = (CView*)m_wndSplitter.GetActivePane();
-
-		//
-		//
 		pNewView = (CView*)m_wndSplitter.GetPane(0,0);
 		m_wndSplitter.ShowWindow(SW_SHOW);
 		Invalidate(TRUE);
@@ -156,11 +150,6 @@ BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//m_wndSplitter.ShowWindow(SW_SHOW);
 
 	BOOL bResult = CMDIChildWndEx::OnCreateClient(lpcs, pContext);
-
-
-	
-	
-
 
 	if (bResult) {
 		//SwitchView(VIEWID_SEARCH);
