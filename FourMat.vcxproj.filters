@@ -70,7 +70,21 @@
     <ClCompile Include="CTranslationDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CScalingDlg.cpp" />
+    <ClCompile Include="CAffineTransform.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CScalingDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CFilter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CImprovement.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CReduceNoise.cpp" />
+    <ClCompile Include="CAddNoiseDlg.cpp" />
+    <ClCompile Include="CBlurDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -148,7 +162,27 @@
     <ClInclude Include="CTranslationDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CScalingDlg.h" />
+    <ClInclude Include="CAffineTransform.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CScalingDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageAccess.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="RGBBYTE.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CFilter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CImprovement.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CReduceNoise.h" />
+    <ClInclude Include="CAddNoiseDlg.h" />
+    <ClInclude Include="CBlurDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">
