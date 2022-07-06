@@ -138,8 +138,8 @@ BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	
 	CRect rect;
 	this->GetClientRect(rect);
-	m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
-	m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
+	m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CLeftDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
+	m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CRightDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
 	m_wndSplitter.ShowWindow(SW_HIDE);
 
 

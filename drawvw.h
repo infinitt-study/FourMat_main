@@ -219,3 +219,13 @@ public:
 	afx_msg void OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnAffinetransformFlip();
 };
+
+class CLeftDrawView : public CDrawView
+{
+
+};
+
+class CRightDrawView : public CDrawView
+{
+
+};
