@@ -83,32 +83,6 @@ void CHistoryView::OnInitialUpdate()
 	//체크박스 추가
 	DWORD dwExStyle = m_lstHistory.GetExtendedStyle();
 	m_lstHistory.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-
-
-	////폴더 내 파일목록 조회
-	//string path = CT2CA(m_strPath);
-	////string path = "res\\*.*";
-
-	//struct _finddata_t fd;	intptr_t handle;
-	//if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
-	//	//cout << "No file in directory!" << endl;
-	//	//MessageBox(_T("파일 없음"));
-	//	return;
-	//}
-
-	//int nRow = 0;
-	//do
-	//{
-	//	//if (strstr(fd.name, ".bmp") != NULL || strstr(fd.name, ".png") != NULL) {
-	//	//	m_lstHistory.InsertItem(nRow, fd.name, 0);
-	//	//	nRow++;
-	//	//}
-	//	m_lstHistory.InsertItem(nRow, fd.name, 0);
-	//	nRow++;
-
-
-	//} while (_findnext(handle, &fd) == 0);
-	//_findclose(handle);
 }
 
 #include "splitfrm.h"
@@ -203,11 +177,11 @@ void CHistoryView::OnClickedButtonMulti()
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
 
+	//
+	//
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
-
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-
 	//
 	//
 	pSplitFrame->SwitchView(VIEWID_MULTIDRAW);
