@@ -347,21 +347,16 @@ void CDrawView::OnDraw(CDC* pDC)
 	/*SetDIBitsToDevice(dc.m_hDC, 0, 0, width, height,
 		memDC, 0, 0, SRCCOPY);*/
 	BITMAPINFO& bmi = pDoc->m_bmi;
-	//SCROLLINFO scrollInfo1;
-	//SCROLLINFO scrollInfo2;
-	//GetScrollInfo(SB_HORZ, &scrollInfo1, SIF_ALL);
-	//GetScrollInfo(SB_VERT, &scrollInfo2, SIF_ALL);
-	//CPoint leftTop = { scrollInfo1.nPos, scrollInfo2.nPos };
 	CPoint leftTop = { 0, 0 };
 	ClientToDoc(leftTop);
 
 	const int width = bmi.bmiHeader.biWidth;
 	const int height = abs(bmi.bmiHeader.biHeight);
 
-	//SetDIBitsToDevice(pDrawDC->m_hDC, 
-	//	leftTop.x, leftTop.y, width, height,
-	//	0, 0, 0, height, 
-	//	pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
+	SetDIBitsToDevice(pDrawDC->m_hDC, 
+		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
+		0, 0, 0, height, 
+		pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
 
 	pDoc->Draw(pDrawDC, this);
 
