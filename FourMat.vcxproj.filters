@@ -82,7 +82,6 @@
     <ClCompile Include="CImprovement.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-
     <ClCompile Include="CReduceNoise.cpp" />
     <ClCompile Include="CAddNoiseDlg.cpp" />
     <ClCompile Include="CBlurDlg.cpp" />
@@ -90,9 +89,8 @@
     <ClCompile Include="CGrayDlg.cpp" />
     <ClCompile Include="CWindowLevel.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
-    <ClCompile Include="CFilterMedian.cpp" />
     <ClCompile Include="CInverse.cpp" />
-
+    <ClCompile Include="IppDib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -188,7 +186,6 @@
     <ClInclude Include="CImprovement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-
     <ClInclude Include="CReduceNoise.h" />
     <ClInclude Include="CAddNoiseDlg.h" />
     <ClInclude Include="CBlurDlg.h" />
@@ -196,9 +193,8 @@
     <ClInclude Include="CGrayDlg.h" />
     <ClInclude Include="CWindowLevel.h" />
     <ClInclude Include="CHistogramDlg.h" />
-    <ClInclude Include="CFilterMedian.h" />
     <ClInclude Include="CInverse.h" />
-
+    <ClInclude Include="IppDib.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

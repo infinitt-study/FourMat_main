@@ -77,7 +77,6 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
@@ -1025,21 +1024,7 @@ void CDrawDoc::OnFilteringBrightness()
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
-#include "CFilterMedian.h"
-void CDrawDoc::OnFilteringRemovenoise()
-{
-	CTranslationDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppFilterMedian(imgSrc, imgDst);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
-		AfxNewBitmap(dib);*/
-	}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
+
 
 #include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()

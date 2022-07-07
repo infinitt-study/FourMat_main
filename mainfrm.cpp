@@ -521,7 +521,6 @@ void CMainFrame::InitImageProcessingCategory()
 
 	pPanelWindow = pCategory->AddPanel(_T("Filtering\nzw"), m_PanelImages.ExtractIcon(7));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_REMOVENOISE, _T("Remove Noise\nn"), 0, 0)); //dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_BRIGHTNESS, _T("Brightness\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_HISTOGRAM, _T("Histogram\nn"), 0, 0)); // dlg
