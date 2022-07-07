@@ -70,6 +70,7 @@ protected:
 	CSize m_dragOffset;                 // offset between pt and drag object corner
 	DROPEFFECT m_prevDropEffect;
 	BOOL m_bDragDataAcceptable;
+	//float zoom = 1;
 
 	BOOL GetObjectInfo(COleDataObject* pDataObject, CSize* pSize, CSize* pOffset);
 	// end of drop-target additions
@@ -207,15 +208,15 @@ private:
 
 public:
 	CString m_strPath;
-	afx_msg void OnFilteringBrightness();
-	afx_msg void OnFilteringContrast();
-	afx_msg void OnFilteringHistogram();
-	afx_msg void OnFilteringRemovenoise();
-	afx_msg void OnFilteringTograyscale();
-	afx_msg void OnAffinetransformRotation();
-	afx_msg void OnAffinetransformScaling();
-	afx_msg void OnAffinetransformSlice();
-	afx_msg void OnAffinetransformSymmetry();
-	afx_msg void OnAffinetransformTranslation();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+};
+
+class CLeftDrawView : public CDrawView
+{
+
+};
+
+class CRightDrawView : public CDrawView
+{
+
 };

@@ -32,6 +32,13 @@
 
 #include "propkey.h"
 #include "splitfrm.h"
+#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
+	IppByteImage img; \
+	IppDibToImage(m_Dib, img);
+
+#define CONVERT_IMAGE_TO_DIB(img, dib) \
+	IppDib dib; \
+	IppImageToDib(img, dib);
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -58,6 +65,24 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SEND_MAIL, OnUpdateFileSendMail)
 #endif
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawDoc::OnAffinetranformMirror)
+	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawDoc::OnAffinetranformRotation)
+	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawDoc::OnAffinetranformScaling)
+	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawDoc::OnAffinetranformSlice)
+	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawDoc::OnAffinetranformTranslation)
+	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawDoc::OnAffinetransformFlip)
+	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawDoc::OnFeatureextractionAddnoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawDoc::OnFeatureextractionBlur)
+	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnFeatureextractionReducenoise)
+	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
+	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
+	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
+	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+
+	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
+	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -72,6 +97,9 @@ CDrawDoc::CDrawDoc()
 	m_paperColorLast = m_paperColor = RGB(255, 255, 255);
 	m_pSummInfo = NULL;
 	ComputePageSize();
+
+	m_strFolderPath.Empty();
+	m_strFilePath.Empty();
 }
 
 CDrawDoc::~CDrawDoc()
@@ -100,7 +128,7 @@ void CDrawDoc::OnUnloadHandler()
 	m_pSummInfo = NULL;
 }
 
-BOOL CDrawDoc::OnNewDocument()
+BOOL CDrawDoc::OnNewDocument() //doc ë³€ìˆ˜ ì´ˆê¸°í™”  
 {
 	if (!COleDocument::OnNewDocument())
 		return FALSE;
@@ -133,6 +161,8 @@ BOOL CDrawDoc::OnNewDocument()
 
 	m_nCurrentFrameNo = 0;
 	m_pObjects = nullptr;
+  
+	m_zoom = 1;
 
 	return TRUE;
 }
@@ -392,34 +422,34 @@ void CDrawDoc::LoadDicom() {
 		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
 
 		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
-		// ¾ĞÃàµÈ ÆÄÀÏ(¿©·¯ÀåÀº ¹«Á¶°Ç ¾ĞÃà µÇ¾î ÀÖÀ½)
+		// ì••ì¶•ëœ íŒŒì¼(ì—¬ëŸ¬ì¥ì€ ë¬´ì¡°ê±´ ì••ì¶• ë˜ì–´ ìˆìŒ)
 		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
-			//jpeg ÀÏ °æ¿ì  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
-			//¿©·¯ÀåÀÇ ÀÌ¹ÌÁö°¡ Á¸ÀçÇÔ ÇÁ·¹ÀÓ ¼ö¸¦ ÀĞ´Â´Ù 
+			//jpeg ì¼ ê²½ìš°  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
+			//ì—¬ëŸ¬ì¥ì˜ ì´ë¯¸ì§€ê°€ ì¡´ì¬í•¨ í”„ë ˆì„ ìˆ˜ë¥¼ ì½ëŠ”ë‹¤ 
 			dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalFrameNo);
 		}
 
-		// ¾ĞÃà¾ÈµÈ ÆÄÀÏ
+		// ì••ì¶•ì•ˆëœ íŒŒì¼
 		else if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2")) {
-			//dicom ±âº» ¿µ»óÀ¸·Î 1°³ÀÇ ÇÁ·¹ÀÓ ¸¸ Á¸ÀçÇÔ ("1.2.840.10008.1.2")
+			//dicom ê¸°ë³¸ ì˜ìƒìœ¼ë¡œ 1ê°œì˜ í”„ë ˆì„ ë§Œ ì¡´ì¬í•¨ ("1.2.840.10008.1.2")
 			m_nTotalFrameNo = 1;
 		}
 
 
 		E_TransferSyntax xfer = dataset->getOriginalXfer();
-		//µ¥ÀÌÅÍ ¼ÂÀ¸·Î ÀÌ¹ÌÁö¸¦ ¾ĞÃà ÇØÁ¦ ÇØ¼­ »ı¼ºÇÑ´Ù 
+		//ë°ì´í„° ì…‹ìœ¼ë¡œ ì´ë¯¸ì§€ë¥¼ ì••ì¶• í•´ì œ í•´ì„œ ìƒì„±í•œë‹¤ 
 		DicomImage* ptrDicomImage = new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalFrameNo);
 
 		if (ptrDicomImage) {
-			//ÀÌ¹ÌÁöÀÇ Æø°ú ³ôÀÌ¸¦ ¾ò´Â´Ù 
+			//ì´ë¯¸ì§€ì˜ í­ê³¼ ë†’ì´ë¥¼ ì–»ëŠ”ë‹¤ 
 			int width = (int)ptrDicomImage->getWidth();
 			int height = (int)ptrDicomImage->getHeight();
 			void* data = nullptr;
 
 			for (int i = 0; i < m_nTotalFrameNo; i++) {
-				//ÇÁ·¹ÀÓÀÇ À§Ä¡¿¡ ÀÖ´Â ¿µ»ó Á¤º¸¸¦ À©µµ¿ì ÀÌ¹ÌÁö 24bit·Î »ı¼ºÇÏ¿© ¾ò´Â´Ù 
+				//í”„ë ˆì„ì˜ ìœ„ì¹˜ì— ìˆëŠ” ì˜ìƒ ì •ë³´ë¥¼ ìœˆë„ìš° ì´ë¯¸ì§€ 24bitë¡œ ìƒì„±í•˜ì—¬ ì–»ëŠ”ë‹¤ 
 				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
-				//ÀÌ¹ÌÁöÀÇ ÁÖ¼Ò¸¦ Ãâ·ÂÇÑ´Ù
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ì¶œë ¥í•œë‹¤
 
 				m_bmi = { sizeof(BITMAPINFO) };
 				//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
@@ -433,7 +463,7 @@ void CDrawDoc::LoadDicom() {
 				m_listData.push_back(data);
 				m_pageLeftObjects.push_back(new CDrawObjList());
 				
-				//ÀÌ¹ÌÁöÀÇ ÁÖ¼Ò¸¦ ¸Ş¸ğ¸® ÇØÁ¦ ÇÑ´Ù
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ë©”ëª¨ë¦¬ í•´ì œ í•œë‹¤
 				//delete[] data;
 				data = nullptr;
 			}
@@ -450,15 +480,15 @@ void CDrawDoc::LoadDicom() {
 
 
 	//m_listData.clear();
-	// m_listData ±âÁ¸ ¸Ş¸ğ¸® ÇØÁ¦ÇÏ±â
-	// ¼Ò¸êÀÚ¿¡ ´ëÇØ¼­µµ ¸Ş¸ğ¸® ÇØÁ¦ ÄÚµå Ãß°¡ÇÏ±â
+	// m_listData ê¸°ì¡´ ë©”ëª¨ë¦¬ í•´ì œí•˜ê¸°
+	// ì†Œë©¸ìì— ëŒ€í•´ì„œë„ ë©”ëª¨ë¦¬ í•´ì œ ì½”ë“œ ì¶”ê°€í•˜ê¸°
 
 //	if (m_pImage) {
 //		const int width = (int)m_pImage->getWidth();
 //		const int height = (int)m_pImage->getHeight();
 //		void* data = nullptr;
 //
-//		// bitmapinfo·Î º¯È¯
+//		// bitmapinfoë¡œ ë³€í™˜
 //		if (m_pImage->createWindowsDIB(data, width * height, 0, 24) && data) //24bytes
 //		{
 //			m_bmi = { sizeof(BITMAPINFO) };
@@ -825,3 +855,281 @@ void CDrawDoc::SetSearchContents(const CString& value)
 }
 
 #endif
+
+
+void CDrawDoc::OnAffinetranformMirror()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppMirror(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[ì¢Œìš° ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
+}
+
+#include "CRotationDlg.h"
+void CDrawDoc::OnAffinetranformRotation()
+{
+	CRotationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		switch (dlg.m_nRotate)
+		{
+		case 0: IppRotate90(imgSrc, imgDst); break;
+		case 1: IppRotate180(imgSrc, imgDst); break;
+		case 2: IppRotate270(imgSrc, imgDst); break;
+		case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			TCHAR* rotate[] = { _T("90ë„"), _T("180ë„"), _T("270ë„") };
+		if (dlg.m_nRotate != 3)
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+		else
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %4.2fë„"), GetTitle(), dlg.m_fAngle);
+		AfxNewBitmap(dib);*/
+		
+	}
+}
+
+#include "CScalingDlg.h"
+void CDrawDoc::OnAffinetranformScaling()
+{
+	CScalingDlg dlg;
+	/*dlg.m_nOldWidth = m_Dib.GetWidth();
+	dlg.m_nOldHeight = m_Dib.GetHeight();
+	if (dlg.DoModal() == IDOK)
+	{
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		switch (dlg.m_nInterpolation)
+		{
+		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
+			ht); break;
+		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
+			ght); break;
+		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
+			t); break;
+		}
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			TCHAR* interpolation[] = { _T("ìµœê·¼ë°© ì´ì›ƒ ë³´ê°„ë²•"), _T("ì–‘ì„ í˜• ë³´ê°„ë²•"
+			), _T("3ì°¨ íšŒì„  ë³´ê°„ë²•") };
+		AfxPrintInfo(_T("[í¬ê¸° ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, , ìƒˆ ê°€ë¡œ í¬ê¸°: %d, ìƒˆ ì„¸ë¡œ
+			í¬ê¸°: % d, ë³´ê°„ë²• : % s"),
+			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
+			Interpolation]);
+		AfxNewBitmap(dib);
+	}*/
+
+}
+
+#include "CSliceDlg.h"
+void CDrawDoc::OnAffinetranformSlice()
+{
+	CSliceDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
+}
+
+#include "CTranslationDlg.h"
+void CDrawDoc::OnAffinetranformTranslation()
+{
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[ì´ë™ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, ê°€ë¡œ ì´ë™: %d, ì„¸ë¡œ ì´ë™: %d"),
+				GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
+		AfxNewBitmap(dib);*/
+	}
+}
+
+
+void CDrawDoc::OnAffinetransformFlip()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
+}
+
+
+#include "CAddNoiseDlg.h"
+void CDrawDoc::OnFeatureextractionAddnoise()
+{
+	CAddNoiseDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+
+		if (dlg.m_nNoiseType == 0)
+			IppNoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+		else
+			IppNoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			TCHAR* noise[] = { _T("ê°€ìš°ì‹œì•ˆ"), _T("ì†Œê¸ˆ&í›„ì¶”") };
+		AfxPrintInfo(_T("[ì¡ìŒ ì¶”ê°€] ì…ë ¥ ì˜ìƒ: %s, ì¡ìŒ ì¢…ë¥˜: %s, ì¡ìŒ ì–‘: %d"),
+			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
+		AfxNewBitmap(dib);*/
+	}
+}
+
+#include "CBlurDlg.h"
+void CDrawDoc::OnFeatureextractionBlur()
+{
+	CBlurDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppFloatImage imgDst;
+		IppFilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[ê°€ìš°ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
+		AfxNewBitmap(dib);*/
+	}
+}
+
+#include "CReduceNoise.h"
+void CDrawDoc::OnFeatureextractionReducenoise()
+{
+	CReduceNoise dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterMedian(imgSrc, imgDst);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[ë¯¸ë””ì–¸ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+		AfxNewBitmap(dib);*/
+	}
+}
+
+
+void CDrawDoc::OnFeatureextractionSharpening()
+{
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterLaplacian(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[ë¼í”Œë¼ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
+}
+
+#include "CBrightnessDlg.h"
+void CDrawDoc::OnFilteringBrightness()
+{
+
+	CBrightnessDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nChangeBright = dlg.m_nBright;
+				m_vectorImageWnd[i]->m_nChangeContrast = dlg.m_nContrast;
+				m_vectorImageWnd[i]->m_nMode = 1;
+			}
+		}
+		Invalidate(TRUE);*/
+	}
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}
+
+
+//void CDrawDoc::OnFilteringContrast()
+//{
+//	CTranslationDlg dlg;
+//	if (dlg.DoModal() == IDOK)
+//	{
+//
+//	}
+//	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+//}
+
+#include "CFilterMedian.h"
+void CDrawDoc::OnFilteringRemovenoise()
+{
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterMedian(imgSrc, imgDst);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			AfxPrintInfo(_T("[ë¯¸ë””ì–¸ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
+		AfxNewBitmap(dib);*/
+	}
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}
+
+#include"CGrayDlg.h"
+void CDrawDoc::OnFilteringTograyscale()
+{
+	CGrayDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nMode = 4;
+			}
+		}
+		Invalidate(TRUE);*/
+	}
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}
+
+#include "CHistogramDlg.h"
+void CDrawDoc::OnFilteringHistogram()
+{
+	CHistogramDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CHistogramDlg dlg;
+		for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
+			}
+		}
+		dlg.DoModal();*/
+	}
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}
+
+#include"CWindowLevel.h"
+void CDrawDoc::OnFilteringWindowlevel()
+{
+	CWindowLevel dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}
+
+
+void CDrawDoc::OnFilteringInverse()
+{
+	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		if (m_vectorImageWnd[i]->m_bClicked) {
+			m_vectorImageWnd[i]->m_nMode = 2;
+		}
+	}
+	Invalidate(TRUE);*/
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+}

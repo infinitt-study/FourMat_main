@@ -108,17 +108,24 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
-	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
-	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
-	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
-	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
-	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
-	ON_COMMAND(ID_AFFINETRANSFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
-	ON_COMMAND(ID_AFFINETRANSFORM_SCALING, &CDrawView::OnAffinetransformScaling)
-	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
-	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
-	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
-	ON_WM_MOUSEWHEEL()
+//	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
+//	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
+//	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
+//	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
+//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
+//	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
+//	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
+//	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawView::OnAffinetransformSlice)
+//	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawView::OnAffinetransformMirror)
+
+//	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+//	ON_WM_MOUSEHWHEEL()
+//	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawView::OnFeatureextractionAddnoise)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawView::OnFeatureextractionBlur)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawView::OnFeatureextractionReducenoise)
+//	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawView::OnFeatureextractionSharpening)
+    ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -238,15 +245,13 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_UPDATE_FILEPATH:
-		m_strPath = pDrawDoc->m_strFilePath; // ÇÊ¿ä¾øÀ½
-		AfxMessageBox(m_strPath);
-
+		//AfxMessageBox(m_strPath);
 		pDrawDoc->LoadDicom();
 		break;
 
 	case HINT_LAOD_DICOMIMAGE:
 		Invalidate(FALSE);
-		//Invalidate();// È­¸éÀ» ¹«È¿È­ÇÏ±â
+		//Invalidate();// È­ï¿½ï¿½ï¿½ ï¿½ï¿½È¿È­ï¿½Ï±ï¿½
 		break;
 	default:
 		//ASSERT(FALSE);
@@ -269,13 +274,12 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = 1.0f;
 	}
-
+	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
 	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
-
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
@@ -343,8 +347,8 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
-	// ±×¸®µåÃâ·ÂÇÏ´Â ºÎºĞ(´©°¡ À§·Î ¿Ã¶ó°¥Áö °áÁ¤ÇØ¼­ º¯°æ)
-		//¿ì¼± Ã¹¹øÂ° ±×¸²¸¸ °¡Á®¿È
+	// ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Îºï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½)
+		//ï¿½ì¼± Ã¹ï¿½ï¿½Â° ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 	BITMAPINFO& bmi = pDoc->m_bmi;
 
 	const int width = bmi.bmiHeader.biWidth;
@@ -1799,127 +1803,33 @@ void CDrawView::ResetPreviewState()
 
 
 
-void CDrawView::OnFilteringBrightness()
+BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	
-}
-
-
-void CDrawView::OnFilteringContrast()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CDrawView::OnFilteringHistogram()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CDrawView::OnFilteringRemovenoise()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-
-void CDrawView::OnFilteringTograyscale()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-#include "CRotationDlg.h"
-void CDrawView::OnAffinetransformRotation()
-{
-	CRotationDlg dlg;
-	//if (dlg.DoModal == IDOK)   // ´ÙÀÌ¾ó·Î±×°¡ Á¾·áµÉ ¶§ ¹İÈ¯µÇ´Â °ªÀ» °Ë»ç, OK ¹öÆ°À¸·Î Á¾·áµÇ¾úÀ» °æ¿ì IDOK¸¦ ¹İÈ¯
-
-	//{
-	//	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-	//		IppByteImage imgDst;
-	//	switch (dlg.m_nRotate)
-	//	{
-	//	case 0: IppRotate90(imgSrc, imgDst); break;
-	//	case 1: IppRotate180(imgSrc, imgDst); break;
-	//	case 2: IppRotate270(imgSrc, imgDst); break;
-	//	case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
-	//	}
-	//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-	//		TCHAR* rotate[] = { _T("90µµ"), _T("180µµ"), _T("270µµ") };
-	//	if (dlg.m_nRotate != 3)
-	//		AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %s"), GetTitle(), rotate[dlg.m_nRotate]);
-	//}
-
-	//else
-	//{
-	//	AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %4.2fµµ"), GetTitle(), dlg.m_fAngle);
-	//	AfxNewBitmap(dib);
-	//}
-}
-
-#include "CScalingDlg.h"
-void CDrawView::OnAffinetransformScaling()
-{
-	CScalingDlg dlg;
-
-	/*dlg.m_nOldWidth = m_Dib.GetWidth();
-	dlg.m_nOldHeight = m_Dib.GetHeight();
-	if (dlg.DoModal() == IDOK)
+	/*if ((nFlags & MK_CONTROL) != MK_CONTROL)
+		return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+		
+	if (zDelta < 0)
 	{
-		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		switch (dlg.m_nInterpolation)
-		{
-		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
-			ht); break;
-		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
-			ght); break;
-		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
-			t); break;
-		}
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			TCHAR* interpolation[] = { _T("ÃÖ±Ù¹æ ÀÌ¿ô º¸°£¹ı"), _T("¾ç¼±Çü º¸°£¹ı"), _T("3Â÷ È¸¼± º¸°£¹ı") };
-			AfxPrintInfo(_T("[Å©±â º¯È¯] ÀÔ·Â ¿µ»ó: %s, , »õ °¡·Î Å©±â: %d, »õ ¼¼·Î
-			Å©±â: % d, º¸°£¹ı : % s"),
-			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
-			Interpolation]);
-		AfxNewBitmap(dib);
-	}*/
 
-}
+		zoom += 10;
+		if (zoom > 100) zoom = 100;
 
-#include "CSliceDlg.h"
-void CDrawView::OnAffinetransformSlice()
-{
-	CSliceDlg dlg;
-
-}
-
-void CDrawView::OnAffinetransformSymmetry()
-{
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-}
-
-#include "CTranslationDlg.h"
-void CDrawView::OnAffinetransformTranslation()
-{
-	CTranslationDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[ÀÌµ¿ º¯È¯] ÀÔ·Â ¿µ»ó: %s, °¡·Î ÀÌµ¿: %d, ¼¼·Î ÀÌµ¿: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
-		AfxNewBitmap(dib);*/
 	}
-
-
+	else
+	{
+		zoom -= 10;
+		if (zoom > 100) zoom = 1;
+	}
+	RedrawWindow();
+	1. ë‹¤ì‹œ ë¶€ë¥¼ ìˆ˜ ìˆëŠ”ì§€, 
+	2. ì•ˆëœë‹¤ë©´ ondraw ì—ì„œ ë‹¤ì‹œ ë¶ˆëŸ¬ì˜¬ìˆ˜ ìˆëŠ”ì§€ 
+		*/
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
-
 
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	// TODO: ¿©±â¿¡ ¸Ş½ÃÁö Ã³¸®±â ÄÚµå¸¦ Ãß°¡ ¹×/¶Ç´Â ±âº»°ªÀ» È£ÃâÇÕ´Ï´Ù.
+	// TODO: ï¿½ï¿½ï¿½â¿¡ ï¿½Ş½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Úµå¸¦ ï¿½ß°ï¿½ ï¿½ï¿½/ï¿½Ç´ï¿½ ï¿½âº»ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
 	if ((nFlags & MK_SHIFT) == MK_SHIFT) {
 
 		CDrawDoc* pDoc = GetDocument();
