@@ -69,12 +69,13 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnFeatureextractionReducenoise)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
-	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawDoc::OnFilteringContrast)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -807,29 +808,41 @@ void CDrawDoc::OnFilteringBrightness()
 	CBrightnessDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nChangeBright = dlg.m_nBright;
+				m_vectorImageWnd[i]->m_nChangeContrast = dlg.m_nContrast;
+				m_vectorImageWnd[i]->m_nMode = 1;
+			}
+		}
+		Invalidate(TRUE);*/
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 
-void CDrawDoc::OnFilteringContrast()
-{
-	CTranslationDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
+//void CDrawDoc::OnFilteringContrast()
+//{
+//	CTranslationDlg dlg;
+//	if (dlg.DoModal() == IDOK)
+//	{
+//
+//	}
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
 
-	}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-
+#include "CFilterMedian.h"
 void CDrawDoc::OnFilteringRemovenoise()
 {
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterMedian(imgSrc, imgDst);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
+		AfxNewBitmap(dib);*/
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -840,7 +853,12 @@ void CDrawDoc::OnFilteringTograyscale()
 	CGrayDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nMode = 4;
+			}
+		}
+		Invalidate(TRUE);*/
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -851,7 +869,13 @@ void CDrawDoc::OnFilteringHistogram()
 	CHistogramDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-
+		/*CHistogramDlg dlg;
+		for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
+			}
+		}
+		dlg.DoModal();*/
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -864,5 +888,17 @@ void CDrawDoc::OnFilteringWindowlevel()
 	{
 
 	}
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFilteringInverse()
+{
+	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		if (m_vectorImageWnd[i]->m_bClicked) {
+			m_vectorImageWnd[i]->m_nMode = 2;
+		}
+	}
+	Invalidate(TRUE);*/
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

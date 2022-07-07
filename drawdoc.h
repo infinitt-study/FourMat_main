@@ -121,4 +121,5 @@ public:
 	afx_msg void OnFilteringTograyscale();
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
+	afx_msg void OnFilteringInverse();
 };
