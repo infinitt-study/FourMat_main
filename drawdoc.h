@@ -22,7 +22,13 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	CDrawObjList* GetObjects() { return &m_objects; }
+	void SetCurrentFrameNo(int nDelta) {
+		m_nCurrentFrameNo -= nDelta;
+		m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
+		m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+	}
+
+	CDrawObjList* GetObjects() { return m_pObjects; }
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
 	int GetMapMode() const { return m_nMapMode; }
@@ -88,7 +94,9 @@ protected:
 
 //	BOOL m_bCanDeactivateInplace;
 
-	CDrawObjList m_objects;
+	std::vector<CDrawObjList*> m_pageLeftObjects;
+	CDrawObjList* m_pObjects;
+
 	CSize m_size;
 	int m_nMapMode;
 	COLORREF m_paperColor;
@@ -104,6 +112,8 @@ public:
 
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
+	long m_nCurrentFrameNo; // 다이콤 내부 이미지 페이지
+	long m_nTotalFrameNo; // 다이콤 내부 이미지 페이지
 
 protected:
 	//{{AFX_MSG(CDrawDoc)

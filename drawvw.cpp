@@ -118,6 +118,7 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_AFFINETRANSFORM_SLICE, &CDrawView::OnAffinetransformSlice)
 	ON_COMMAND(ID_AFFINETRANSFORM_SYMMETRY, &CDrawView::OnAffinetransformSymmetry)
 	ON_COMMAND(ID_AFFINETRANSFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -352,7 +353,7 @@ void CDrawView::OnDraw(CDC* pDC)
 	SetDIBitsToDevice(pDrawDC->m_hDC, 
 		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
 		0, 0, 0, height, 
-		pDoc->m_listData[0], &bmi, DIB_RGB_COLORS);
+		pDoc->m_listData[pDoc->m_nCurrentFrameNo], &bmi, DIB_RGB_COLORS);
 
 	pDoc->Draw(pDrawDC, this);
 
@@ -911,7 +912,7 @@ void CDrawView::OnEditSelectAll()
 
 void CDrawView::OnUpdateEditSelectAll(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(GetDocument()->GetObjects()->GetCount() != 0);
+	pCmdUI->Enable(GetDocument()->GetObjects() == nullptr ? 0 : GetDocument()->GetObjects()->GetCount() != 0);
 }
 
 void CDrawView::OnEditClear()
@@ -1913,4 +1914,17 @@ void CDrawView::OnAffinetransformTranslation()
 	}
 
 
+}
+
+
+BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if ((nFlags & MK_SHIFT) == MK_SHIFT) {
+
+		CDrawDoc* pDoc = GetDocument();
+		pDoc->SetCurrentFrameNo(zDelta / 120);
+		Invalidate();
+	}
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }

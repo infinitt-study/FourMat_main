@@ -102,6 +102,8 @@ BOOL CDrawApp::InitInstance()
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views.
 
+	DJDecoderRegistration::registerCodecs();
+
 	CMultiDocTemplate* pDocTemplate;
 	pDocTemplate = new CMultiDocTemplate(IDR_DRAWCLTYPE, 
 		RUNTIME_CLASS(CDrawDoc), 
@@ -167,6 +169,7 @@ BOOL CDrawApp::InitInstance()
 
 int CDrawApp::ExitInstance()
 {
+	DJDecoderRegistration::cleanup();
 	return CWinAppEx::ExitInstance();
 }
 
