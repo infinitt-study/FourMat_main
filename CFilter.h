@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "ImageAccess.h"
+#include "IppImage.h"
 
 void IppFilterMean(IppByteImage& imgSrc, IppByteImage& imgDst);
 void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst);

@@ -23,4 +23,5 @@ protected:
 public:
 	int m_nNoiseType;
 	int m_nAmount;
+	virtual BOOL OnInitDialog();
 };
