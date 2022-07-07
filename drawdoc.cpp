@@ -474,15 +474,10 @@ void CDrawDoc::LoadDicom() {
 		delete ptrDicomImage;
 	}
 
-	//DicomImage* m_pImage = new DicomImage(m_strFilePath);
-	//DicomImage* m_pImage = new DicomImage(_T("C:\\Users\\mylap\\Desktop\\dicom\\IncludeDCMTK\\MRBRAIN.DCM"));
-
-
-
-	//m_listData.clear();
-	// m_listData 기존 메모리 해제하기
-	// 소멸자에 대해서도 메모리 해제 코드 추가하기
-
+//	DicomImage* m_pImage = new DicomImage(m_strFilePath);
+//
+//	m_listData.clear();
+//
 //	if (m_pImage) {
 //		const int width = (int)m_pImage->getWidth();
 //		const int height = (int)m_pImage->getHeight();

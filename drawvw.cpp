@@ -250,8 +250,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_LAOD_DICOMIMAGE:
-		Invalidate(FALSE);
-		//Invalidate();// ȭ��� ��ȿȭ�ϱ�
+		Invalidate();
 		break;
 	default:
 		//ASSERT(FALSE);
@@ -347,8 +346,7 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
-	// �׸�������ϴ� �κ�(���� ��� �ö��� ����ؼ� ����)
-		//�켱 ù��° �׸��� �����
+
 	BITMAPINFO& bmi = pDoc->m_bmi;
 
 	const int width = bmi.bmiHeader.biWidth;
@@ -1824,17 +1822,14 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	1. 다시 부를 수 있는지, 
 	2. 안된다면 ondraw 에서 다시 불러올수 있는지 
 		*/
-	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-}
 
-BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
-{
-	// TODO: ���⿡ �޽��� ó���� �ڵ带 �߰� ��/�Ǵ� �⺻��� ȣ���մϴ�.
 	if ((nFlags & MK_SHIFT) == MK_SHIFT) {
 
 		CDrawDoc* pDoc = GetDocument();
 		pDoc->SetCurrentFrameNo(zDelta / 120);
 		Invalidate();
 	}
+
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
+

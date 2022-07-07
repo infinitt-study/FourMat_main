@@ -113,8 +113,8 @@ public:
 
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
-	long m_nCurrentFrameNo; // 다이콤 내부 이미지 페이지
-	long m_nTotalFrameNo; // 다이콤 내부 이미지 페이지
+	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
+	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
