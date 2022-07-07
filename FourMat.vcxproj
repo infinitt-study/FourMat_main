@@ -1442,7 +1442,6 @@
     <ClCompile Include="CBrightnessDlg.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
-    <ClCompile Include="CFilterMedian.cpp" />
     <ClCompile Include="CGrayDlg.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
@@ -1854,7 +1853,6 @@
     <ClInclude Include="CBrightnessDlg.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
-    <ClInclude Include="CFilterMedian.h" />
     <ClInclude Include="CGrayDlg.h" />
     <ClInclude Include="CHistogramDlg.h" />
     <ClInclude Include="CHistoryView.h" />
