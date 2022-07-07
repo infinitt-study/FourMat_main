@@ -266,7 +266,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	pDC->SetMapMode(MM_ANISOTROPIC);
 
-	//float zoom = 1;
+	float zoom = 1;
 	if (nullptr == pInfo) {
 		zoom = 1.5f;
 	}
@@ -1787,133 +1787,16 @@ void CDrawView::ResetPreviewState()
 
 
 
-
-#include "CRotationDlg.h"
-//void CDrawView::OnAffinetransformRotation()
-//{
-//	CRotationDlg dlg;
-//	//if (dlg.DoModal == IDOK)   // 다이얼로그가 종료될 때 반환되는 값을 검사, OK 버튼으로 종료되었을 경우 IDOK를 반환
-//
-//	//{
-//	//	CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//	//		IppByteImage imgDst;
-//	//	switch (dlg.m_nRotate)
-//	//	{
-//	//	case 0: IppRotate90(imgSrc, imgDst); break;
-//	//	case 1: IppRotate180(imgSrc, imgDst); break;
-//	//	case 2: IppRotate270(imgSrc, imgDst); break;
-//	//	case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
-//	//	}
-//	//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//	//		TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
-//	//	if (dlg.m_nRotate != 3)
-//	//		AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
-//	//}
-//
-//	//else
-//	//{
-//	//	AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
-//	//	AfxNewBitmap(dib);
-//	//}
-//}
-
-#include "CScalingDlg.h"
-//void CDrawView::OnAffinetransformScaling()
-//{
-//	CScalingDlg dlg;
-//
-//	/*dlg.m_nOldWidth = m_Dib.GetWidth();
-//	dlg.m_nOldHeight = m_Dib.GetHeight();
-//	if (dlg.DoModal() == IDOK)
-//	{
-//		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//			IppByteImage imgDst;
-//		switch (dlg.m_nInterpolation)
-//		{
-//		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
-//			ht); break;
-//		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
-//			ght); break;
-//		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
-//			t); break;
-//		}
-//		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//			TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"), _T("3차 회선 보간법") };
-//			AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),
-//			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_nInterpolation]);
-//		AfxNewBitmap(dib);
-//	}*/
-//
-//}
-
-#include "CSliceDlg.h"
-//void CDrawView::OnAffinetransformSlice()
-//{
-//	CSliceDlg dlg;
-//
-//
-//}
-
-
-
-#include "CTranslationDlg.h"
-//void CDrawView::OnAffinetransformTranslation()
-//{
-//	CTranslationDlg dlg;
-//	if (dlg.DoModal() == IDOK)
-//	{
-//		AfxMessageBox("123");
-//
-//		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//		IppByteImage imgDst;
-//		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-//		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
-//		AfxNewBitmap(dib);*/
-//	}
-//
-//
-//}
-
-
-
-
-//void CDrawView::OnAffinetransformMirror()
-//{
-//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//		IppByteImage imgDst;
-//	IppMirror(imgSrc, imgDst);
-//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
-//	AfxNewBitmap(dib);*/
-//
-//}
-
-
-
-//void CDrawView::OnAffinetransformFlip()
-//{
-//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//		IppByteImage imgDst;
-//	IppFlip(imgSrc, imgDst);
-//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
-//	AfxNewBitmap(dib);*/
-//
-//}
-
-
-
-
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	if ((nFlags & MK_CONTROL) != MK_CONTROL)
+	/*if ((nFlags & MK_CONTROL) != MK_CONTROL)
 		return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 		
 	if (zDelta < 0)
 	{
+
 		zoom += 10;
-		if (zoom > 300) zoom = 100;
+		if (zoom > 100) zoom = 100;
 
 	}
 	else
@@ -1922,7 +1805,9 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		if (zoom > 100) zoom = 1;
 	}
 	RedrawWindow();
-		
+	1. 다시 부를 수 있는지, 
+	2. 안된다면 ondraw 에서 다시 불러올수 있는지 
+		*/
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
 

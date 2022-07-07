@@ -1,19 +1,19 @@
 ﻿#pragma once
 
 
-// CBlurDlg 대화 상자
+// CGrayDlg 대화 상자
 
-class CBlurDlg : public CDialogEx
+class CGrayDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CBlurDlg)
+	DECLARE_DYNAMIC(CGrayDlg)
 
 public:
-	CBlurDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CBlurDlg();
+	CGrayDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CGrayDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_FEATUREEXTRACTION_BLUR };
+	enum { IDD = IDD_FILTERING_GRAY };
 #endif
 
 protected:
@@ -21,9 +21,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CSliderCtrl m_sliderSigma;
-	float m_fSigma;
+	CSliderCtrl m_sliderGray;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnEnChangeSigmaEdit();
+	int m_nGray;
 };

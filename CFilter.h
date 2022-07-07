@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "ImageAccess.h"
+#include "IppImage.h"
 
 void IppFilterMean(IppByteImage& imgSrc, IppByteImage& imgDst);
 void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst);
@@ -16,4 +16,5 @@ void IppNoiseSaltNPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
 
 void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst);
 void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambda, float k, int iter);
+
 

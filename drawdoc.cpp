@@ -32,6 +32,14 @@
 
 #include "propkey.h"
 
+#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
+	IppByteImage img; \
+	IppDibToImage(m_Dib, img);
+
+#define CONVERT_IMAGE_TO_DIB(img, dib) \
+	IppDib dib; \
+	IppImageToDib(img, dib);
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -69,10 +77,13 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnFeatureextractionReducenoise)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
-	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawDoc::OnFilteringContrast)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
+	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
+	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -108,7 +119,7 @@ void CDrawDoc::OnUnloadHandler()
 	m_pSummInfo = NULL;
 }
 
-BOOL CDrawDoc::OnNewDocument()
+BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화  
 {
 	if (!COleDocument::OnNewDocument())
 		return FALSE;
@@ -138,6 +149,8 @@ BOOL CDrawDoc::OnNewDocument()
 	m_logbrush.lbStyle = BS_SOLID;
 	m_logbrush.lbColor = RGB(192, 192, 192);
 	m_logbrush.lbHatch = HS_HORIZONTAL;
+
+	m_zoom = 1;
 
 	return TRUE;
 }
@@ -724,7 +737,12 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 void CDrawDoc::OnAffinetranformMirror()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppMirror(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 }
 
 #include "CRotationDlg.h"
@@ -733,6 +751,24 @@ void CDrawDoc::OnAffinetranformRotation()
 	CRotationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		switch (dlg.m_nRotate)
+		{
+		case 0: IppRotate90(imgSrc, imgDst); break;
+		case 1: IppRotate180(imgSrc, imgDst); break;
+		case 2: IppRotate270(imgSrc, imgDst); break;
+		case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+		}
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
+		if (dlg.m_nRotate != 3)
+			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+		else
+			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
+		AfxNewBitmap(dib);*/
 		
 	}
 }
@@ -741,10 +777,30 @@ void CDrawDoc::OnAffinetranformRotation()
 void CDrawDoc::OnAffinetranformScaling()
 {
 	CScalingDlg dlg;
+	/*dlg.m_nOldWidth = m_Dib.GetWidth();
+	dlg.m_nOldHeight = m_Dib.GetHeight();
 	if (dlg.DoModal() == IDOK)
 	{
-
-	}
+		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		switch (dlg.m_nInterpolation)
+		{
+		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
+			ht); break;
+		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
+			ght); break;
+		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
+			t); break;
+		}
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"
+			), _T("3차 회선 보간법") };
+		AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로
+			크기: % d, 보간법 : % s"),
+			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
+			Interpolation]);
+		AfxNewBitmap(dib);
+	}*/
 
 }
 
@@ -756,7 +812,7 @@ void CDrawDoc::OnAffinetranformSlice()
 	{
 
 	}
-	}
+}
 
 #include "CTranslationDlg.h"
 void CDrawDoc::OnAffinetranformTranslation()
@@ -765,65 +821,193 @@ void CDrawDoc::OnAffinetranformTranslation()
 	if (dlg.DoModal() == IDOK)
 	{
 
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),
+				GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
+		AfxNewBitmap(dib);*/
 	}
 }
 
 
 void CDrawDoc::OnAffinetransformFlip()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFlip(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 }
 
 
+#include "CAddNoiseDlg.h"
 void CDrawDoc::OnFeatureextractionAddnoise()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CAddNoiseDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+
+		if (dlg.m_nNoiseType == 0)
+			IppNoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+		else
+			IppNoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
+
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			TCHAR* noise[] = { _T("가우시안"), _T("소금&후추") };
+		AfxPrintInfo(_T("[잡음 추가] 입력 영상: %s, 잡음 종류: %s, 잡음 양: %d"),
+			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
+		AfxNewBitmap(dib);*/
+	}
 }
 
-
+#include "CBlurDlg.h"
 void CDrawDoc::OnFeatureextractionBlur()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CBlurDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppFloatImage imgDst;
+		IppFilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
+		AfxNewBitmap(dib);*/
+	}
 }
 
-
+#include "CReduceNoise.h"
 void CDrawDoc::OnFeatureextractionReducenoise()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CReduceNoise dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterMedian(imgSrc, imgDst);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+
+			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
+		AfxNewBitmap(dib);*/
+	}
 }
 
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		IppByteImage imgDst;
+	IppFilterLaplacian(imgSrc, imgDst);
+	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
+	AfxNewBitmap(dib);*/
 }
 
-
+#include "CBrightnessDlg.h"
 void CDrawDoc::OnFilteringBrightness()
 {
+
+	CBrightnessDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nChangeBright = dlg.m_nBright;
+				m_vectorImageWnd[i]->m_nChangeContrast = dlg.m_nContrast;
+				m_vectorImageWnd[i]->m_nMode = 1;
+			}
+		}
+		Invalidate(TRUE);*/
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 
-void CDrawDoc::OnFilteringContrast()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
+//void CDrawDoc::OnFilteringContrast()
+//{
+//	CTranslationDlg dlg;
+//	if (dlg.DoModal() == IDOK)
+//	{
+//
+//	}
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
 
-
+#include "CFilterMedian.h"
 void CDrawDoc::OnFilteringRemovenoise()
 {
+	CTranslationDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+			IppByteImage imgDst;
+		IppFilterMedian(imgSrc, imgDst);
+		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
+		AfxNewBitmap(dib);*/
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
+#include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
 {
+	CGrayDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				m_vectorImageWnd[i]->m_nMode = 4;
+			}
+		}
+		Invalidate(TRUE);*/
+	}
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include "CHistogramDlg.h"
+void CDrawDoc::OnFilteringHistogram()
+{
+	CHistogramDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		/*CHistogramDlg dlg;
+		for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+			if (m_vectorImageWnd[i]->m_bClicked) {
+				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
+			}
+		}
+		dlg.DoModal();*/
+	}
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include"CWindowLevel.h"
+void CDrawDoc::OnFilteringWindowlevel()
+{
+	CWindowLevel dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 
-void CDrawDoc::OnFilteringHistogram()
+void CDrawDoc::OnFilteringInverse()
 {
+	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		if (m_vectorImageWnd[i]->m_bClicked) {
+			m_vectorImageWnd[i]->m_nMode = 2;
+		}
+	}
+	Invalidate(TRUE);*/
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

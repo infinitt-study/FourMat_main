@@ -1,19 +1,19 @@
 ﻿#pragma once
 
 
-// CBlurDlg 대화 상자
+// CHistogramDlg 대화 상자
 
-class CBlurDlg : public CDialogEx
+class CHistogramDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CBlurDlg)
+	DECLARE_DYNAMIC(CHistogramDlg)
 
 public:
-	CBlurDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CBlurDlg();
+	CHistogramDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CHistogramDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_FEATUREEXTRACTION_BLUR };
+	enum { IDD = IDD_HISTOGRAM };
 #endif
 
 protected:
@@ -21,9 +21,8 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CSliderCtrl m_sliderSigma;
-	float m_fSigma;
+	CSliderCtrl m_sliderHistogram;
+	int m_nHistogram;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnEnChangeSigmaEdit();
 };

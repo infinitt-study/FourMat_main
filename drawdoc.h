@@ -35,6 +35,7 @@ public:
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
 
+	float m_zoom;
 	//BOOL CanDeactivateInplace() const
 	//{
 	//	return m_bCanDeactivateInplace;
@@ -116,8 +117,10 @@ public:
 	afx_msg void OnFeatureextractionReducenoise();
 	afx_msg void OnFeatureextractionSharpening();
 	afx_msg void OnFilteringBrightness();
-	afx_msg void OnFilteringContrast();
+	//afx_msg void OnFilteringContrast();
 	afx_msg void OnFilteringRemovenoise();
 	afx_msg void OnFilteringTograyscale();
 	afx_msg void OnFilteringHistogram();
+	afx_msg void OnFilteringWindowlevel();
+	afx_msg void OnFilteringInverse();
 };

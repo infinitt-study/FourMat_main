@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
-// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
+// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
+// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -84,6 +84,7 @@
 #define IDC_NEW_SY                      139
 #define IDC_ROTATE90                    139
 #define IDC_NEW_HEIGHT                  139
+#define IDC_CONTRAST_EDIT               139
 #define IDD_HISTORY_FORM                140
 #define IDC_ROTATE180                   140
 #define IDC_ROTATE270                   141
@@ -97,6 +98,7 @@
 #define IDC_SLIDER4                     145
 #define IDC_EDIT4                       145
 #define IDC_DIFFUSION_K                 145
+#define IDC_CONTRAST_SLIDER             145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -121,7 +123,10 @@
 #define IDD_DIALOG2                     162
 #define IDD_FEATUREEXTRACTION_BLUR      162
 #define IDC_SIGMA_SLIDER                162
+#define IDC_BRIGHT_EDIT                 163
 #define IDD_AFFINETRANSFORM_SCALING     164
+#define IDC_HISTOGRAM_SLIDER            164
+#define IDC_HISTOGRAM_EDIT              165
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDD_ABOUTBOX                    999
@@ -197,16 +202,16 @@
 #define ID_FEATUREEXTRACTION_SHARPENING 32873
 #define ID_FEATUREEXTRACTION_ADDNOISE   32874
 #define ID_FEATUREEXTRACTION_REDUCENOISE 32875
+#define ID_FILTERING_WINDOWLEVEL        32876
+#define ID_FILTERING_INVERSE            32877
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32876
-#define _APS_NEXT_CONTROL_VALUE         163
-
-
+#define _APS_NEXT_COMMAND_VALUE         32878
+#define _APS_NEXT_CONTROL_VALUE         166
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
