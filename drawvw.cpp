@@ -246,7 +246,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 
 	case HINT_UPDATE_FILEPATH:
 		m_strPath = pDrawDoc->m_strFilePath;
-		AfxMessageBox(m_strPath);
+		//AfxMessageBox(m_strPath);
 		break;
 
 	default:
