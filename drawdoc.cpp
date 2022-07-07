@@ -31,7 +31,7 @@
 #endif
 
 #include "propkey.h"
-
+#include "splitfrm.h"
 #define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
 	IppByteImage img; \
 	IppDibToImage(m_Dib, img);
@@ -39,7 +39,6 @@
 #define CONVERT_IMAGE_TO_DIB(img, dib) \
 	IppDib dib; \
 	IppImageToDib(img, dib);
-
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -106,20 +105,30 @@ CDrawDoc::CDrawDoc()
 CDrawDoc::~CDrawDoc()
 {
 	OnUnloadHandler();
+	//m_listData.clear();
 }
 
 void CDrawDoc::OnUnloadHandler()
 {
-	POSITION pos = m_objects.GetHeadPosition();
-	while (pos != NULL)
-		delete m_objects.GetNext(pos);
+	for (auto& pObjects : m_pageLeftObjects) {
+		POSITION pos = pObjects->GetHeadPosition();
+		while (pos != NULL)
+			delete pObjects->GetNext(pos);
+		pObjects->RemoveAll();
+		delete pObjects;
+	}
+	m_pageLeftObjects.clear();
 
-	m_objects.RemoveAll();
+	for (const auto& bitmapData : m_listData) {
+		free(bitmapData);
+	}
+	m_listData.clear();
+
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
 }
 
-BOOL CDrawDoc::OnNewDocument() //doc º¯¼ö ÃÊ±âÈ­  
+BOOL CDrawDoc::OnNewDocument() //doc ë³€ìˆ˜ ì´ˆê¸°í™”  
 {
 	if (!COleDocument::OnNewDocument())
 		return FALSE;
@@ -150,6 +159,9 @@ BOOL CDrawDoc::OnNewDocument() //doc º¯¼ö ÃÊ±âÈ­
 	m_logbrush.lbColor = RGB(192, 192, 192);
 	m_logbrush.lbHatch = HS_HORIZONTAL;
 
+	m_nCurrentFrameNo = 0;
+	m_pObjects = nullptr;
+  
 	m_zoom = 1;
 
 	return TRUE;
@@ -161,6 +173,10 @@ BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		delete m_pSummInfo;
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
+
+	m_nCurrentFrameNo = 0;
+	m_pObjects = nullptr;
+
 	return COleDocument::OnOpenDocument(lpszPathName);
 }
 
@@ -182,14 +198,14 @@ void CDrawDoc::Serialize(CArchive& ar)
 	if (ar.IsStoring())
 	{
 		ar << m_paperColor;
-		m_objects.Serialize(ar);
+		//m_objects.Serialize(ar);
 		m_pSummInfo->WriteToStorage(m_lpRootStg);
 	}
 	else
 	{
 		ar >> m_paperColor;
 		m_paperColorLast = m_paperColor;
-		m_objects.Serialize(ar);
+		//m_objects.Serialize(ar);
 		m_pSummInfo->ReadFromStorage(m_lpRootStg);
 	}
 
@@ -203,10 +219,12 @@ void CDrawDoc::Serialize(CArchive& ar)
 
 void CDrawDoc::Draw(CDC* pDC, CDrawView* pView)
 {
-	POSITION pos = m_objects.GetHeadPosition();
+	if (m_pObjects == nullptr) return;
+
+	POSITION pos = m_pObjects->GetHeadPosition();
 	while (pos != NULL)
 	{
-		CDrawObj* pObj = m_objects.GetNext(pos);
+		CDrawObj* pObj = m_pObjects->GetNext(pos);
 		pObj->Draw(pDC);
 #ifndef SHARED_HANDLERS
 		if (pView != NULL && pView->m_bActive && !pDC->IsPrinting() && pView->IsSelected(pObj))
@@ -236,7 +254,7 @@ void CDrawDoc::Draw (CDC* pDC)
 
 void CDrawDoc::Add(CDrawObj* pObj)
 {
-	m_objects.AddTail(pObj);
+	m_pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
 	SetModifiedFlag();
 }
@@ -244,9 +262,9 @@ void CDrawDoc::Add(CDrawObj* pObj)
 void CDrawDoc::Remove(CDrawObj* pObj)
 {
 	// Find and remove from document
-	POSITION pos = m_objects.Find(pObj);
+	POSITION pos = m_pObjects->Find(pObj);
 	if (pos != NULL)
-		m_objects.RemoveAt(pos);
+		m_pObjects->RemoveAt(pos);
 	// set document modified flag
 	SetModifiedFlag();
 
@@ -266,10 +284,10 @@ void CDrawDoc::Remove(CDrawObj* pObj)
 CDrawObj* CDrawDoc::ObjectAt(const CPoint& point)
 {
 	CRect rect(point, CSize(1, 1));
-	POSITION pos = m_objects.GetTailPosition();
+	POSITION pos = m_pObjects->GetTailPosition();
 	while (pos != NULL)
 	{
-		CDrawObj* pObj = m_objects.GetPrev(pos);
+		CDrawObj* pObj = m_pObjects->GetPrev(pos);
 		if (pObj->Intersects(rect))
 			return pObj;
 	}
@@ -391,6 +409,110 @@ void CDrawDoc::SetPreviewColor(COLORREF clr)
 	UpdateAllViews(NULL);
 }
 
+void CDrawDoc::LoadDicom() {
+
+	DcmFileFormat fileformat;
+	OFFilename filePath = (OFFilename)m_strFilePath;
+	m_nCurrentFrameNo = 0;
+	m_nTotalFrameNo = 0;
+
+	if (fileformat.loadFile(filePath).good()) {
+		DcmDataset* dataset = fileformat.getDataset();
+		OFString strTransferSyntaxUID = nullptr;
+		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
+
+		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
+		// ì••ì¶•ëœ íŒŒì¼(ì—¬ëŸ¬ì¥ì€ ë¬´ì¡°ê±´ ì••ì¶• ë˜ì–´ ìˆìŒ)
+		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
+			//jpeg ì¼ ê²½ìš°  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
+			//ì—¬ëŸ¬ì¥ì˜ ì´ë¯¸ì§€ê°€ ì¡´ì¬í•¨ í”„ë ˆì„ ìˆ˜ë¥¼ ì½ëŠ”ë‹¤ 
+			dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalFrameNo);
+		}
+
+		// ì••ì¶•ì•ˆëœ íŒŒì¼
+		else if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2")) {
+			//dicom ê¸°ë³¸ ì˜ìƒìœ¼ë¡œ 1ê°œì˜ í”„ë ˆì„ ë§Œ ì¡´ì¬í•¨ ("1.2.840.10008.1.2")
+			m_nTotalFrameNo = 1;
+		}
+
+
+		E_TransferSyntax xfer = dataset->getOriginalXfer();
+		//ë°ì´í„° ì…‹ìœ¼ë¡œ ì´ë¯¸ì§€ë¥¼ ì••ì¶• í•´ì œ í•´ì„œ ìƒì„±í•œë‹¤ 
+		DicomImage* ptrDicomImage = new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalFrameNo);
+
+		if (ptrDicomImage) {
+			//ì´ë¯¸ì§€ì˜ í­ê³¼ ë†’ì´ë¥¼ ì–»ëŠ”ë‹¤ 
+			int width = (int)ptrDicomImage->getWidth();
+			int height = (int)ptrDicomImage->getHeight();
+			void* data = nullptr;
+
+			for (int i = 0; i < m_nTotalFrameNo; i++) {
+				//í”„ë ˆì„ì˜ ìœ„ì¹˜ì— ìˆëŠ” ì˜ìƒ ì •ë³´ë¥¼ ìœˆë„ìš° ì´ë¯¸ì§€ 24bitë¡œ ìƒì„±í•˜ì—¬ ì–»ëŠ”ë‹¤ 
+				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ì¶œë ¥í•œë‹¤
+
+				m_bmi = { sizeof(BITMAPINFO) };
+				//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
+				m_bmi.bmiHeader.biWidth = width;
+				m_bmi.bmiHeader.biHeight = -height;
+				m_bmi.bmiHeader.biPlanes = 1;
+				m_bmi.bmiHeader.biBitCount = 24;
+				m_bmi.bmiHeader.biCompression = BI_RGB;
+				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+				
+				m_listData.push_back(data);
+				m_pageLeftObjects.push_back(new CDrawObjList());
+				
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ë©”ëª¨ë¦¬ í•´ì œ í•œë‹¤
+				//delete[] data;
+				data = nullptr;
+			}
+			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
+
+		}
+		SetCurrentFrameNo(0);
+		delete ptrDicomImage;
+	}
+
+	//DicomImage* m_pImage = new DicomImage(m_strFilePath);
+	//DicomImage* m_pImage = new DicomImage(_T("C:\\Users\\mylap\\Desktop\\dicom\\IncludeDCMTK\\MRBRAIN.DCM"));
+
+
+
+	//m_listData.clear();
+	// m_listData ê¸°ì¡´ ë©”ëª¨ë¦¬ í•´ì œí•˜ê¸°
+	// ì†Œë©¸ìì— ëŒ€í•´ì„œë„ ë©”ëª¨ë¦¬ í•´ì œ ì½”ë“œ ì¶”ê°€í•˜ê¸°
+
+//	if (m_pImage) {
+//		const int width = (int)m_pImage->getWidth();
+//		const int height = (int)m_pImage->getHeight();
+//		void* data = nullptr;
+//
+//		// bitmapinfoë¡œ ë³€í™˜
+//		if (m_pImage->createWindowsDIB(data, width * height, 0, 24) && data) //24bytes
+//		{
+//			m_bmi = { sizeof(BITMAPINFO) };
+//			//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
+//			m_bmi.bmiHeader.biWidth = width;
+//			m_bmi.bmiHeader.biHeight = -height;
+//			m_bmi.bmiHeader.biPlanes = 1;
+//			m_bmi.bmiHeader.biBitCount = 24;
+//			m_bmi.bmiHeader.biCompression = BI_RGB;
+//			//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+//			
+//
+//			m_listData.push_back(data);
+//		}
+//
+////		delete[] static_cast <char*> (data);
+//		data = nullptr;
+//
+//		UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
+//	}
+//	delete m_pImage;
+}
+
+
 //BOOL CDrawDoc::CanCloseFrame(CFrameWnd* pFrame)
 //{
 ////	m_bCanDeactivateInplace = FALSE;
@@ -408,9 +530,9 @@ void CDrawDoc::FixUpObjectPositions()
 	CPoint ptRightBottom(0, 0);
 
 	// find bounding rectangle of all objects 
-	for (POSITION pos = m_objects.GetHeadPosition(); pos != NULL;)	
+	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
 	{
-		CDrawObj* pObj = m_objects.GetNext(pos);
+		CDrawObj* pObj = m_pObjects->GetNext(pos);
 		CRect rectPos = pObj->m_position;
 		rectPos.NormalizeRect();
 		ptLeftTop.x = min(rectPos.left, ptLeftTop.x);
@@ -425,9 +547,9 @@ void CDrawDoc::FixUpObjectPositions()
 	m_rectDocumentBounds.InflateRect(4, 4);
 
 	// center all objects within bounding rectangle
-	for (POSITION pos = m_objects.GetHeadPosition(); pos != NULL;)	
+	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
 	{
-		CDrawObj* pObj = m_objects.GetNext(pos);
+		CDrawObj* pObj = m_pObjects->GetNext(pos);
 		pObj->MoveTo(CPoint (-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
 	}
 }
@@ -741,7 +863,7 @@ void CDrawDoc::OnAffinetranformMirror()
 		IppByteImage imgDst;
 	IppMirror(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[ÁÂ¿ì ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ì¢Œìš° ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
@@ -763,11 +885,11 @@ void CDrawDoc::OnAffinetranformRotation()
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			TCHAR* rotate[] = { _T("90µµ"), _T("180µµ"), _T("270µµ") };
+			TCHAR* rotate[] = { _T("90ë„"), _T("180ë„"), _T("270ë„") };
 		if (dlg.m_nRotate != 3)
-			AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %s"), GetTitle(), rotate[dlg.m_nRotate]);
 		else
-			AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %4.2fµµ"), GetTitle(), dlg.m_fAngle);
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %4.2fë„"), GetTitle(), dlg.m_fAngle);
 		AfxNewBitmap(dib);*/
 		
 	}
@@ -793,10 +915,10 @@ void CDrawDoc::OnAffinetranformScaling()
 			t); break;
 		}
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			TCHAR* interpolation[] = { _T("ÃÖ±Ù¹æ ÀÌ¿ô º¸°£¹ı"), _T("¾ç¼±Çü º¸°£¹ı"
-			), _T("3Â÷ È¸¼± º¸°£¹ı") };
-		AfxPrintInfo(_T("[Å©±â º¯È¯] ÀÔ·Â ¿µ»ó: %s, , »õ °¡·Î Å©±â: %d, »õ ¼¼·Î
-			Å©±â: % d, º¸°£¹ı : % s"),
+			TCHAR* interpolation[] = { _T("ìµœê·¼ë°© ì´ì›ƒ ë³´ê°„ë²•"), _T("ì–‘ì„ í˜• ë³´ê°„ë²•"
+			), _T("3ì°¨ íšŒì„  ë³´ê°„ë²•") };
+		AfxPrintInfo(_T("[í¬ê¸° ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, , ìƒˆ ê°€ë¡œ í¬ê¸°: %d, ìƒˆ ì„¸ë¡œ
+			í¬ê¸°: % d, ë³´ê°„ë²• : % s"),
 			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
 			Interpolation]);
 		AfxNewBitmap(dib);
@@ -826,7 +948,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			AfxPrintInfo(_T("[ÀÌµ¿ º¯È¯] ÀÔ·Â ¿µ»ó: %s, °¡·Î ÀÌµ¿: %d, ¼¼·Î ÀÌµ¿: %d"),
+			AfxPrintInfo(_T("[ì´ë™ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, ê°€ë¡œ ì´ë™: %d, ì„¸ë¡œ ì´ë™: %d"),
 				GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
 		AfxNewBitmap(dib);*/
 	}
@@ -839,7 +961,7 @@ void CDrawDoc::OnAffinetransformFlip()
 		IppByteImage imgDst;
 	IppFlip(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[»óÇÏ ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
@@ -860,8 +982,8 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			TCHAR* noise[] = { _T("°¡¿ì½Ã¾È"), _T("¼Ò±İ&ÈÄÃß") };
-		AfxPrintInfo(_T("[ÀâÀ½ Ãß°¡] ÀÔ·Â ¿µ»ó: %s, ÀâÀ½ Á¾·ù: %s, ÀâÀ½ ¾ç: %d"),
+			TCHAR* noise[] = { _T("ê°€ìš°ì‹œì•ˆ"), _T("ì†Œê¸ˆ&í›„ì¶”") };
+		AfxPrintInfo(_T("[ì¡ìŒ ì¶”ê°€] ì…ë ¥ ì˜ìƒ: %s, ì¡ìŒ ì¢…ë¥˜: %s, ì¡ìŒ ì–‘: %d"),
 			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
 		AfxNewBitmap(dib);*/
 	}
@@ -878,7 +1000,7 @@ void CDrawDoc::OnFeatureextractionBlur()
 		IppFilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			AfxPrintInfo(_T("[°¡¿ì½Ã¾È ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
+			AfxPrintInfo(_T("[ê°€ìš°ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
 		AfxNewBitmap(dib);*/
 	}
 }
@@ -894,7 +1016,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 		IppFilterMedian(imgSrc, imgDst);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			AfxPrintInfo(_T("[¹Ìµğ¾ğ ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+			AfxPrintInfo(_T("[ë¯¸ë””ì–¸ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
 	}
 }
@@ -906,7 +1028,7 @@ void CDrawDoc::OnFeatureextractionSharpening()
 		IppByteImage imgDst;
 	IppFilterLaplacian(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[¶óÇÃ¶ó½Ã¾È ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ë¼í”Œë¼ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
@@ -926,7 +1048,7 @@ void CDrawDoc::OnFilteringBrightness()
 		}
 		Invalidate(TRUE);*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
@@ -937,7 +1059,7 @@ void CDrawDoc::OnFilteringBrightness()
 //	{
 //
 //	}
-//	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+//	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 //}
 
 #include "CFilterMedian.h"
@@ -950,10 +1072,10 @@ void CDrawDoc::OnFilteringRemovenoise()
 			IppByteImage imgDst;
 		IppFilterMedian(imgSrc, imgDst);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			AfxPrintInfo(_T("[¹Ìµğ¾ğ ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+			AfxPrintInfo(_T("[ë¯¸ë””ì–¸ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 #include"CGrayDlg.h"
@@ -969,7 +1091,7 @@ void CDrawDoc::OnFilteringTograyscale()
 		}
 		Invalidate(TRUE);*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 #include "CHistogramDlg.h"
@@ -986,7 +1108,7 @@ void CDrawDoc::OnFilteringHistogram()
 		}
 		dlg.DoModal();*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 #include"CWindowLevel.h"
@@ -997,7 +1119,7 @@ void CDrawDoc::OnFilteringWindowlevel()
 	{
 
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
@@ -1009,5 +1131,5 @@ void CDrawDoc::OnFilteringInverse()
 		}
 	}
 	Invalidate(TRUE);*/
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }

@@ -125,7 +125,7 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 //	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawView::OnFeatureextractionBlur)
 //	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawView::OnFeatureextractionReducenoise)
 //	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawView::OnFeatureextractionSharpening)
-ON_WM_MOUSEWHEEL()
+    ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -245,10 +245,14 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_UPDATE_FILEPATH:
-		m_strPath = pDrawDoc->m_strFilePath;
 		//AfxMessageBox(m_strPath);
+		pDrawDoc->LoadDicom();
 		break;
 
+	case HINT_LAOD_DICOMIMAGE:
+		Invalidate(FALSE);
+		//Invalidate();// ȭ��� ��ȿȭ�ϱ�
+		break;
 	default:
 		//ASSERT(FALSE);
 		break;
@@ -268,14 +272,14 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	float zoom = 1;
 	if (nullptr == pInfo) {
-		zoom = 1.5f;
+		zoom = 1.0f;
 	}
 	//멤버 변수 ctrl flag : 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx/2, GetDocument()->GetSize().cy/2 };
+	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
@@ -343,6 +347,17 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
+	// �׸�������ϴ� �κ�(���� ��� �ö��� ����ؼ� ����)
+		//�켱 ù��° �׸��� �����
+	BITMAPINFO& bmi = pDoc->m_bmi;
+
+	const int width = bmi.bmiHeader.biWidth;
+	const int height = abs(bmi.bmiHeader.biHeight);
+
+	SetDIBitsToDevice(pDrawDC->m_hDC, 
+		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
+		0, 0, 0, height, 
+		pDoc->m_listData[pDoc->m_nCurrentFrameNo], &bmi, DIB_RGB_COLORS);
 
 	pDoc->Draw(pDrawDC, this);
 
@@ -354,6 +369,7 @@ void CDrawView::OnDraw(CDC* pDC)
 		dc.SetViewportOrg(0, 0);
 		dc.SetWindowOrg(0,0);
 		dc.SetMapMode(MM_TEXT);
+
 		pDC->BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dc, 0, 0, SRCCOPY);
 		dc.SelectObject(pOldBitmap);
 	}
@@ -900,7 +916,7 @@ void CDrawView::OnEditSelectAll()
 
 void CDrawView::OnUpdateEditSelectAll(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(GetDocument()->GetObjects()->GetCount() != 0);
+	pCmdUI->Enable(GetDocument()->GetObjects() == nullptr ? 0 : GetDocument()->GetObjects()->GetCount() != 0);
 }
 
 void CDrawView::OnEditClear()
@@ -1811,12 +1827,14 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-//void CDrawView::OnAffinetransformFlip()
-//{
-//	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-//		IppByteImage imgDst;
-//	IppFlip(imgSrc, imgDst);
-//	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-//		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
-//	AfxNewBitmap(dib);*/
-//}
+BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: ���⿡ �޽��� ó���� �ڵ带 �߰� ��/�Ǵ� �⺻��� ȣ���մϴ�.
+	if ((nFlags & MK_SHIFT) == MK_SHIFT) {
+
+		CDrawDoc* pDoc = GetDocument();
+		pDoc->SetCurrentFrameNo(zDelta / 120);
+		Invalidate();
+	}
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+}

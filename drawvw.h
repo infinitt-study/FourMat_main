@@ -16,6 +16,7 @@
 #define HINT_DELETE_SELECTION   3
 #define HINT_UPDATE_FOLDERPATH	4
 #define HINT_UPDATE_FILEPATH	5
+#define HINT_LAOD_DICOMIMAGE	6
 
 class CDrawObj;
 
@@ -207,9 +208,7 @@ private:
 
 public:
 	CString m_strPath;
-
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
 };
 
 class CLeftDrawView : public CDrawView

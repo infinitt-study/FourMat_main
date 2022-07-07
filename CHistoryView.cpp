@@ -109,7 +109,6 @@ void CHistoryView::OnBnClickedOk()
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
-
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
 	pSplitFrame->SwitchView(VIEWID_DRAW);
 }
@@ -176,9 +175,7 @@ void CHistoryView::OnClickedButtonMulti()
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
-
-	//
-	//
+  
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();

@@ -58,3 +58,16 @@
 #else
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
+
+#include "dcmtk/dcmimgle/dcmimage.h"
+
+#include "dcmtk/config/osconfig.h"
+#include "dcmtk/dcmdata/dcfilefo.h"
+#include "dcmtk/dcmdata/libi2d/i2d.h"
+#include "dcmtk/dcmdata/libi2d/i2djpgs.h"
+#include "dcmtk/dcmdata/libi2d/i2dplsc.h"
+#include "dcmtk/dcmdata/dctk.h"
+#include "dcmtk/dcmjpeg/djdecode.h"
+
+#include <vector>
+#include <string>

@@ -336,144 +336,192 @@
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Static|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Static|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug Static|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug Static|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release Static|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release Static|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug CLR|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug CLR|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release CLR|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release CLR|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug CLR|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug CLR|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">
     <OutDir>$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">
     <OutDir>$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -513,6 +561,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|X64'">
@@ -550,6 +599,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -587,6 +637,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|X64'">
@@ -620,6 +671,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">
@@ -658,6 +710,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|X64'">
@@ -691,6 +744,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">
@@ -732,6 +786,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|X64'">
@@ -769,6 +824,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Static|Win32'">
@@ -806,6 +862,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Static|X64'">
@@ -839,6 +896,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
@@ -879,6 +937,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|X64'">
@@ -916,6 +975,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug Static|Win32'">
@@ -954,6 +1014,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug Static|X64'">
@@ -987,6 +1048,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release Static|Win32'">
@@ -1028,6 +1090,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release Static|X64'">
@@ -1065,6 +1128,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug CLR|Win32'">
@@ -1102,6 +1166,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug CLR|X64'">
@@ -1136,6 +1201,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release CLR|Win32'">
@@ -1175,6 +1241,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release CLR|X64'">
@@ -1212,6 +1279,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug CLR|Win32'">
@@ -1250,6 +1318,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug CLR|X64'">
@@ -1284,6 +1353,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">
@@ -1324,6 +1394,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">
@@ -1361,6 +1432,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>Iphlpapi.lib;ws2_32.lib;wsock32.lib;netapi32.lib;ofstd.lib;oflog.lib;dcmdata.lib;dcmdsig.lib;dcmnet.lib;dcmsr.lib;dcmimgle.lib;dcmqrdb.lib;dcmtls.lib;dcmwlm.lib;dcmpstat.lib;dcmjpls.lib;dcmjpeg.lib;dcmimage.lib;ijg8.lib;ijg12.lib;ijg16.lib;i2d.lib;zlib_d.lib;iconv_d.lib;libxml2_d.lib;openjp2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
