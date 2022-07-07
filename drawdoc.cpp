@@ -57,8 +57,8 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	// Enable default OLE container implementation
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, COleDocument::OnUpdatePasteMenu)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE_LINK, COleDocument::OnUpdatePasteLinkMenu)
-//	ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, COleDocument::OnUpdateEditLinksMenu)
-//	ON_COMMAND(ID_OLE_EDIT_LINKS, COleDocument::OnEditLinks)
+	//	ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, COleDocument::OnUpdateEditLinksMenu)
+	//	ON_COMMAND(ID_OLE_EDIT_LINKS, COleDocument::OnEditLinks)
 	ON_UPDATE_COMMAND_UI(ID_OLE_VERB_FIRST, COleDocument::OnUpdateObjectVerbMenu)
 	// MAPI support
 	ON_COMMAND(ID_FILE_SEND_MAIL, OnFileSendMail)
@@ -92,7 +92,7 @@ CDrawDoc::CDrawDoc()
 {
 	EnableCompoundFile();
 
-//	m_bCanDeactivateInplace = TRUE;
+	//	m_bCanDeactivateInplace = TRUE;
 	m_nMapMode = MM_ANISOTROPIC;
 	m_paperColorLast = m_paperColor = RGB(255, 255, 255);
 	m_pSummInfo = NULL;
@@ -145,7 +145,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_pSummInfo->RecordCreateDate();
 	m_pSummInfo->SetNumPages(1);
 	// NumWords, NumChars default to 0
-	m_pSummInfo->SetAppname( _T("DrawCli") );
+	m_pSummInfo->SetAppname(_T("DrawCli"));
 	// Security defaults to 0
 
 	m_bPen = TRUE;
@@ -161,7 +161,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 
 	m_nCurrentFrameNo = 0;
 	m_pObjects = nullptr;
-  
+
 	m_zoom = 1;
 
 	return TRUE;
@@ -169,7 +169,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 
 BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	if ( m_pSummInfo != NULL)
+	if (m_pSummInfo != NULL)
 		delete m_pSummInfo;
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
@@ -233,22 +233,22 @@ void CDrawDoc::Draw(CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw (CDC* pDC)
+void CDrawDoc::Draw(CDC* pDC)
 {
-	CSize szPage = m_rectDocumentBounds.Size ();
-	pDC->FillSolidRect(CRect (CPoint (0, 0), szPage), m_paperColor);
+	CSize szPage = m_rectDocumentBounds.Size();
+	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
 
 	pDC->SetMapMode(MM_ANISOTROPIC);
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX),
-	pDC->GetDeviceCaps(LOGPIXELSY));
+		pDC->GetDeviceCaps(LOGPIXELSY));
 
 	pDC->SetWindowExt(100, -100);
 	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
 
-	Draw (pDC, NULL);
+	Draw(pDC, NULL);
 
 	pDC->SetViewportOrg(0, 0);
-	pDC->SetWindowOrg(0,0);
+	pDC->SetWindowOrg(0, 0);
 	pDC->SetMapMode(MM_TEXT);
 }
 
@@ -304,13 +304,13 @@ void CDrawDoc::ComputePageSize()
 	{
 		// GetPrinterDC returns a HDC so attach it
 		CDC dc;
-		HDC hDC= dlg.CreatePrinterDC();
+		HDC hDC = dlg.CreatePrinterDC();
 		ASSERT(hDC != NULL);
 		dc.Attach(hDC);
 
 		// Get the size of the page in loenglish
-		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 1000, 254);
-		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 1000, 254);
+		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 900, 100);
+		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 300, 100);
 	}
 
 #ifndef SHARED_HANDLERS
@@ -333,7 +333,7 @@ void CDrawDoc::OnViewPaperColor()
 {
 #ifndef SHARED_HANDLERS
 	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_VIEW_PAPERCOLOR);
-	m_paperColor = color == (COLORREF) -1 ? RGB(255, 255, 255) : color;
+	m_paperColor = color == (COLORREF)-1 ? RGB(255, 255, 255) : color;
 	m_paperColorLast = m_paperColor;
 
 	SetModifiedFlag();
@@ -364,30 +364,30 @@ void CDrawDoc::OnFileSummaryInfo()
 #ifndef SHARED_HANDLERS
 	ASSERT_VALID(this);
 
-	CPropertySheet sheet( _T("Document Properties") );
+	CPropertySheet sheet(_T("Document Properties"));
 	CSummPage summ;
 	CStatPage stat;
-	sheet.AddPage( &summ );
-	sheet.AddPage( &stat );
+	sheet.AddPage(&summ);
+	sheet.AddPage(&stat);
 
 	summ.m_strAppname = m_pSummInfo->GetAppname();
-	summ.m_strTitle   = m_pSummInfo->GetTitle();
-	summ.m_strSubj    = m_pSummInfo->GetSubject();
-	summ.m_strAuthor  = m_pSummInfo->GetAuthor();
-	summ.m_strKeywd   = m_pSummInfo->GetKeywords();
-	summ.m_strCmt     = m_pSummInfo->GetComments();
-	summ.m_strTempl   = m_pSummInfo->GetTemplate();
+	summ.m_strTitle = m_pSummInfo->GetTitle();
+	summ.m_strSubj = m_pSummInfo->GetSubject();
+	summ.m_strAuthor = m_pSummInfo->GetAuthor();
+	summ.m_strKeywd = m_pSummInfo->GetKeywords();
+	summ.m_strCmt = m_pSummInfo->GetComments();
+	summ.m_strTempl = m_pSummInfo->GetTemplate();
 
-	stat.m_strSavedBy    = m_pSummInfo->GetLastAuthor();
-	stat.m_strRevNum     = m_pSummInfo->GetRevNum();
-	stat.m_strEditTime   = m_pSummInfo->GetEditTime();
-	stat.m_strLastPrint  = m_pSummInfo->GetLastPrintDate();
+	stat.m_strSavedBy = m_pSummInfo->GetLastAuthor();
+	stat.m_strRevNum = m_pSummInfo->GetRevNum();
+	stat.m_strEditTime = m_pSummInfo->GetEditTime();
+	stat.m_strLastPrint = m_pSummInfo->GetLastPrintDate();
 	stat.m_strCreateDate = m_pSummInfo->GetCreateDate();
-	stat.m_strLastSave   = m_pSummInfo->GetLastSaveDate();
-	stat.m_strNumPages   = m_pSummInfo->GetNumPages();
-	stat.m_strNumWords   = m_pSummInfo->GetNumWords();
-	stat.m_strNumChars   = m_pSummInfo->GetNumChars();
-	stat.m_strSecurity   = m_pSummInfo->GetSecurity();
+	stat.m_strLastSave = m_pSummInfo->GetLastSaveDate();
+	stat.m_strNumPages = m_pSummInfo->GetNumPages();
+	stat.m_strNumWords = m_pSummInfo->GetNumWords();
+	stat.m_strNumChars = m_pSummInfo->GetNumChars();
+	stat.m_strSecurity = m_pSummInfo->GetSecurity();
 
 	if (sheet.DoModal() != IDOK)
 		return;
@@ -410,7 +410,6 @@ void CDrawDoc::SetPreviewColor(COLORREF clr)
 }
 
 void CDrawDoc::LoadDicom() {
-
 	DcmFileFormat fileformat;
 	OFFilename filePath = (OFFilename)m_strFilePath;
 	m_nCurrentFrameNo = 0;
@@ -446,23 +445,23 @@ void CDrawDoc::LoadDicom() {
 			int height = (int)ptrDicomImage->getHeight();
 			void* data = nullptr;
 
+			m_bmi = { sizeof(BITMAPINFO) };
+			//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
+			m_bmi.bmiHeader.biWidth = width;
+			m_bmi.bmiHeader.biHeight = -height;
+			m_bmi.bmiHeader.biPlanes = 1;
+			m_bmi.bmiHeader.biBitCount = 24;
+			m_bmi.bmiHeader.biCompression = BI_RGB;
+			//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+
 			for (int i = 0; i < m_nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
 				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
 				//이미지의 주소를 출력한다
 
-				m_bmi = { sizeof(BITMAPINFO) };
-				//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
-				m_bmi.bmiHeader.biWidth = width;
-				m_bmi.bmiHeader.biHeight = -height;
-				m_bmi.bmiHeader.biPlanes = 1;
-				m_bmi.bmiHeader.biBitCount = 24;
-				m_bmi.bmiHeader.biCompression = BI_RGB;
-				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
-				
 				m_listData.push_back(data);
 				m_pageLeftObjects.push_back(new CDrawObjList());
-				
+
 				//이미지의 주소를 메모리 해제 한다
 				//delete[] data;
 				data = nullptr;
@@ -474,37 +473,6 @@ void CDrawDoc::LoadDicom() {
 		delete ptrDicomImage;
 	}
 
-//	DicomImage* m_pImage = new DicomImage(m_strFilePath);
-//
-//	m_listData.clear();
-//
-//	if (m_pImage) {
-//		const int width = (int)m_pImage->getWidth();
-//		const int height = (int)m_pImage->getHeight();
-//		void* data = nullptr;
-//
-//		// bitmapinfo로 변환
-//		if (m_pImage->createWindowsDIB(data, width * height, 0, 24) && data) //24bytes
-//		{
-//			m_bmi = { sizeof(BITMAPINFO) };
-//			//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
-//			m_bmi.bmiHeader.biWidth = width;
-//			m_bmi.bmiHeader.biHeight = -height;
-//			m_bmi.bmiHeader.biPlanes = 1;
-//			m_bmi.bmiHeader.biBitCount = 24;
-//			m_bmi.bmiHeader.biCompression = BI_RGB;
-//			//m_bitmapinfo.bmiHeader.biSizeImage = 0;
-//			
-//
-//			m_listData.push_back(data);
-//		}
-//
-////		delete[] static_cast <char*> (data);
-//		data = nullptr;
-//
-//		UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
-//	}
-//	delete m_pImage;
 }
 
 
@@ -545,12 +513,12 @@ void CDrawDoc::FixUpObjectPositions()
 	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
 	{
 		CDrawObj* pObj = m_pObjects->GetNext(pos);
-		pObj->MoveTo(CPoint (-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
+		pObj->MoveTo(CPoint(-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
 	}
 }
 
 #ifdef SHARED_HANDLERS
-void CDrawDoc::InitializeSearchContent ()
+void CDrawDoc::InitializeSearchContent()
 {
 	SetAuthor(m_pSummInfo->GetAuthor());
 	SetTitle(m_pSummInfo->GetTitle());
@@ -565,14 +533,14 @@ void CDrawDoc::InitializeSearchContent ()
 
 	CString strContent;
 
-	LPCTSTR szTypes[] = 
+	LPCTSTR szTypes[] =
 	{
-		_T ("line"),
-		_T ("rectangle"),
-		_T ("rounded rectangle"),
-		_T ("ellipse"),
-		_T ("polyline"),
-		_T ("ole object"),
+		_T("line"),
+		_T("rectangle"),
+		_T("rounded rectangle"),
+		_T("ellipse"),
+		_T("polyline"),
+		_T("ole object"),
 	};
 
 	struct XColor
@@ -581,25 +549,25 @@ void CDrawDoc::InitializeSearchContent ()
 		COLORREF clr;
 	};
 
-	XColor szColors[] = 
+	XColor szColors[] =
 	{
-		{_T("black")  , RGB(  0,   0,   0)},
+		{_T("black")  , RGB(0,   0,   0)},
 		{_T("gray")   , RGB(128, 128, 128)},
 		{_T("white")  , RGB(255, 255, 255)},
 		{_T("maroon") , RGB(128,   0,   0)},
-		{_T("green")  , RGB(  0, 128,   0)},
+		{_T("green")  , RGB(0, 128,   0)},
 		{_T("olive")  , RGB(128, 128,   0)},
-		{_T("navy")   , RGB(  0,   0, 128)},
+		{_T("navy")   , RGB(0,   0, 128)},
 		{_T("purple") , RGB(128,   0, 128)},
-		{_T("teal")   , RGB(  0, 128, 128)},
+		{_T("teal")   , RGB(0, 128, 128)},
 		{_T("red")    , RGB(255,   0,   0)},
-		{_T("lime")   , RGB(  0, 255,   0)},
+		{_T("lime")   , RGB(0, 255,   0)},
 		{_T("yellow") , RGB(255, 255,   0)},
-		{_T("blue")   , RGB(  0,   0, 255)},
+		{_T("blue")   , RGB(0,   0, 255)},
 		{_T("fuchsia"), RGB(255,   0, 255)},
-		{_T("aqua")   , RGB(  0, 255, 255)}
+		{_T("aqua")   , RGB(0, 255, 255)}
 	};
-	BYTE nColorIndex[] = {0, 128, 255};
+	BYTE nColorIndex[] = { 0, 128, 255 };
 
 	POSITION pos = m_objects.GetHeadPosition();
 	while (pos != NULL)
@@ -693,12 +661,12 @@ void CDrawDoc::InitializeSearchContent ()
 		{
 			COLORREF clrOrig = clr;
 			clr = RGB
-				(
+			(
 				nColorIndex[GetRValue(clr) / 86],
 				nColorIndex[GetGValue(clr) / 86],
 				nColorIndex[GetBValue(clr) / 86]
 			);
-			for (int i = 0; i < sizeof(szColors)/ sizeof(XColor); i++)
+			for (int i = 0; i < sizeof(szColors) / sizeof(XColor); i++)
 			{
 				if (szColors[i].clr == clr)
 				{
@@ -707,9 +675,9 @@ void CDrawDoc::InitializeSearchContent ()
 				}
 			}
 
-			if (strClr.IsEmpty ())
+			if (strClr.IsEmpty())
 			{
-				strClr.Format (_T("#%0X"), clrOrig);
+				strClr.Format(_T("#%0X"), clrOrig);
 			}
 		}
 		else
@@ -745,7 +713,7 @@ void CDrawDoc::SetTitle(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Title, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -759,7 +727,7 @@ void CDrawDoc::SetAuthor(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Author, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -773,7 +741,7 @@ void CDrawDoc::SetCompany(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Company, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -787,7 +755,7 @@ void CDrawDoc::SetComment(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Comment, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -801,8 +769,8 @@ void CDrawDoc::SetCopyright(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
-		pChunk->SetTextValue(PKEY_Copyright, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);	
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
+		pChunk->SetTextValue(PKEY_Copyright, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
 }
@@ -815,7 +783,7 @@ void CDrawDoc::SetKeywords(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Keywords, value);
 		SetChunkValue(pChunk);
 	}
@@ -829,7 +797,7 @@ void CDrawDoc::SetLastAuthor(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Document_LastAuthor, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -843,7 +811,7 @@ void CDrawDoc::SetSearchContents(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Search_Contents, value, CHUNK_TEXT);
 		SetChunkValue(pChunk);
 	}
@@ -886,7 +854,7 @@ void CDrawDoc::OnAffinetranformRotation()
 		else
 			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
 		AfxNewBitmap(dib);*/
-		
+
 	}
 }
 
