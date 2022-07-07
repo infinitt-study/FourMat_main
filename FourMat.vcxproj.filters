@@ -174,7 +174,7 @@
     <ClInclude Include="CScalingDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ImageAccess.h">
+    <ClInclude Include="IppImage.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RGBBYTE.h">

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ImageAccess.h"
+#include "IppImage.h"
 
 void IppTranslate(IppByteImage& imgSrc, IppByteImage& imgDst, int sx, int sy);
 

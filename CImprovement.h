@@ -1,5 +1,5 @@
 #pragma once
-#include "ImageAccess.h"
+#include "IppImage.h"
 
 void IppInverse(IppByteImage& img);
 void IppBrightness(IppByteImage& img, int n);

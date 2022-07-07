@@ -37,3 +37,15 @@ END_MESSAGE_MAP()
 
 
 // CAddNoiseDlg 메시지 처리기
+
+
+BOOL CAddNoiseDlg::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	((CSpinButtonCtrl*)GetDlgItem(IDC_SPIN_AMOUNT))->SetRange(0, 100);
+
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}

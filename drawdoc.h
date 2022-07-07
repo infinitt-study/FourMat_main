@@ -35,6 +35,7 @@ public:
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
 
+	float m_zoom;
 	//BOOL CanDeactivateInplace() const
 	//{
 	//	return m_bCanDeactivateInplace;
