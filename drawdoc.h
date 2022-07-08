@@ -22,13 +22,27 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	void SetCurrentFrameNo(int nDelta) {
-		m_nCurrentFrameNo -= nDelta;
-		m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
-		m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
+		if (bLeftView) {
+			m_nCurrentFrameNo -= nDelta;
+			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
+			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+		}
+		else {
+			m_nCurrentRightFrameNo -= nDelta;
+			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listData.size();
+			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
+		}
 	}
 
-	CDrawObjList* GetObjects() { return m_pObjects; }
+	//수정 -> 연결된거 다 수정
+	CDrawObjList* GetObjects(BOOL bLeftView)
+	{ 
+		return bLeftView ? m_pObjects : m_pRightObjects;
+	}
+
+
+
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
 	int GetMapMode() const { return m_nMapMode; }
@@ -49,16 +63,16 @@ public:
 
 // Operations
 public:
-	CDrawObj* ObjectAt(const CPoint& point);
-	void Draw(CDC* pDC, CDrawView* pView);
+	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
+	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
-	void Draw (CDC* pDC);
+	void Draw (BOOL bLeftView, CDC* pDC);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
 
-	void Add(CDrawObj* pObj);
-	void Remove(CDrawObj* pObj);
+	void Add(BOOL bLeftView, CDrawObj* pObj);
+	void Remove(BOOL bLeftView, CDrawObj* pObj);
 
 	void SetPreviewColor(COLORREF clr);
 
@@ -95,8 +109,13 @@ protected:
 
 //	BOOL m_bCanDeactivateInplace;
 
+public:
 	std::vector<CDrawObjList*> m_pageLeftObjects;
+	std::vector<CDrawObjList*> m_pageRightObjects;
+
 	CDrawObjList* m_pObjects;
+	CDrawObjList* m_pRightObjects;
+
 
 	CSize m_size;
 	int m_nMapMode;
@@ -105,16 +124,34 @@ protected:
 
 public:
 	CString m_strFolderPath;
-	CString m_strFilePath;
 
-	void LoadDicom();
+	CString m_strFilePath;
+	CString m_strRightFilePath;
+
+	void LoadDicom(BOOL bLeftView);
 	//DicomImage* m_pImage; // 따로 지우기
-	BITMAPINFO m_bmi;
+	BITMAPINFO m_bmiLeft;
+	BITMAPINFO m_bmiRight;
+	BITMAPINFO& GetBmi(BOOL bLeftView)
+	{
+		return bLeftView ? m_bmiLeft : m_bmiRight;
+	}
+
+	void* GetDib(BOOL bLeftView)
+	{
+		return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
+	}
+
 
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
+	std::vector<void*> m_listRightData;
+
 	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
+	long m_nCurrentRightFrameNo;
+
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
+	long m_nTotalRightFrameNo;
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
@@ -140,4 +177,5 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
+	void HelperLoadDicom(BOOL bLeftView);
 };

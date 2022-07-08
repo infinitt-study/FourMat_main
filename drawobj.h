@@ -60,7 +60,7 @@ public:
 	virtual void MoveHandleTo(int nHandle, CPoint point, CDrawView* pView = NULL);
 	virtual void OnOpen(CDrawView* pView);
 	virtual void OnEditProperties();
-	virtual CDrawObj* Clone(CDrawDoc* pDoc = NULL);
+	virtual CDrawObj* Clone(BOOL bLeftView, CDrawDoc* pDoc = NULL);
 	virtual void Remove();
 	void Invalidate();
 
@@ -155,7 +155,7 @@ public:
 	virtual HCURSOR GetHandleCursor(int nHandle);
 	virtual void MoveHandleTo(int nHandle, CPoint point, CDrawView* pView = NULL);
 	virtual BOOL Intersects(const CRect& rect);
-	virtual CDrawObj* Clone(CDrawDoc* pDoc);
+	virtual CDrawObj* Clone(BOOL bLeftView, CDrawDoc* pDoc);
 
 	virtual BOOL CanChangeFillColor() const
 	{
@@ -204,7 +204,7 @@ public:
 	virtual HCURSOR GetHandleCursor(int nHandle);
 	virtual void MoveHandleTo(int nHandle, CPoint point, CDrawView* pView = NULL);
 	virtual BOOL Intersects(const CRect& rect);
-	virtual CDrawObj* Clone(CDrawDoc* pDoc);
+	virtual CDrawObj* Clone(BOOL bLeftView, CDrawDoc* pDoc);
 
 protected:
 	int m_nPoints;
@@ -230,7 +230,7 @@ public:
 public:
 	virtual void Serialize(CArchive& ar);
 	virtual void Draw(CDC* pDC);
-	virtual CDrawObj* Clone(CDrawDoc* pDoc);
+	virtual CDrawObj* Clone(BOOL bLeftView, CDrawDoc* pDoc);
 	virtual void OnOpen(CDrawView* pView);
 	virtual void MoveTo(const CRect& positon, CDrawView* pView = NULL);
 	virtual void OnEditProperties();

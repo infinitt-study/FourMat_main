@@ -30,7 +30,6 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON_START, m_btnStart);
-	DDX_Control(pDX, IDC_BUTTON_STOP, m_btnStop);
 	DDX_Text(pDX, IDC_EDIT_FILENAME, m_strFileName);
 	DDX_Text(pDX, IDC_EDIT_FILELOCATION, m_strFileLocation);
 	DDX_Check(pDX, IDC_CHECK1, m_bSub);
@@ -39,7 +38,6 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSearchFileView, CFormView)
     ON_BN_CLICKED(IDC_BUTTON_START, &CSearchFileView::OnClickedButtonStart)
-    ON_BN_CLICKED(IDC_BUTTON_STOP, &CSearchFileView::OnClickedButtonStop)
     ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonSingle)
 END_MESSAGE_MAP()
 
@@ -72,7 +70,6 @@ void CSearchFileView::OnInitialUpdate()
     CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
     pSplitFrame->SetSearchFileView(this);
 
-
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	// 리스트 컨트롤에 이미지 연결
 	m_img.Create(IDB_LIST, 16, 2, RGB(255, 255, 255));
@@ -92,8 +89,22 @@ void CSearchFileView::OnInitialUpdate()
 	// GetCurrentDirectory() : 프로그램이 실행되는 위치(폴더)를 얻어옴. 얻어진 결과는 m_strFileLocation에 입력
 	char pBuf[256];
 	GetCurrentDirectory(256, pBuf);
+
+    //실행되는 위치 -> "목록" 폴더
+    strcat(pBuf, "\\목록");
+
 	m_strFileLocation.Format("%s", pBuf);
 	UpdateData(FALSE);
+
+
+    //처음 시작 최초 1회는 자동으로 목록 출력
+    m_lstResult.DeleteAllItems();
+
+    m_strToken = m_strFileName;
+    m_strToken.MakeUpper();
+
+    SearFileNotSub();
+
 }
 
 // 하위 폴더를 제외한 검색 구현
@@ -109,7 +120,7 @@ void CSearchFileView::SearFileNotSub() {
 
     // 시작 위치를 지정. 검색 조건은 모든 파일(*.*) 이다.
     if (m_strFileLocation.Right(1) == "\\")
-        strTmp = m_strFileLocation + "*.*";
+        strTmp = m_strFileLocation + "\\*.*";
     else {
         strTmp = m_strFileLocation + "\\";
         strTmp += "*.*";
@@ -122,9 +133,6 @@ void CSearchFileView::SearFileNotSub() {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-
-        if (m_bStop)
-            return;
 
         b = cfile.FindNextFile();
 
@@ -188,9 +196,6 @@ void CSearchFileView::SearFile(CString strStartFolder)
             DispatchMessage(&msg);
         }
  
-        if (m_bStop)
-            return;
- 
         b = cfile.FindNextFile();
  
         // . ..일 경우
@@ -233,10 +238,9 @@ void CSearchFileView::OnClickedButtonStart()
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
     UpdateData(TRUE);
     m_lstResult.DeleteAllItems();
-    m_bStop = FALSE;
 
-    m_strToken = m_strFileName;
-    m_strToken.MakeUpper();
+    //m_strToken = m_strFileName;
+    //m_strToken.MakeUpper();
 
     if (m_bSub == TRUE) {
         SearFile(m_strFileLocation);
@@ -247,12 +251,6 @@ void CSearchFileView::OnClickedButtonStart()
     UpdateData(FALSE);
 }
 
-
-void CSearchFileView::OnClickedButtonStop()
-{
-    // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-    m_bStop = TRUE;
-}
 
 void CSearchFileView::OnClickedButtonSingle()
 {

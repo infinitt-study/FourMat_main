@@ -138,23 +138,20 @@ BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	
 	CRect rect;
 	this->GetClientRect(rect);
-	m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CLeftDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
-	m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CRightDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
+	m_wndSplitter.CreateView(0, 0, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2 + 100, rect.Height()), pContext);
+	m_wndSplitter.CreateView(0, 1, RUNTIME_CLASS(CDrawView), CSize(rect.Width() / 2, rect.Height()), pContext);
 	m_wndSplitter.ShowWindow(SW_HIDE);
+	CDrawView* pLeftView = (CDrawView*)m_wndSplitter.GetPane(0, 0);
+	CDrawView* pRightView = (CDrawView*)m_wndSplitter.GetPane(0, 1);
+	pLeftView->setLeftView(TRUE);
+	pRightView->setLeftView(FALSE);
 
 
 	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	//m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
 	m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
-	//m_wndSplitter.ShowWindow(SW_SHOW);
-
-	BOOL bResult = CMDIChildWndEx::OnCreateClient(lpcs, pContext);
-
-	if (bResult) {
-		//SwitchView(VIEWID_SEARCH);
-	}
-	return bResult;
+	return CMDIChildWndEx::OnCreateClient(lpcs, pContext);
 }
 
 
