@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void IppInverse(IppByteImage& img)
+void Inverse(ByteImage& img)
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
@@ -16,7 +16,7 @@ void IppInverse(IppByteImage& img)
 	}
 }
 
-void IppBrightness(IppByteImage& img, int n)
+void Brightness(ByteImage& img, int n)
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
@@ -27,7 +27,7 @@ void IppBrightness(IppByteImage& img, int n)
 	}
 }
 
-void IppContrast(IppByteImage& img, int n)
+void Contrast(ByteImage& img, int n)
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
@@ -38,7 +38,7 @@ void IppContrast(IppByteImage& img, int n)
 	}
 }
 
-void IppGammaCorrection(IppByteImage& img, float gamma)
+void GammaCorrection(ByteImage& img, float gamma)
 {
 	float inv_gamma = 1.f / gamma;
 
@@ -55,7 +55,7 @@ void IppGammaCorrection(IppByteImage& img, float gamma)
 	}
 }
 
-void IppHistogram(IppByteImage& img, float histo[256])
+void Histogram(ByteImage& img, float histo[256])
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
@@ -73,7 +73,7 @@ void IppHistogram(IppByteImage& img, float histo[256])
 	}
 }
 
-void IppHistogramStretching(IppByteImage& img)
+void HistogramStretching(ByteImage& img)
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
@@ -97,14 +97,14 @@ void IppHistogramStretching(IppByteImage& img)
 	}
 }
 
-void IppHistogramEqualization(IppByteImage& img)
+void HistogramEqualization(ByteImage& img)
 {
 	int size = img.GetSize();
 	BYTE* p = img.GetPixels();
 
 	// 히스토그램 계산
 	float hist[256];
-	IppHistogram(img, hist);
+	Histogram(img, hist);
 
 	// 히스토그램 누적 함수 계산
 	float cdf[256] = { 0.0, };
@@ -119,7 +119,7 @@ void IppHistogramEqualization(IppByteImage& img)
 	}
 }
 
-bool IppAdd(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool Add(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -142,7 +142,7 @@ bool IppAdd(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-bool IppSub(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool Sub(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -165,7 +165,7 @@ bool IppSub(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-bool IppAve(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool Ave(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -188,7 +188,7 @@ bool IppAve(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-bool IppDiff(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool Diff(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -213,7 +213,7 @@ bool IppDiff(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-bool IppAND(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool AND(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -236,7 +236,7 @@ bool IppAND(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-bool IppOR(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
+bool OR(ByteImage& img1, ByteImage& img2, ByteImage& img3)
 {
 	int w = img1.GetWidth();
 	int h = img1.GetHeight();
@@ -259,7 +259,7 @@ bool IppOR(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3)
 	return true;
 }
 
-void IppBitPlane(IppByteImage& img1, IppByteImage& img2, int bit)
+void BitPlane(ByteImage& img1, ByteImage& img2, int bit)
 {
 	img2.CreateImage(img1.GetWidth(), img1.GetHeight());
 

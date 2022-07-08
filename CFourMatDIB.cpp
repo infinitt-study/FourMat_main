@@ -1,14 +1,14 @@
 #include "stdafx.h"
-#include "IppDib.h"
+#include "CFourMatDIB.h"
 
 #define DIB_HEADER_MARKER ((WORD) ('M' << 8) | 'B')
 
-IppDib::IppDib()
+CFourMatDIB::CFourMatDIB()
 	: m_nWidth(0), m_nHeight(0), m_nBitCount(0), m_nDibSize(0), m_pDib(NULL)
 {
 }
 
-IppDib::IppDib(const IppDib& dib)
+CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
 	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(NULL)
 {
 	if (dib.m_pDib != NULL)
@@ -18,13 +18,14 @@ IppDib::IppDib(const IppDib& dib)
 	}
 }
 
-IppDib::~IppDib()
+
+CFourMatDIB::~CFourMatDIB()
 {
 	if (m_pDib)
 		delete[] m_pDib;
 }
 
-BOOL IppDib::CreateGrayBitmap(LONG nWidth, LONG nHeight)
+BOOL CFourMatDIB::CreateGrayBitmap(LONG nWidth, LONG nHeight)
 {
 	if (m_pDib)
 		DestroyBitmap();
@@ -73,7 +74,7 @@ BOOL IppDib::CreateGrayBitmap(LONG nWidth, LONG nHeight)
 	return TRUE;
 }
 
-BOOL IppDib::CreateRgbBitmap(LONG nWidth, LONG nHeight)
+BOOL CFourMatDIB::CreateRgbBitmap(LONG nWidth, LONG nHeight)
 {
 	if (m_pDib)
 		DestroyBitmap();
@@ -111,7 +112,46 @@ BOOL IppDib::CreateRgbBitmap(LONG nWidth, LONG nHeight)
 	return TRUE;
 }
 
-void IppDib::DestroyBitmap()
+BOOL CFourMatDIB::CreateRgbBitmap(LONG nWidth, LONG nHeight, BYTE* pImageData)
+{
+	if (m_pDib)
+		DestroyBitmap();
+
+	m_nWidth = nWidth;
+	m_nHeight = nHeight;
+	m_nBitCount = 24;
+
+	DWORD dwWidthStep = (m_nWidth * m_nBitCount / 8 + 3) & ~3;
+	DWORD dwSizeImage = (m_nHeight * dwWidthStep);
+	m_nDibSize = sizeof(BITMAPINFOHEADER) + dwSizeImage;
+
+	m_pDib = new BYTE[m_nDibSize];
+	if (m_pDib == NULL)
+		return FALSE;
+
+	// BITMAPINFOHEADER 구조체 설정
+	LPBITMAPINFOHEADER lpbmi = (LPBITMAPINFOHEADER)m_pDib;
+	lpbmi->biSize = sizeof(BITMAPINFOHEADER);
+	lpbmi->biWidth = m_nWidth;
+	lpbmi->biHeight = m_nHeight;
+	lpbmi->biPlanes = 1;
+	lpbmi->biBitCount = m_nBitCount;
+	lpbmi->biCompression = BI_RGB;
+	lpbmi->biSizeImage = dwSizeImage;
+	lpbmi->biXPelsPerMeter = 0;
+	lpbmi->biYPelsPerMeter = 0;
+	lpbmi->biClrUsed = 0;
+	lpbmi->biClrImportant = 0;
+
+	// 픽셀 데이터 초기화
+	BYTE* pData = GetDIBitsAddr();
+	memcpy(pData, pImageData, dwSizeImage);
+
+	return TRUE;
+}
+
+
+void CFourMatDIB::DestroyBitmap()
 {
 	if (m_pDib)
 	{
@@ -124,8 +164,8 @@ void IppDib::DestroyBitmap()
 	m_nBitCount = 0;
 	m_nDibSize = 0;
 }
-
-BOOL IppDib::Load(const char* filename)
+/*
+BOOL CFourMatDIB::Load(const char* filename)
 {
 	const char* ext = strrchr(filename, '.');
 	if (!_strcmpi(ext, ".bmp"))
@@ -134,7 +174,7 @@ BOOL IppDib::Load(const char* filename)
 		return FALSE;
 }
 
-BOOL IppDib::Save(const char* filename)
+BOOL CFourMatDIB::Save(const char* filename)
 {
 	const char* ext = strrchr(filename, '.');
 	if (!_strcmpi(ext, ".bmp"))
@@ -143,7 +183,7 @@ BOOL IppDib::Save(const char* filename)
 		return FALSE;
 }
 
-BOOL IppDib::LoadBMP(const char* filename)
+BOOL CFourMatDIB::LoadBMP(const char* filename)
 {
 	FILE* fp = NULL;
 	fopen_s(&fp, filename, "rb");
@@ -211,7 +251,7 @@ BOOL IppDib::LoadBMP(const char* filename)
 	return TRUE;
 }
 
-BOOL IppDib::SaveBMP(const char* filename)
+BOOL CFourMatDIB::SaveBMP(const char* filename)
 {
 	if (!IsValid())
 		return FALSE;
@@ -236,8 +276,8 @@ BOOL IppDib::SaveBMP(const char* filename)
 
 	return TRUE;
 }
-
-void IppDib::Draw(HDC hdc, int dx, int dy)
+*/
+void CFourMatDIB::Draw(HDC hdc, int dx, int dy)
 {
 	if (m_pDib == NULL)
 		return;
@@ -259,12 +299,12 @@ void IppDib::Draw(HDC hdc, int dx, int dy)
 		DIB_RGB_COLORS);	// wUsage
 }
 
-void IppDib::Draw(HDC hdc, int dx, int dy, int dw, int dh, DWORD dwRop)
+void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh, DWORD dwRop)
 {
 	Draw(hdc, dx, dy, dw, dh, 0, 0, m_nWidth, m_nHeight, dwRop);
 }
 
-void IppDib::Draw(HDC hdc, int dx, int dy, int dw, int dh,
+void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh,
 	int sx, int sy, int sw, int sh, DWORD dwRop)
 {
 	if (m_pDib == NULL)
@@ -289,7 +329,7 @@ void IppDib::Draw(HDC hdc, int dx, int dy, int dw, int dh,
 		SRCCOPY);			// dwROP
 }
 
-BOOL IppDib::CopyToClipboard()
+BOOL CFourMatDIB::CopyToClipboard()
 {
 	if (!::OpenClipboard(NULL))
 		return FALSE;
@@ -315,7 +355,7 @@ BOOL IppDib::CopyToClipboard()
 	return TRUE;
 }
 
-BOOL IppDib::PasteFromClipboard()
+BOOL CFourMatDIB::PasteFromClipboard()
 {
 	// CF_DIB 타입이 아니면 종료한다.
 	if (!::IsClipboardFormatAvailable(CF_DIB))
@@ -350,7 +390,7 @@ BOOL IppDib::PasteFromClipboard()
 	else
 		m_nDibSize = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1 << m_nBitCount) + dwSizeImage;
 
-	// 현재 설정된 IppDib 객체가 있다면 삭제한다.
+	// 현재 설정된 CFourMatDIB 객체가 있다면 삭제한다.
 	if (m_pDib)
 		DestroyBitmap();
 
@@ -370,7 +410,7 @@ BOOL IppDib::PasteFromClipboard()
 	return TRUE;
 }
 
-IppDib& IppDib::operator=(const IppDib& dib)
+CFourMatDIB& CFourMatDIB::operator=(const CFourMatDIB& dib)
 {
 	if (this == &dib)	// 재귀 검사
 		return *this;
@@ -393,7 +433,7 @@ IppDib& IppDib::operator=(const IppDib& dib)
 	return *this;
 }
 
-BYTE* IppDib::GetDIBitsAddr() const
+BYTE* CFourMatDIB::GetDIBitsAddr() const
 {
 	if (m_pDib == NULL)
 		return NULL;
@@ -402,7 +442,7 @@ BYTE* IppDib::GetDIBitsAddr() const
 	return ((BYTE*)m_pDib + lpbmi->biSize + (sizeof(RGBQUAD) * GetPaletteNums()));
 }
 
-int IppDib::GetPaletteNums() const
+int CFourMatDIB::GetPaletteNums() const
 {
 	switch (m_nBitCount)
 	{

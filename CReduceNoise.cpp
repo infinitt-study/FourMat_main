@@ -22,6 +22,7 @@ CReduceNoise::CReduceNoise(CWnd* pParent /*=nullptr*/)
 
 CReduceNoise::~CReduceNoise()
 {
+
 }
 
 void CReduceNoise::DoDataExchange(CDataExchange* pDX)

@@ -12,6 +12,9 @@
 #include "drawobj.h"
 #include "summinfo.h"
 
+#include "AccessPixel.h"
+#include "RGBBYTE.h"
+
 class CDrawView;
 
 class CDrawDoc : public COleDocument
@@ -102,15 +105,25 @@ protected:
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
+	//현민
+	CImage m_bmp;
+	LONG    m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
+	LONG    m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
+	WORD    m_nBitCount;   // 픽셀 당 비트 수
+	DWORD   m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
+	BYTE* m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
+	int m_nPitch;
+	BYTE* lpvBits;
+	
 
 public:
 	CString m_strFolderPath;
 	CString m_strFilePath;
 
 	void LoadDicom();
+
 	//DicomImage* m_pImage; // 따로 지우기
 	BITMAPINFO m_bmi;
-
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
 	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
@@ -138,4 +151,5 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
+	
 };

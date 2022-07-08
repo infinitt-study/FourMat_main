@@ -5,7 +5,7 @@
 
 const double PI = 3.14159265358979323846;
 
-void IppTranslate(IppByteImage& imgSrc, IppByteImage& imgDst, int sx, int sy)
+void Translate(ByteImage& imgSrc, ByteImage& imgDst, int sx, int sy)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -26,7 +26,7 @@ void IppTranslate(IppByteImage& imgSrc, IppByteImage& imgDst, int sx, int sy)
 		}
 }
 
-void IppResizeNearest(IppByteImage& imgSrc, IppByteImage& imgDst, int nw, int nh)
+void ResizeNearest(ByteImage& imgSrc, ByteImage& imgDst, int nw, int nh)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -53,7 +53,7 @@ void IppResizeNearest(IppByteImage& imgSrc, IppByteImage& imgDst, int nw, int nh
 		}
 }
 
-void IppResizeBilinear(IppByteImage& imgSrc, IppByteImage& imgDst, int nw, int nh)
+void ResizeBilinear(ByteImage& imgSrc, ByteImage& imgDst, int nw, int nh)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -90,7 +90,7 @@ void IppResizeBilinear(IppByteImage& imgSrc, IppByteImage& imgDst, int nw, int n
 		}
 }
 
-void IppResizeCubic(IppByteImage& imgSrc, IppByteImage& imgDst, int nw, int nh)
+void ResizeCubic(ByteImage& imgSrc, ByteImage& imgDst, int nw, int nh)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -147,7 +147,7 @@ double cubic_interpolation(double v1, double v2, double v3, double v4, double d)
 	return v;
 }
 
-void IppRotate(IppByteImage& imgSrc, IppByteImage& imgDst, double angle)
+void Rotate(ByteImage& imgSrc, ByteImage& imgDst, double angle)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -220,7 +220,7 @@ void IppRotate(IppByteImage& imgSrc, IppByteImage& imgDst, double angle)
 		}
 }
 
-void IppRotate90(IppByteImage& imgSrc, IppByteImage& imgDst)
+void Rotate90(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -238,7 +238,7 @@ void IppRotate90(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppRotate180(IppByteImage& imgSrc, IppByteImage& imgDst)
+void Rotate180(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -256,9 +256,9 @@ void IppRotate180(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppRotate270(IppByteImage& imgSrc, IppByteImage& imgDst)
+void Rotate270(ByteImage& imgSrc, ByteImage& imgDst)
 {
-	IppByteImage cpy = imgSrc;
+	ByteImage cpy = imgSrc;
 
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -276,7 +276,7 @@ void IppRotate270(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppMirror(IppByteImage& imgSrc, IppByteImage& imgDst)
+void Mirror(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -294,7 +294,7 @@ void IppMirror(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFlip(IppByteImage& imgSrc, IppByteImage& imgDst)
+void Flip(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();

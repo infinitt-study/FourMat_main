@@ -1,19 +1,19 @@
 #pragma once
-#pragma once
 
 #include <windows.h>
 
-class IppDib
+class CFourMatDIB
 {
 public:
 	// 생성자와 소멸자
-	IppDib();
-	IppDib(const IppDib& dib);
-	~IppDib();
+	CFourMatDIB();
+	CFourMatDIB(const CFourMatDIB& dib);
+	~CFourMatDIB();
 
 	// 비트맵 생성과 소멸
 	BOOL CreateGrayBitmap(LONG nWidth, LONG nHeight);
 	BOOL CreateRgbBitmap(LONG nWidth, LONG nHeight);
+	BOOL CreateRgbBitmap(LONG nWidth, LONG nHeight, BYTE* pImageData);
 	void DestroyBitmap();
 
 	// 파일 입출력
@@ -31,7 +31,7 @@ public:
 	BOOL PasteFromClipboard();
 
 	// 대입 연산자 재정의
-	IppDib& operator=(const IppDib& dib);
+	CFourMatDIB& operator=(const CFourMatDIB& dib);
 
 	// 비트맵 정보 반환
 	LONG        GetWidth()    const { return m_nWidth; }
@@ -55,3 +55,4 @@ private:
 	DWORD   m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
 	BYTE* m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
 };
+

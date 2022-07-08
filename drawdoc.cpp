@@ -32,13 +32,22 @@
 
 #include "propkey.h"
 #include "splitfrm.h"
-#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
-	IppByteImage img; \
-	IppDibToImage(m_Dib, img);
+#include "CConvertDataType.h"
 
-#define CONVERT_IMAGE_TO_DIB(img, dib) \
-	IppDib dib; \
-	IppImageToDib(img, dib);
+//#include "CConvert.h"
+
+#include <math.h>
+
+const double PI = 3.14159265358979323846;
+
+//#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
+//	ByteImage img; \ 
+//	DibToImage(m_Dib, img);
+//
+//#define CONVERT_IMAGE_TO_DIB(img, dib) \
+//	Dib dib; \
+//	ImageToDib(img, dib);
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -172,7 +181,7 @@ BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		delete m_pSummInfo;
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
-
+	m_zoom = 1;
 	m_nCurrentFrameNo = 0;
 	m_pObjects = nullptr;
 
@@ -328,6 +337,8 @@ void CDrawDoc::ComputePageSize()
 #endif
 }
 
+
+
 void CDrawDoc::OnViewPaperColor()
 {
 #ifndef SHARED_HANDLERS
@@ -456,8 +467,7 @@ void CDrawDoc::LoadDicom() {
 			for (int i = 0; i < m_nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
 				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
-				//이미지의 주소를 출력한다
-
+        
 				m_listData.push_back(data);
 				m_pageLeftObjects.push_back(new CDrawObjList());
 
@@ -472,6 +482,14 @@ void CDrawDoc::LoadDicom() {
 		delete ptrDicomImage;
 	}
 
+	/*BYTE* CDrawDoc::GetBitmapItsAddr() const
+	{
+		if (m_bmi == NULL)
+			return NULL;
+
+		LPBITMAPINFOHEADER lpbmi = (LPBITMAPINFOHEADER)m_bmi;
+		return ((BYTE*)m_bmi + lpbmi->biSize + (sizeof(RGBQUAD) * GetPaletteNums()));
+	}*/
 }
 
 
@@ -822,8 +840,8 @@ void CDrawDoc::SetSearchContents(const CString& value)
 void CDrawDoc::OnAffinetranformMirror()
 {
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppMirror(imgSrc, imgDst);
+		ByteImage imgDst;
+	Mirror(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
@@ -836,13 +854,13 @@ void CDrawDoc::OnAffinetranformRotation()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst;
 		switch (dlg.m_nRotate)
 		{
-		case 0: IppRotate90(imgSrc, imgDst); break;
-		case 1: IppRotate180(imgSrc, imgDst); break;
-		case 2: IppRotate270(imgSrc, imgDst); break;
-		case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+		case 0: Rotate90(imgSrc, imgDst); break;
+		case 1: Rotate180(imgSrc, imgDst); break;
+		case 2: Rotate270(imgSrc, imgDst); break;
+		case 3: Rotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
 		}
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
@@ -866,14 +884,14 @@ void CDrawDoc::OnAffinetranformScaling()
 	if (dlg.DoModal() == IDOK)
 	{
 		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst;
 		switch (dlg.m_nInterpolation)
 		{
-		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
+		case 0: ResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
 			ht); break;
-		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
+		case 1: ResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
 			ght); break;
-		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
+		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
 			t); break;
 		}
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
@@ -904,15 +922,14 @@ void CDrawDoc::OnAffinetranformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB dib;
+		//dib.CreateRgbBitmap();
+		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		//ByteImage imgDst;
+		//Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		//CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
-			AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),
-				GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
-		AfxNewBitmap(dib);*/
+		//AfxNewBitmap(dib);
 	}
 }
 
@@ -920,8 +937,8 @@ void CDrawDoc::OnAffinetranformTranslation()
 void CDrawDoc::OnAffinetransformFlip()
 {
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppFlip(imgSrc, imgDst);
+		ByteImage imgDst;
+	Flip(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
@@ -935,12 +952,12 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지 
 
 		if (dlg.m_nNoiseType == 0)
-			IppNoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
 		else
-			IppNoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
+			NoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
@@ -958,8 +975,8 @@ void CDrawDoc::OnFeatureextractionBlur()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppFloatImage imgDst;
-		IppFilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
+			FloatImage imgDst;
+		FilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
 			AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
@@ -973,10 +990,8 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 	CReduceNoise dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppFilterMedian(imgSrc, imgDst);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		/*
+		FilterMedian(imgSrc, imgDst);
 
 			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
@@ -986,12 +1001,13 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppFilterLaplacian(imgSrc, imgDst);
-	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
+		ByteImage imgDst; 
+	FilterLaplacian(imgSrc, imgDst);//영상 처리 
+	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib 
 		AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);*/
+	AfxNewBitmap(dib);//bitmap new  
+	*/ 
 }
 
 #include "CBrightnessDlg.h"
@@ -1025,7 +1041,6 @@ void CDrawDoc::OnFilteringBrightness()
 //}
 
 
-
 #include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
 {
@@ -1033,7 +1048,8 @@ void CDrawDoc::OnFilteringTograyscale()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) {
+			if (m_vectorImageWnd[i]->m_bClicked) 
+			{
 				m_vectorImageWnd[i]->m_nMode = 4;
 			}
 		}
@@ -1048,8 +1064,7 @@ void CDrawDoc::OnFilteringHistogram()
 	CHistogramDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*CHistogramDlg dlg;
-		for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 			if (m_vectorImageWnd[i]->m_bClicked) {
 				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
 			}
