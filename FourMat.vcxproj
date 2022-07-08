@@ -1440,9 +1440,11 @@
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBrightnessDlg.cpp" />
+    <ClCompile Include="CConvertDataType.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CFilterMedian.cpp" />
+    <ClCompile Include="CFourMatDIB.cpp" />
     <ClCompile Include="CGrayDlg.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
@@ -1586,7 +1588,6 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="FourMat.cpp" />
-    <ClCompile Include="IppDib.cpp" />
     <ClCompile Include="LineWeightDlg.cpp" />
     <ClCompile Include="mainfrm.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1852,9 +1853,11 @@
     <ClInclude Include="CAffineTransform.h" />
     <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CBrightnessDlg.h" />
+    <ClInclude Include="CConvertDataType.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
     <ClInclude Include="CFilterMedian.h" />
+    <ClInclude Include="CFourMatDIB.h" />
     <ClInclude Include="CGrayDlg.h" />
     <ClInclude Include="CHistogramDlg.h" />
     <ClInclude Include="CHistoryView.h" />
@@ -1873,8 +1876,7 @@
     <ClInclude Include="drawtool.h" />
     <ClInclude Include="drawvw.h" />
     <ClInclude Include="FourMat.h" />
-    <ClInclude Include="IppDib.h" />
-    <ClInclude Include="IppImage.h" />
+    <ClInclude Include="AccessPixel.h" />
     <ClInclude Include="LineWeightDlg.h" />
     <ClInclude Include="mainfrm.h" />
     <ClInclude Include="propset.h" />

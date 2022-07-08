@@ -1,20 +1,20 @@
 #pragma once
 
 
-#include "IppImage.h"
+#include "AccessPixel.h"
 
-void IppFilterMean(IppByteImage& imgSrc, IppByteImage& imgDst);
-void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst);
-void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, float sigma);
+void FilterMean(ByteImage& imgSrc, ByteImage& imgDst);
+void FilterWeightedMean(ByteImage& imgSrc, ByteImage& imgDst);
+void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma);
 
-void IppFilterLaplacian(IppByteImage& imgSrc, IppByteImage& imgDst);
-void IppFilterUnsharpMask(IppByteImage& imgSrc, IppByteImage& imgDst);
-void IppFilterHighboost(IppByteImage& imgSrc, IppByteImage& imgDst, float alpha);
+void FilterLaplacian(ByteImage& imgSrc, ByteImage& imgDst);
+void FilterUnsharpMask(ByteImage& imgSrc, ByteImage& imgDst);
+void FilterHighboost(ByteImage& imgSrc, ByteImage& imgDst, float alpha);
 
-void IppNoiseGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, int amount);
-void IppNoiseSaltNPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount);
+void NoiseGaussian(ByteImage& imgSrc, ByteImage& imgDst, int amount);
+void NoiseSaltNPepper(ByteImage& imgSrc, ByteImage& imgDst, int amount);
 
-void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst);
-void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambda, float k, int iter);
+void FilterMedian(ByteImage& imgSrc, ByteImage& imgDst);
+void FilterDiffusion(ByteImage& imgSrc, FloatImage& imgDst, float lambda, float k, int iter);
 
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CInverse.h"
-void CInverse(IppRgbImage& img)
+void CInverse(RgbImage& img)
 {
 	int size = img.GetSize();
 	RGBBYTE* p = img.GetPixels();

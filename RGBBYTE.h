@@ -10,6 +10,6 @@ public:
 
 public:
 	RGBBYTE() : b(0), g(0), r(0) {}
-	RGBBYTE(BYTE gray) : b(gray), g(gray), r(gray) {}
-	RGBBYTE(const BYTE& _r, const BYTE& _g, const BYTE& _b) : b(_b), g(_g), r(_r) {}
+	RGBBYTE(BYTE gray) : b(gray), g(gray), r(gray) {} // gray 
+	RGBBYTE(const BYTE& _r, const BYTE& _g, const BYTE& _b) : b(_b), g(_g), r(_r) {} // ÄÃ·¯  
 };

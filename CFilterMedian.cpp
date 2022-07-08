@@ -1,7 +1,7 @@
 #include "stdafx.h"
 //#include "CFilterMedian.h"
 //#include <algorithm>
-//void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst)
+//void FilterMedian(ByteImage& imgSrc, ByteImage& imgDst)
 //{
 //	int w = imgSrc.GetWidth();
 //	int h = imgSrc.GetHeight();

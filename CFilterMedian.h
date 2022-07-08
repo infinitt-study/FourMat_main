@@ -1,4 +1,4 @@
 //#include "ImageAccess.h"
-//void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst);
+//void FilterMedian(ByteImage& imgSrc, ByteImage& imgDst);
 
 

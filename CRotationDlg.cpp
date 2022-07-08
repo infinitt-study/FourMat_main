@@ -51,9 +51,9 @@ BOOL CRotationDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
-//세 개의 함수는 모두 IppByteImage 타입의 입력 영상 imgSrc를 각각 정해진 각도만큼 회전하여 결과 영상을 imgDst에 저장한다.
+//세 개의 함수는 모두 ByteImage 타입의 입력 영상 imgSrc를 각각 정해진 각도만큼 회전하여 결과 영상을 imgDst에 저장한다.
 
-//void IppRotate90(IppByteImage& imgSrc, IppByteImage& imgDst)
+//void Rotate90(ByteImage& imgSrc, ByteImage& imgDst)
 //{
 //	int w = imgSrc.GetWidth();
 //	int h = imgSrc.GetHeight();
@@ -67,7 +67,7 @@ BOOL CRotationDlg::OnInitDialog()
 //			pDst[j][i] = pSrc[h - 1 - i][j];
 //		}
 //}
-//void IppRotate180(IppByteImage& imgSrc, IppByteImage& imgDst)
+//void Rotate180(ByteImage& imgSrc, ByteImage& imgDst)
 //{
 //	int w = imgSrc.GetWidth();
 //	int h = imgSrc.GetHeight();
@@ -81,9 +81,9 @@ BOOL CRotationDlg::OnInitDialog()
 //			pDst[j][i] = pSrc[h - 1 - j][w - 1 - i];
 //		}
 //}
-//void IppRotate270(IppByteImage& imgSrc, IppByteImage& imgDst)
+//void Rotate270(ByteImage& imgSrc, ByteImage& imgDst)
 //{
-//	IppByteImage cpy = imgSrc;
+//	ByteImage cpy = imgSrc;
 //	int w = imgSrc.GetWidth();
 //	int h = imgSrc.GetHeight();
 //	imgDst.CreateImage(h, w);

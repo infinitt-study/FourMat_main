@@ -1,3 +1,3 @@
 #pragma once
-#include"IppImage.h"
-void IppInverse(IppRgbImage& img);
+#include"AccessPixel.h"
+void Inverse(RgbImage& img);

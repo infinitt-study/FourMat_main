@@ -1,19 +1,19 @@
 #pragma once
-#include "IppImage.h"
+#include "AccessPixel.h"
 
-void IppInverse(IppByteImage& img);
-void IppBrightness(IppByteImage& img, int n);
-void IppContrast(IppByteImage& img, int n);
-void IppGammaCorrection(IppByteImage& img, float gamma);
-void IppHistogram(IppByteImage& img, float histo[256]);
-void IppHistogramStretching(IppByteImage& img);
-void IppHistogramEqualization(IppByteImage& img);
+void Inverse(ByteImage& img);
+void Brightness(ByteImage& img, int n);
+void Contrast(ByteImage& img, int n);
+void GammaCorrection(ByteImage& img, float gamma);
+void Histogram(ByteImage& img, float histo[256]);
+void HistogramStretching(ByteImage& img);
+void HistogramEqualization(ByteImage& img);
 
-bool IppAdd(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-bool IppSub(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-bool IppAve(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-bool IppDiff(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-bool IppAND(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-bool IppOR(IppByteImage& img1, IppByteImage& img2, IppByteImage& img3);
-void IppBitPlane(IppByteImage& img1, IppByteImage& img2, int bit);
+bool Add(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+bool Sub(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+bool Ave(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+bool Diff(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+bool AND(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+bool OR(ByteImage& img1, ByteImage& img2, ByteImage& img3);
+void BitPlane(ByteImage& img1, ByteImage& img2, int bit);
 

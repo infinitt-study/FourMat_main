@@ -10,7 +10,7 @@
 const double PI = 3.14159265358979323846;
 const float  PI_F = 3.14159265358979323846f;
 
-void IppFilterMean(IppByteImage& imgSrc, IppByteImage& imgDst)
+void FilterMean(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -41,7 +41,7 @@ void IppFilterMean(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst)
+void FilterWeightedMean(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -72,7 +72,7 @@ void IppFilterWeightedMean(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, float sigma)
+void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma)
 {
 	register int i, j, k, x;
 
@@ -93,7 +93,7 @@ void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, float sigma)
 	if (dim % 2 == 0) dim++;
 	int dim2 = dim / 2;
 
-	IppFloatImage imgMask(dim, 1);
+	FloatImage imgMask(dim, 1);
 	float* pMask = imgMask.GetPixels();
 
 	for (i = 0; i < dim; i++)
@@ -102,7 +102,7 @@ void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, float sigma)
 		pMask[i] = exp(-(x * x) / (2 * sigma * sigma)) / (sqrt(2 * PI_F) * sigma);
 	}
 
-	IppFloatImage imgBuf(w, h);
+	FloatImage imgBuf(w, h);
 	float** pBuf = imgBuf.GetPixels2D();
 
 	//-------------------------------------------------------------------------
@@ -153,7 +153,7 @@ void IppFilterGaussian(IppByteImage& imgSrc, IppFloatImage& imgDst, float sigma)
 		}
 }
 
-void IppFilterLaplacian(IppByteImage& imgSrc, IppByteImage& imgDst)
+void FilterLaplacian(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -174,7 +174,7 @@ void IppFilterLaplacian(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFilterUnsharpMask(IppByteImage& imgSrc, IppByteImage& imgDst)
+void FilterUnsharpMask(ByteImage& imgSrc, ByteImage& imgDst)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -195,7 +195,7 @@ void IppFilterUnsharpMask(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFilterHighboost(IppByteImage& imgSrc, IppByteImage& imgDst, float alpha)
+void FilterHighboost(ByteImage& imgSrc, ByteImage& imgDst, float alpha)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -217,7 +217,7 @@ void IppFilterHighboost(IppByteImage& imgSrc, IppByteImage& imgDst, float alpha)
 		}
 }
 
-void IppNoiseGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
+void NoiseGaussian(ByteImage& imgSrc, ByteImage& imgDst, int amount)
 {
 	int size = imgSrc.GetSize();
 
@@ -236,7 +236,7 @@ void IppNoiseGaussian(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
 	}
 }
 
-void IppNoiseSaltNPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
+void NoiseSaltNPepper(ByteImage& imgSrc, ByteImage& imgDst, int amount)
 {
 	int size = imgSrc.GetSize();
 
@@ -254,7 +254,7 @@ void IppNoiseSaltNPepper(IppByteImage& imgSrc, IppByteImage& imgDst, int amount)
 	}
 }
 
-void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst)
+void FilterMedian(ByteImage& imgSrc, ByteImage& imgDst) // 함수 이름 바꾸기  
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -279,12 +279,12 @@ void IppFilterMedian(IppByteImage& imgSrc, IppByteImage& imgDst)
 		}
 }
 
-void IppFilterDiffusion(IppByteImage& imgSrc, IppFloatImage& imgDst, float lambda, float k, int iter)
+void FilterDiffusion(ByteImage& imgSrc, FloatImage& imgDst, float lambda, float k, int iter)
 {
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
 
-	IppFloatImage imgCpy;
+	FloatImage imgCpy;
 	imgCpy.Convert(imgSrc);
 
 	imgDst = imgCpy;
