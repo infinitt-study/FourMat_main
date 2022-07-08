@@ -143,12 +143,11 @@ void CHistoryView::FolderSearch()
 	int nRow = 0;
 	do
 	{
-		//if (strstr(fd.name, ".bmp") != NULL || strstr(fd.name, ".png") != NULL) {
-		//	m_lstHistory.InsertItem(nRow, fd.name, 0);
-		//	nRow++;
-		//}
-		m_lstHistory.InsertItem(nRow, fd.name, 0);
-		nRow++;
+		if (strstr(fd.name, ".DCM") != NULL) {
+			m_lstHistory.InsertItem(nRow, fd.name, 0);
+			nRow++;
+		}
+
 
 	} while (_findnext(handle, &fd) == 0);
 	_findclose(handle);
@@ -174,9 +173,13 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0] + "\\" + strFileName[1];
+	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0];
+	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[1];
   
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
+	//수정
+	//pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_MULTIFILEPATH);
+	
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
 	//

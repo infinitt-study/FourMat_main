@@ -135,6 +135,8 @@ CDrawView::CDrawView()
 	m_bGrid = TRUE;
 	m_gridColor = RGB(0, 0, 128);
 	m_bActive = FALSE;
+	m_bLeftView = TRUE;
+
 	// new
 	if ( m_cfObjectDescriptor == NULL )
 		m_cfObjectDescriptor = (CLIPFORMAT)::RegisterClipboardFormat(_T("Object Descriptor") );
@@ -245,12 +247,19 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 
 	case HINT_UPDATE_FILEPATH:
 		//AfxMessageBox(m_strPath);
-		pDrawDoc->LoadDicom();
+		pDrawDoc->LoadDicom(m_bLeftView);
 		break;
 
 	case HINT_LAOD_DICOMIMAGE:
 		Invalidate();
 		break;
+		
+	//수정
+	case HINT_UPDATE_MULTIFILEPATH:
+		pDrawDoc->LoadDicom(TRUE);
+		pDrawDoc->LoadDicom(FALSE);
+		break;
+
 	default:
 		//ASSERT(FALSE);
 		break;
@@ -350,7 +359,7 @@ void CDrawView::OnDraw(CDC* pDC)
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
 
-	BITMAPINFO& bmi = pDoc->m_bmi;
+	BITMAPINFO& bmi = pDoc->GetBmi(m_bLeftView);
 
 	const int width = bmi.bmiHeader.biWidth;
 	const int height = abs(bmi.bmiHeader.biHeight);
@@ -358,9 +367,11 @@ void CDrawView::OnDraw(CDC* pDC)
 	SetDIBitsToDevice(pDrawDC->m_hDC,  
 		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
 		0, 0, 0, height, 
-		pDoc->m_listData[pDoc->m_nCurrentFrameNo], &bmi, DIB_RGB_COLORS); 
 
-	pDoc->Draw(pDrawDC, this);
+		pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
+
+
+	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
 	if (pDrawDC != pDC)
 	{
@@ -743,7 +754,7 @@ void CDrawView::SelectWithinRect(CRect rect, BOOL bAdd)
 
 	ClientToDoc(rect);
 
-	CDrawObjList* pObList = GetDocument()->GetObjects();
+	CDrawObjList* pObList = GetDocument()->GetObjects(m_bLeftView);
 	POSITION posObj = pObList->GetHeadPosition();
 	while (posObj != NULL)
 	{
@@ -771,7 +782,7 @@ void CDrawView::CloneSelection()
 	while (pos != NULL)
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
-		pObj->Clone(pObj->m_pDocument);
+		pObj->Clone(m_bLeftView, pObj->m_pDocument);
 		// copies object and adds it to the document
 	}
 }
@@ -911,7 +922,7 @@ void CDrawView::OnUpdateSingleSelect(CCmdUI* pCmdUI)
 
 void CDrawView::OnEditSelectAll()
 {
-	CDrawObjList* pObList = GetDocument()->GetObjects();
+	CDrawObjList* pObList = GetDocument()->GetObjects(m_bLeftView);
 	POSITION pos = pObList->GetHeadPosition();
 	while (pos != NULL)
 		Select(pObList->GetNext(pos), TRUE);
@@ -919,7 +930,7 @@ void CDrawView::OnEditSelectAll()
 
 void CDrawView::OnUpdateEditSelectAll(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(GetDocument()->GetObjects() == nullptr ? 0 : GetDocument()->GetObjects()->GetCount() != 0);
+	pCmdUI->Enable(GetDocument()->GetObjects(m_bLeftView) == nullptr ? 0 : GetDocument()->GetObjects(m_bLeftView)->GetCount() != 0);
 }
 
 void CDrawView::OnEditClear()
@@ -933,7 +944,7 @@ void CDrawView::OnEditClear()
 	while (pos != NULL)
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
-		GetDocument()->Remove(pObj);
+		GetDocument()->Remove(m_bLeftView, pObj);
 		pObj->Remove();
 	}
 	//Cleanup Tool members such as CPolyTool::m_pDrawObj, that should be NULL at this point.
@@ -1339,7 +1350,7 @@ void CDrawView::OnObjectMoveBack()
 {
 	CDrawDoc* pDoc = GetDocument();
 	CDrawObj* pObj = m_selection.GetHead();
-	CDrawObjList* pObjects = pDoc->GetObjects();
+	CDrawObjList* pObjects = pDoc->GetObjects(m_bLeftView);
 	POSITION pos = pObjects->Find(pObj);
 	ASSERT(pos != NULL);
 	if (pos != pObjects->GetHeadPosition())
@@ -1356,7 +1367,7 @@ void CDrawView::OnObjectMoveForward()
 {
 	CDrawDoc* pDoc = GetDocument();
 	CDrawObj* pObj = m_selection.GetHead();
-	CDrawObjList* pObjects = pDoc->GetObjects();
+	CDrawObjList* pObjects = pDoc->GetObjects(m_bLeftView);
 	POSITION pos = pObjects->Find(pObj);
 	ASSERT(pos != NULL);
 	if (pos != pObjects->GetTailPosition())
@@ -1373,7 +1384,7 @@ void CDrawView::OnObjectMoveToBack()
 {
 	CDrawDoc* pDoc = GetDocument();
 	CDrawObj* pObj = m_selection.GetHead();
-	CDrawObjList* pObjects = pDoc->GetObjects();
+	CDrawObjList* pObjects = pDoc->GetObjects(m_bLeftView);
 	POSITION pos = pObjects->Find(pObj);
 	ASSERT(pos != NULL);
 	pObjects->RemoveAt(pos);
@@ -1385,7 +1396,7 @@ void CDrawView::OnObjectMoveToFront()
 {
 	CDrawDoc* pDoc = GetDocument();
 	CDrawObj* pObj = m_selection.GetHead();
-	CDrawObjList* pObjects = pDoc->GetObjects();
+	CDrawObjList* pObjects = pDoc->GetObjects(m_bLeftView);
 	POSITION pos = pObjects->Find(pObj);
 	ASSERT(pos != NULL);
 	pObjects->RemoveAt(pos);
@@ -1465,7 +1476,7 @@ void CDrawView::OnEditPaste()
 		// now add all items in m_selection to document
 		POSITION pos = m_selection.GetHeadPosition();
 		while (pos != NULL)
-			GetDocument()->Add(m_selection.GetNext(pos));
+			GetDocument()->Add(m_bLeftView, m_selection.GetNext(pos));
 	}
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
@@ -1679,7 +1690,7 @@ void CDrawView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	ClientToDoc(local);
 
 	CDrawObj* pObj;
-	pObj = GetDocument()->ObjectAt(local);
+	pObj = GetDocument()->ObjectAt(m_bLeftView, local);
 	if (pObj != NULL)
 	{
 		if (!IsSelected(pObj))
@@ -1808,30 +1819,11 @@ void CDrawView::ResetPreviewState()
 
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	CDrawDoc* pDoc = GetDocument();
-	if ((nFlags & MK_CONTROL) == MK_CONTROL)
-	{
-		if (zDelta < 0)
-		{
 
-			pDoc->m_zoom += 0.1;
-			if (pDoc->m_zoom > 3) pDoc->m_zoom = 3;
-			// 비율로 줄어들게 되면 -> 
-		}
-		else
-		{
-			pDoc->m_zoom -= 0.1;
-			if (pDoc->m_zoom < 0.2) pDoc->m_zoom = 0.2;
-		}
-		RedrawWindow();
-		
-	}
-
-	else if ((nFlags & MK_SHIFT) == MK_SHIFT)
-	
+   if ((nFlags & MK_SHIFT) == MK_SHIFT)
 	{
-		pDoc->SetCurrentFrameNo(zDelta / 120);
-		//pDoc->m_zoom -= 0.1; // 
+		CDrawDoc* pDoc = GetDocument();
+		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}
 	else

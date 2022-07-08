@@ -384,7 +384,7 @@ void CDrawObj::Invalidate()
 #endif
 }
 
-CDrawObj* CDrawObj::Clone(CDrawDoc* pDoc)
+CDrawObj* CDrawObj::Clone(BOOL bLeftView, CDrawDoc* pDoc)
 {
 	ASSERT_VALID(this);
 
@@ -396,7 +396,7 @@ CDrawObj* CDrawObj::Clone(CDrawDoc* pDoc)
 	ASSERT_VALID(pClone);
 
 	if (pDoc != NULL)
-		pDoc->Add(pClone);
+		pDoc->Add(bLeftView, pClone);
 
 	return pClone;
 }
@@ -776,7 +776,7 @@ BOOL CDrawRect::Intersects(const CRect& rect)
 	return rgn.RectInRegion(fixed);
 }
 
-CDrawObj* CDrawRect::Clone(CDrawDoc* pDoc)
+CDrawObj* CDrawRect::Clone(BOOL bLeftView, CDrawDoc* pDoc)
 {
 	ASSERT_VALID(this);
 
@@ -790,7 +790,7 @@ CDrawObj* CDrawRect::Clone(CDrawDoc* pDoc)
 	ASSERT_VALID(pClone);
 
 	if (pDoc != NULL)
-		pDoc->Add(pClone);
+		pDoc->Add(bLeftView, pClone);
 
 	ASSERT_VALID(pClone);
 	return pClone;
@@ -961,7 +961,7 @@ BOOL CDrawPoly::Intersects(const CRect& rect)
 	return rgn.RectInRegion(rect);
 }
 
-CDrawObj* CDrawPoly::Clone(CDrawDoc* pDoc)
+CDrawObj* CDrawPoly::Clone(BOOL bLeftView, CDrawDoc* pDoc)
 {
 	ASSERT_VALID(this);
 
@@ -980,7 +980,7 @@ CDrawObj* CDrawPoly::Clone(CDrawDoc* pDoc)
 	ASSERT_VALID(pClone);
 
 	if (pDoc != NULL)
-		pDoc->Add(pClone);
+		pDoc->Add(bLeftView, pClone);
 
 	ASSERT_VALID(pClone);
 	return pClone;
@@ -1114,7 +1114,7 @@ void CDrawOleObj::Serialize( CArchive& ar )
 	}
 }
 
-CDrawObj* CDrawOleObj::Clone(CDrawDoc* pDoc)
+CDrawObj* CDrawOleObj::Clone(BOOL bLeftView, CDrawDoc* pDoc)
 {
 	ASSERT_VALID(this);
 
@@ -1142,7 +1142,7 @@ CDrawObj* CDrawOleObj::Clone(CDrawDoc* pDoc)
 		ASSERT_VALID(pClone);
 
 		if (pDoc != NULL)
-			pDoc->Add(pClone);
+			pDoc->Add(bLeftView, pClone);
 	}
 	CATCH_ALL(e)
 	{

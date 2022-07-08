@@ -616,7 +616,7 @@ BOOL CProperty::ReadFromStream( IStream* pIStream )
 	// the allocated buffer.
 	//
 	cbItem = 0;        // Size of the current item
-	pIStream->Clone( &pIStrItem );
+	pIStream->Clone(&pIStrItem );
 	ENSURE(pIStrItem != NULL);
 	iReps = nReps;
 	while (iReps--)

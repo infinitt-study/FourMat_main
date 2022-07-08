@@ -25,13 +25,27 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	void SetCurrentFrameNo(int nDelta) {
-		m_nCurrentFrameNo -= nDelta;
-		m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
-		m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
+		if (bLeftView) {
+			m_nCurrentFrameNo -= nDelta;
+			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
+			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+		}
+		else {
+			m_nCurrentRightFrameNo -= nDelta;
+			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listData.size();
+			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
+		}
 	}
 
-	CDrawObjList* GetObjects() { return m_pObjects; }
+	//ìˆ˜ì • -> ì—°ê²°ëœê±° ë‹¤ ìˆ˜ì •
+	CDrawObjList* GetObjects(BOOL bLeftView)
+	{ 
+		return bLeftView ? m_pObjects : m_pRightObjects;
+	}
+
+
+
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
 	int GetMapMode() const { return m_nMapMode; }
@@ -52,16 +66,16 @@ public:
 
 // Operations
 public:
-	CDrawObj* ObjectAt(const CPoint& point);
-	void Draw(CDC* pDC, CDrawView* pView);
+	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
+	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
-	void Draw (CDC* pDC);
+	void Draw (BOOL bLeftView, CDC* pDC);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
 
-	void Add(CDrawObj* pObj);
-	void Remove(CDrawObj* pObj);
+	void Add(BOOL bLeftView, CDrawObj* pObj);
+	void Remove(BOOL bLeftView, CDrawObj* pObj);
 
 	void SetPreviewColor(COLORREF clr);
 
@@ -98,36 +112,58 @@ protected:
 
 //	BOOL m_bCanDeactivateInplace;
 
+public:
 	std::vector<CDrawObjList*> m_pageLeftObjects;
+	std::vector<CDrawObjList*> m_pageRightObjects;
+
 	CDrawObjList* m_pObjects;
+	CDrawObjList* m_pRightObjects;
+
 
 	CSize m_size;
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
-	//Çö¹Î
+	//í˜„ë¯¼
 	CImage m_bmp;
-	LONG    m_nWidth;      // ºñÆ®¸Ê °¡·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	LONG    m_nHeight;     // ºñÆ®¸Ê ¼¼·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	WORD    m_nBitCount;   // ÇÈ¼¿ ´ç ºñÆ® ¼ö
-	DWORD   m_nDibSize;    // DIB ÀüÃ¼ Å©±â (BITMAPINFOHEADER + »ö»ó Å×ÀÌºí + ÇÈ¼¿ µ¥ÀÌÅÍ)
-	BYTE* m_pDib;        // DIB ½ÃÀÛ ÁÖ¼Ò (BITMAPINFOHEADER ½ÃÀÛ ÁÖ¼Ò)
+	LONG    m_nWidth;      // ë¹„íŠ¸ë§µ ê°€ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	LONG    m_nHeight;     // ë¹„íŠ¸ë§µ ì„¸ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	WORD    m_nBitCount;   // í”½ì…€ ë‹¹ ë¹„íŠ¸ ìˆ˜
+	DWORD   m_nDibSize;    // DIB ì „ì²´ í¬ê¸° (BITMAPINFOHEADER + ìƒ‰ìƒ í…Œì´ë¸” + í”½ì…€ ë°ì´í„°)
+	BYTE* m_pDib;        // DIB ì‹œì‘ ì£¼ì†Œ (BITMAPINFOHEADER ì‹œì‘ ì£¼ì†Œ)
 	int m_nPitch;
 	BYTE* lpvBits;
 	
 
 public:
 	CString m_strFolderPath;
+
 	CString m_strFilePath;
+	CString m_strRightFilePath;
 
-	void LoadDicom();
+	void LoadDicom(BOOL bLeftView);
+	//DicomImage* m_pImage; // ë”°ë¡œ ì§€ìš°ê¸°
+	BITMAPINFO m_bmiLeft;
+	BITMAPINFO m_bmiRight;
+	BITMAPINFO& GetBmi(BOOL bLeftView)
+	{
+		return bLeftView ? m_bmiLeft : m_bmiRight;
+	}
 
-	//DicomImage* m_pImage; // µû·Î Áö¿ì±â
-	BITMAPINFO m_bmi;
+	void* GetDib(BOOL bLeftView)
+	{
+		return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
+	}
+
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
-	long m_nCurrentFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÇöÀçÆäÀÌÁö
-	long m_nTotalFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÀüÃ¼ÆäÀÌÁö
+	std::vector<void*> m_listRightData;
+
+	long m_nCurrentFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ í˜„ì¬í˜ì´ì§€
+	long m_nCurrentRightFrameNo;
+
+	long m_nTotalFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ ì „ì²´í˜ì´ì§€
+	long m_nTotalRightFrameNo;
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
@@ -151,5 +187,7 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
-	
+
+	void HelperLoadDicom(BOOL bLeftView);
+
 };
