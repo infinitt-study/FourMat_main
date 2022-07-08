@@ -91,9 +91,6 @@
     <ClCompile Include="CBrightnessDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CFilterMedian.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CGrayDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -213,9 +210,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CBrightnessDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CFilterMedian.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CGrayDlg.h">

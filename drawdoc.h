@@ -147,8 +147,6 @@ public:
 	afx_msg void OnFeatureextractionReducenoise();
 	afx_msg void OnFeatureextractionSharpening();
 	afx_msg void OnFilteringBrightness();
-	//afx_msg void OnFilteringContrast();
-	afx_msg void OnFilteringRemovenoise();
 	afx_msg void OnFilteringTograyscale();
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
