@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CTranslationDlg, CDialogEx)
 
 CTranslationDlg::CTranslationDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(ID_AFFINETRANSFORM_TRANSLATION, pParent)
+	: CDialogEx(IDD_AFFINETRANSFORM_TRANSLATION, pParent)
 	, m_nNewSX(0)
 	, m_nNewSY(0)
 {

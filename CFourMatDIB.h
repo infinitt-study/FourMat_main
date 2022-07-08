@@ -8,6 +8,7 @@ public:
 	// 积己磊客 家戈磊
 	CFourMatDIB();
 	CFourMatDIB(const CFourMatDIB& dib);
+	CFourMatDIB(CFourMatDIB&& dib);
 	~CFourMatDIB();
 
 	// 厚飘甘 积己苞 家戈

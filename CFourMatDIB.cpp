@@ -18,6 +18,12 @@ CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
 	}
 }
 
+CFourMatDIB::CFourMatDIB(CFourMatDIB&& dib)
+	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(dib.m_pDib)
+{
+	dib.m_pDib = nullptr;
+}
+
 
 CFourMatDIB::~CFourMatDIB()
 {

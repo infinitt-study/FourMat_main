@@ -33,6 +33,8 @@
 #include "propkey.h"
 #include "splitfrm.h"
 #include "CConvertDataType.h"
+#include "CAffineTransform.h"
+
 
 //#include "CConvert.h"
 
@@ -141,16 +143,16 @@ void CDrawDoc::OnUnloadHandler()
 
 
 
-	for (const auto& bitmapData : m_listData) {
-		free(bitmapData);
-	}
-	m_listData.clear();
+	//for (const auto& bitmapData : m_listData) {
+	//	free(bitmapData);
+	//}
+	//m_listData.clear();
 
-	//수정
-	for (const auto& bitmapData : m_listRightData) {
-		free(bitmapData);
-	}
-	m_listRightData.clear();
+	////수정
+	//for (const auto& bitmapData : m_listRightData) {
+	//	free(bitmapData);
+	//}
+	//m_listRightData.clear();
 
 
 	delete m_pSummInfo;
@@ -289,6 +291,12 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 	pDC->SetViewportOrg(0, 0);
 	pDC->SetWindowOrg(0, 0);
 	pDC->SetMapMode(MM_TEXT);
+}
+
+void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
+{
+	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2);
 }
 
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
@@ -500,6 +508,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 {
 	DcmFileFormat fileformat;
 	OFFilename filePath;
+
 	if (bLeftView) {
 		filePath = (OFFilename)m_strFilePath;
 		m_nCurrentFrameNo = 0;
@@ -510,7 +519,6 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		m_nCurrentRightFrameNo = 0;
 		m_nTotalRightFrameNo = 0;
 	}
-
 
 	if (fileformat.loadFile(filePath).good()) {
 		DcmDataset* dataset = fileformat.getDataset();
@@ -543,8 +551,9 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			void* data = nullptr;
 
 			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
-			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
-			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
+//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
+//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
+			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
 			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
@@ -552,21 +561,25 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
 				//이미지의 주소를 출력한다
 
-				bmi = { sizeof(BITMAPINFO) };
-				//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
-				bmi.bmiHeader.biWidth = width;
-				bmi.bmiHeader.biHeight = -height;
-				bmi.bmiHeader.biPlanes = 1;
-				bmi.bmiHeader.biBitCount = 24;
-				bmi.bmiHeader.biCompression = BI_RGB;
-				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+				CFourMatDIB fourMatDIB;
+				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*) data);
 
-				listData.push_back(data);
+				listData.emplace_back(std::move(fourMatDIB));
+
+				//bmi = { sizeof(BITMAPINFO) };
+				////m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
+				//bmi.bmiHeader.biWidth = width;
+				//bmi.bmiHeader.biHeight = -height;
+				//bmi.bmiHeader.biPlanes = 1;
+				//bmi.bmiHeader.biBitCount = 24;
+				//bmi.bmiHeader.biCompression = BI_RGB;
+				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
+				//listData.push_back(data);
 
 				objectList.push_back(new CDrawObjList());
 
 				//이미지의 주소를 메모리 해제 한다
-				//delete[] data;
+				delete[] data;
 				data = nullptr;
 			}
 			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
@@ -1005,6 +1018,7 @@ void CDrawDoc::OnAffinetranformSlice()
 	CSliceDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB dib;
 
 	}
 }
@@ -1015,7 +1029,16 @@ void CDrawDoc::OnAffinetranformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB dib;
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+
+		FourMatDIBToGrayImage(dib, imgSrc);
+		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		FourMatGrayToDIBImage(imgDst, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
 		//dib.CreateRgbBitmap();
 		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 		//ByteImage imgDst;

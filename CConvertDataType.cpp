@@ -39,7 +39,7 @@ void FourMatDIBToImage(CFourMatDIB& dib, RgbImage& img)
 	}
 }
 
-void FourMatDIBToGrayImage(CFourMatDIB& dib, ByteImage& img)
+void FourMatDIBToGrayImage(const CFourMatDIB& dib, ByteImage& img)
 {
 	assert(dib.IsValid());
 	assert(dib.GetBitCount() == 24);
@@ -63,6 +63,26 @@ void FourMatDIBToGrayImage(CFourMatDIB& dib, ByteImage& img)
 	}
 }
 
+void FourMatGrayToDIBImage(const ByteImage& img, CFourMatDIB& dib)
+{
+	assert(dib.IsValid());
+	assert(dib.GetBitCount() == 24);
+
+	int w = dib.GetWidth();
+	int h = dib.GetHeight();
+	int ws = (w * 3 + 3) & ~3;
+	BYTE* pDIBits = dib.GetDIBitsAddr();
+	BYTE** pixels = img.GetPixels2D();
+
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++) {
+			pDIBits[(h - 1 - i) * ws + j * 3 + 0] = pixels[i][j];
+			pDIBits[(h - 1 - i) * ws + j * 3 + 1] = pixels[i][j];
+			pDIBits[(h - 1 - i) * ws + j * 3 + 2] = pixels[i][j];
+		}
+	}
+}
 
 void ImageToFourMatDIB(ByteImage& img, CFourMatDIB& dib)
 {

@@ -260,6 +260,10 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		pDrawDoc->LoadDicom(FALSE);
 		break;
 
+	case HINT_DICOM_IMAGE_REDRAW:
+		Invalidate();
+		break;
+
 	default:
 		//ASSERT(FALSE);
 		break;
@@ -359,16 +363,19 @@ void CDrawView::OnDraw(CDC* pDC)
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
 
-	BITMAPINFO& bmi = pDoc->GetBmi(m_bLeftView);
 
-	const int width = bmi.bmiHeader.biWidth;
-	const int height = abs(bmi.bmiHeader.biHeight);
-	//이미지를 그려주는 함수
-	SetDIBitsToDevice(pDrawDC->m_hDC,  
-		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
-		0, 0, 0, height, 
+	pDoc->DIBDraw(m_bLeftView, pDrawDC);
 
-		pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
+	//BITMAPINFO& bmi = pDoc->GetBmi(m_bLeftView);
+
+	//const int width = bmi.bmiHeader.biWidth;
+	//const int height = abs(bmi.bmiHeader.biHeight);
+	////이미지를 그려주는 함수
+	//SetDIBitsToDevice(pDrawDC->m_hDC,  
+	//	-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
+	//	0, 0, 0, height, 
+
+	//	pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
 
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
@@ -1826,8 +1833,7 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}
-	else
-	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-
-	}
+	
+   return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+}
 

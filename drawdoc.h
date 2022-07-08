@@ -14,6 +14,7 @@
 
 #include "AccessPixel.h"
 #include "RGBBYTE.h"
+#include "CFourMatDIB.h"
 
 class CDrawView;
 
@@ -28,12 +29,12 @@ public:
 	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
 		if (bLeftView) {
 			m_nCurrentFrameNo -= nDelta;
-			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listData.size();
+			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listLeftDIB.size();
 			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
 		}
 		else {
 			m_nCurrentRightFrameNo -= nDelta;
-			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listData.size();
+			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listLeftDIB.size();
 			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
 		}
 	}
@@ -70,6 +71,7 @@ public:
 	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
 	void Draw (BOOL bLeftView, CDC* pDC);
+	void DIBDraw(BOOL bLeftView, CDC* pDC);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
@@ -143,21 +145,25 @@ public:
 
 	void LoadDicom(BOOL bLeftView);
 	//DicomImage* m_pImage; // 따로 지우기
-	BITMAPINFO m_bmiLeft;
-	BITMAPINFO m_bmiRight;
-	BITMAPINFO& GetBmi(BOOL bLeftView)
-	{
-		return bLeftView ? m_bmiLeft : m_bmiRight;
-	}
 
-	void* GetDib(BOOL bLeftView)
-	{
-		return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
-	}
+	//BITMAPINFO m_bmiLeft;
+	//BITMAPINFO m_bmiRight;
+	//BITMAPINFO& GetBmi(BOOL bLeftView)
+	//{
+	//	return bLeftView ? m_bmiLeft : m_bmiRight;
+	//}
+
+	//void* GetDib(BOOL bLeftView)
+	//{
+	//	return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
+	//}
 
 	//std::vector<BITMAPINFO> m_listBitmap;
-	std::vector<void*> m_listData;
-	std::vector<void*> m_listRightData;
+	//std::vector<void*> m_listData;
+	//std::vector<void*> m_listRightData;
+
+	std::vector <CFourMatDIB> m_listLeftDIB;
+	std::vector <CFourMatDIB> m_listRightDIB;
 
 	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
 	long m_nCurrentRightFrameNo;
