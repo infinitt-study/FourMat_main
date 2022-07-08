@@ -63,16 +63,16 @@ public:
 
 // Operations
 public:
-	CDrawObj* ObjectAt(const CPoint& point);
-	void Draw(CDC* pDC, CDrawView* pView);
+	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
+	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
-	void Draw (CDC* pDC);
+	void Draw (BOOL bLeftView, CDC* pDC);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
 
-	void Add(CDrawObj* pObj);
-	void Remove(CDrawObj* pObj);
+	void Add(BOOL bLeftView, CDrawObj* pObj);
+	void Remove(BOOL bLeftView, CDrawObj* pObj);
 
 	void SetPreviewColor(COLORREF clr);
 

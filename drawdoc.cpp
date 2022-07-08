@@ -246,14 +246,15 @@ void CDrawDoc::Serialize(CArchive& ar)
 // CDrawDoc implementation
 
 //수정 못함
-void CDrawDoc::Draw(CDC* pDC, CDrawView* pView)
+void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 {
-	if (m_pObjects == nullptr) return;
+	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	if (pObjects == nullptr) return;
 
-	POSITION pos = m_pObjects->GetHeadPosition();
+	POSITION pos = pObjects->GetHeadPosition();
 	while (pos != NULL)
 	{
-		CDrawObj* pObj = m_pObjects->GetNext(pos);
+		CDrawObj* pObj = pObjects->GetNext(pos);
 		pObj->Draw(pDC);
 #ifndef SHARED_HANDLERS
 		if (pView != NULL && pView->m_bActive && !pDC->IsPrinting() && pView->IsSelected(pObj))
@@ -262,7 +263,7 @@ void CDrawDoc::Draw(CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw (CDC* pDC)
+void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 {
 	CSize szPage = m_rectDocumentBounds.Size ();
 	pDC->FillSolidRect(CRect (CPoint (0, 0), szPage), m_paperColor);
@@ -274,26 +275,32 @@ void CDrawDoc::Draw (CDC* pDC)
 	pDC->SetWindowExt(100, -100);
 	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
 
-	Draw (pDC, NULL);
+	Draw (bLeftView, pDC, NULL);
 
 	pDC->SetViewportOrg(0, 0);
 	pDC->SetWindowOrg(0,0);
 	pDC->SetMapMode(MM_TEXT);
 }
 
-void CDrawDoc::Add(CDrawObj* pObj)
+void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
-	m_pObjects->AddTail(pObj);
+	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	if (pObjects == nullptr) return;
+
+	pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
 	SetModifiedFlag();
 }
 
-void CDrawDoc::Remove(CDrawObj* pObj)
+void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 {
+	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	if (pObjects == nullptr) return;
+
 	// Find and remove from document
-	POSITION pos = m_pObjects->Find(pObj);
+	POSITION pos = pObjects->Find(pObj);
 	if (pos != NULL)
-		m_pObjects->RemoveAt(pos);
+		pObjects->RemoveAt(pos);
 	// set document modified flag
 	SetModifiedFlag();
 
@@ -310,13 +317,16 @@ void CDrawDoc::Remove(CDrawObj* pObj)
 }
 
 // point is in logical coordinates
-CDrawObj* CDrawDoc::ObjectAt(const CPoint& point)
+CDrawObj* CDrawDoc::ObjectAt(BOOL bLeftView, const CPoint& point)
 {
+	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	if (pObjects == nullptr) return nullptr;
+
 	CRect rect(point, CSize(1, 1));
-	POSITION pos = m_pObjects->GetTailPosition();
+	POSITION pos = pObjects->GetTailPosition();
 	while (pos != NULL)
 	{
-		CDrawObj* pObj = m_pObjects->GetPrev(pos);
+		CDrawObj* pObj = pObjects->GetPrev(pos);
 		if (pObj->Intersects(rect))
 			return pObj;
 	}

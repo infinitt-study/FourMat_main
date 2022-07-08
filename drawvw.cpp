@@ -366,7 +366,7 @@ void CDrawView::OnDraw(CDC* pDC)
 		0, 0, 0, height, 
 		pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
 
-	pDoc->Draw(pDrawDC, this);
+	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
 	if (pDrawDC != pDC)
 	{
@@ -777,7 +777,7 @@ void CDrawView::CloneSelection()
 	while (pos != NULL)
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
-		pObj->Clone(pObj->m_pDocument);
+		pObj->Clone(m_bLeftView, pObj->m_pDocument);
 		// copies object and adds it to the document
 	}
 }
@@ -937,7 +937,7 @@ void CDrawView::OnEditClear()
 	while (pos != NULL)
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
-		GetDocument()->Remove(pObj);
+		GetDocument()->Remove(m_bLeftView, pObj);
 		pObj->Remove();
 	}
 	//Cleanup Tool members such as CPolyTool::m_pDrawObj, that should be NULL at this point.
@@ -1469,7 +1469,7 @@ void CDrawView::OnEditPaste()
 		// now add all items in m_selection to document
 		POSITION pos = m_selection.GetHeadPosition();
 		while (pos != NULL)
-			GetDocument()->Add(m_selection.GetNext(pos));
+			GetDocument()->Add(m_bLeftView, m_selection.GetNext(pos));
 	}
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
@@ -1683,7 +1683,7 @@ void CDrawView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	ClientToDoc(local);
 
 	CDrawObj* pObj;
-	pObj = GetDocument()->ObjectAt(local);
+	pObj = GetDocument()->ObjectAt(m_bLeftView, local);
 	if (pObj != NULL)
 	{
 		if (!IsSelected(pObj))
