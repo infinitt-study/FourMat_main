@@ -10,13 +10,14 @@
 // All rights reserved.
 
 // Hints for UpdateAllViews/OnUpdate
-#define HINT_UPDATE_WINDOW      0
-#define HINT_UPDATE_DRAWOBJ     1
-#define HINT_UPDATE_SELECTION   2
-#define HINT_DELETE_SELECTION   3
-#define HINT_UPDATE_FOLDERPATH	4
-#define HINT_UPDATE_FILEPATH	5
-#define HINT_LAOD_DICOMIMAGE	6
+#define HINT_UPDATE_WINDOW			0
+#define HINT_UPDATE_DRAWOBJ			1
+#define HINT_UPDATE_SELECTION		2
+#define HINT_DELETE_SELECTION		3
+#define HINT_UPDATE_FOLDERPATH		4
+#define HINT_UPDATE_FILEPATH		5
+#define HINT_LAOD_DICOMIMAGE		6
+#define HINT_UPDATE_MULTIFILEPATH	7
 
 class CDrawObj;
 
@@ -204,19 +205,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	COLORREF GetColorFromColorButton(int nButtonID);
+	//COLORREF GetColorFromColorButton(int nButtonID);
 
 public:
 	CString m_strPath;
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-};
 
-class CLeftDrawView : public CDrawView
-{
-
-};
-
-class CRightDrawView : public CDrawView
-{
-
+	BOOL m_bLeftView;
+	void setLeftView(BOOL bLeftView)
+	{
+		m_bLeftView = bLeftView;
+	}
 };

@@ -82,17 +82,36 @@
     <ClCompile Include="CImprovement.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-
-    <ClCompile Include="CReduceNoise.cpp" />
-    <ClCompile Include="CAddNoiseDlg.cpp" />
-    <ClCompile Include="CBlurDlg.cpp" />
-    <ClCompile Include="CBrightnessDlg.cpp" />
-    <ClCompile Include="CGrayDlg.cpp" />
-    <ClCompile Include="CWindowLevel.cpp" />
-    <ClCompile Include="CHistogramDlg.cpp" />
-    <ClCompile Include="CFilterMedian.cpp" />
-    <ClCompile Include="CInverse.cpp" />
-
+    <ClCompile Include="CAddNoiseDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlurDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBrightnessDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CFilterMedian.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CGrayDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CHistogramDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CInverse.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CReduceNoise.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CWindowLevel.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IppDib.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -188,17 +207,36 @@
     <ClInclude Include="CImprovement.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-
-    <ClInclude Include="CReduceNoise.h" />
-    <ClInclude Include="CAddNoiseDlg.h" />
-    <ClInclude Include="CBlurDlg.h" />
-    <ClInclude Include="CBrightnessDlg.h" />
-    <ClInclude Include="CGrayDlg.h" />
-    <ClInclude Include="CWindowLevel.h" />
-    <ClInclude Include="CHistogramDlg.h" />
-    <ClInclude Include="CFilterMedian.h" />
-    <ClInclude Include="CInverse.h" />
-
+    <ClInclude Include="CAddNoiseDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlurDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBrightnessDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CFilterMedian.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CGrayDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CHistogramDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CReduceNoise.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CInverse.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CWindowLevel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IppDib.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

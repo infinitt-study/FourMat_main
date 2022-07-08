@@ -718,7 +718,7 @@ void CMainFrame::UpdateUI(CDrawView* pCurrView)
 {
 	// Update Status Bar
 	CDrawDoc* pCurrDoc = pCurrView->GetDocument();
-	UpdateStatusBarCountPane(ID_STATUSBAR_PANE_OBJECTCOUNT, _T("Object Count"), (int) (pCurrDoc->GetObjects() == nullptr ? 0 : pCurrDoc->GetObjects()->GetCount()));
+	UpdateStatusBarCountPane(ID_STATUSBAR_PANE_OBJECTCOUNT, _T("Object Count"), (int) (pCurrDoc->GetObjects(TRUE) == nullptr ? 0 : pCurrDoc->GetObjects(TRUE)->GetCount()));
 	UpdateStatusBarCountPane(ID_STATUSBAR_PANE_SELECTEDOBJECTCOUNT, _T("Selected Count"), (int) pCurrView->m_selection.GetCount());
 
 	m_wndStatusBar.Invalidate();
