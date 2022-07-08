@@ -1064,8 +1064,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "DrawClient Application"
-    IDR_DRAWCLTYPE          "\nDrawClient\nDrawClient Document\nDrawClient Files (*.drw)\n.drw\nDrawClient.Document\nDrawClient Document\nDCLI\nDrawClient Files"
+    IDR_MAINFRAME           "Fourmat DICOM"
+    IDR_DRAWCLTYPE          "\nViewer\nDrawClient Document\nDrawClient Files (*.drw)\n.drw\nDrawClient.Document\nDrawClient Document\nDCLI\nDrawClient Files"
 END
 
 STRINGTABLE
