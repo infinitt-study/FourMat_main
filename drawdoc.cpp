@@ -32,13 +32,22 @@
 
 #include "propkey.h"
 #include "splitfrm.h"
-#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
-	IppByteImage img; \
-	IppDibToImage(m_Dib, img);
+#include "CConvertDataType.h"
 
-#define CONVERT_IMAGE_TO_DIB(img, dib) \
-	IppDib dib; \
-	IppImageToDib(img, dib);
+//#include "CConvert.h"
+
+#include <math.h>
+
+const double PI = 3.14159265358979323846;
+
+//#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
+//	ByteImage img; \ 
+//	DibToImage(m_Dib, img);
+//
+//#define CONVERT_IMAGE_TO_DIB(img, dib) \
+//	Dib dib; \
+//	ImageToDib(img, dib);
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -57,8 +66,8 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	// Enable default OLE container implementation
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, COleDocument::OnUpdatePasteMenu)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE_LINK, COleDocument::OnUpdatePasteLinkMenu)
-//	ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, COleDocument::OnUpdateEditLinksMenu)
-//	ON_COMMAND(ID_OLE_EDIT_LINKS, COleDocument::OnEditLinks)
+	//	ON_UPDATE_COMMAND_UI(ID_OLE_EDIT_LINKS, COleDocument::OnUpdateEditLinksMenu)
+	//	ON_COMMAND(ID_OLE_EDIT_LINKS, COleDocument::OnEditLinks)
 	ON_UPDATE_COMMAND_UI(ID_OLE_VERB_FIRST, COleDocument::OnUpdateObjectVerbMenu)
 	// MAPI support
 	ON_COMMAND(ID_FILE_SEND_MAIL, OnFileSendMail)
@@ -77,7 +86,6 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawDoc::OnFilteringRemovenoise)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
@@ -92,7 +100,7 @@ CDrawDoc::CDrawDoc()
 {
 	EnableCompoundFile();
 
-//	m_bCanDeactivateInplace = TRUE;
+	//	m_bCanDeactivateInplace = TRUE;
 	m_nMapMode = MM_ANISOTROPIC;
 	m_paperColorLast = m_paperColor = RGB(255, 255, 255);
 	m_pSummInfo = NULL;
@@ -167,7 +175,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_pSummInfo->RecordCreateDate();
 	m_pSummInfo->SetNumPages(1);
 	// NumWords, NumChars default to 0
-	m_pSummInfo->SetAppname( _T("DrawCli") );
+	m_pSummInfo->SetAppname(_T("DrawCli"));
 	// Security defaults to 0
 
 	m_bPen = TRUE;
@@ -196,11 +204,11 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 
 BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	if ( m_pSummInfo != NULL)
+	if (m_pSummInfo != NULL)
 		delete m_pSummInfo;
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
-
+	m_zoom = 1;
 	m_nCurrentFrameNo = 0;
 	m_nCurrentRightFrameNo = 0;
 
@@ -266,12 +274,12 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 
 void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 {
-	CSize szPage = m_rectDocumentBounds.Size ();
-	pDC->FillSolidRect(CRect (CPoint (0, 0), szPage), m_paperColor);
+	CSize szPage = m_rectDocumentBounds.Size();
+	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
 
 	pDC->SetMapMode(MM_ANISOTROPIC);
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX),
-	pDC->GetDeviceCaps(LOGPIXELSY));
+		pDC->GetDeviceCaps(LOGPIXELSY));
 
 	pDC->SetWindowExt(100, -100);
 	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
@@ -279,7 +287,7 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 	Draw (bLeftView, pDC, NULL);
 
 	pDC->SetViewportOrg(0, 0);
-	pDC->SetWindowOrg(0,0);
+	pDC->SetWindowOrg(0, 0);
 	pDC->SetMapMode(MM_TEXT);
 }
 
@@ -344,13 +352,13 @@ void CDrawDoc::ComputePageSize()
 	{
 		// GetPrinterDC returns a HDC so attach it
 		CDC dc;
-		HDC hDC= dlg.CreatePrinterDC();
+		HDC hDC = dlg.CreatePrinterDC();
 		ASSERT(hDC != NULL);
 		dc.Attach(hDC);
 
 		// Get the size of the page in loenglish
-		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 1000, 254);
-		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 1000, 254);
+		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 900, 100);
+		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 300, 100);
 	}
 
 #ifndef SHARED_HANDLERS
@@ -369,11 +377,13 @@ void CDrawDoc::ComputePageSize()
 #endif
 }
 
+
+
 void CDrawDoc::OnViewPaperColor()
 {
 #ifndef SHARED_HANDLERS
 	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_VIEW_PAPERCOLOR);
-	m_paperColor = color == (COLORREF) -1 ? RGB(255, 255, 255) : color;
+	m_paperColor = color == (COLORREF)-1 ? RGB(255, 255, 255) : color;
 	m_paperColorLast = m_paperColor;
 
 	SetModifiedFlag();
@@ -404,30 +414,30 @@ void CDrawDoc::OnFileSummaryInfo()
 #ifndef SHARED_HANDLERS
 	ASSERT_VALID(this);
 
-	CPropertySheet sheet( _T("Document Properties") );
+	CPropertySheet sheet(_T("Document Properties"));
 	CSummPage summ;
 	CStatPage stat;
-	sheet.AddPage( &summ );
-	sheet.AddPage( &stat );
+	sheet.AddPage(&summ);
+	sheet.AddPage(&stat);
 
 	summ.m_strAppname = m_pSummInfo->GetAppname();
-	summ.m_strTitle   = m_pSummInfo->GetTitle();
-	summ.m_strSubj    = m_pSummInfo->GetSubject();
-	summ.m_strAuthor  = m_pSummInfo->GetAuthor();
-	summ.m_strKeywd   = m_pSummInfo->GetKeywords();
-	summ.m_strCmt     = m_pSummInfo->GetComments();
-	summ.m_strTempl   = m_pSummInfo->GetTemplate();
+	summ.m_strTitle = m_pSummInfo->GetTitle();
+	summ.m_strSubj = m_pSummInfo->GetSubject();
+	summ.m_strAuthor = m_pSummInfo->GetAuthor();
+	summ.m_strKeywd = m_pSummInfo->GetKeywords();
+	summ.m_strCmt = m_pSummInfo->GetComments();
+	summ.m_strTempl = m_pSummInfo->GetTemplate();
 
-	stat.m_strSavedBy    = m_pSummInfo->GetLastAuthor();
-	stat.m_strRevNum     = m_pSummInfo->GetRevNum();
-	stat.m_strEditTime   = m_pSummInfo->GetEditTime();
-	stat.m_strLastPrint  = m_pSummInfo->GetLastPrintDate();
+	stat.m_strSavedBy = m_pSummInfo->GetLastAuthor();
+	stat.m_strRevNum = m_pSummInfo->GetRevNum();
+	stat.m_strEditTime = m_pSummInfo->GetEditTime();
+	stat.m_strLastPrint = m_pSummInfo->GetLastPrintDate();
 	stat.m_strCreateDate = m_pSummInfo->GetCreateDate();
-	stat.m_strLastSave   = m_pSummInfo->GetLastSaveDate();
-	stat.m_strNumPages   = m_pSummInfo->GetNumPages();
-	stat.m_strNumWords   = m_pSummInfo->GetNumWords();
-	stat.m_strNumChars   = m_pSummInfo->GetNumChars();
-	stat.m_strSecurity   = m_pSummInfo->GetSecurity();
+	stat.m_strLastSave = m_pSummInfo->GetLastSaveDate();
+	stat.m_strNumPages = m_pSummInfo->GetNumPages();
+	stat.m_strNumWords = m_pSummInfo->GetNumWords();
+	stat.m_strNumChars = m_pSummInfo->GetNumChars();
+	stat.m_strSecurity = m_pSummInfo->GetSecurity();
 
 	if (sheet.DoModal() != IDOK)
 		return;
@@ -532,7 +542,6 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			int height = (int)ptrDicomImage->getHeight();
 			void* data = nullptr;
 
-
 			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
 			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
 			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
@@ -565,6 +574,15 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		SetCurrentFrameNo(bLeftView, 0);
 		delete ptrDicomImage;
 	}
+
+	/*BYTE* CDrawDoc::GetBitmapItsAddr() const
+	{
+		if (m_bmi == NULL)
+			return NULL;
+
+		LPBITMAPINFOHEADER lpbmi = (LPBITMAPINFOHEADER)m_bmi;
+		return ((BYTE*)m_bmi + lpbmi->biSize + (sizeof(RGBQUAD) * GetPaletteNums()));
+	}*/
 }
 
 
@@ -605,12 +623,12 @@ void CDrawDoc::FixUpObjectPositions()
 	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
 	{
 		CDrawObj* pObj = m_pObjects->GetNext(pos);
-		pObj->MoveTo(CPoint (-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
+		pObj->MoveTo(CPoint(-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
 	}
 }
 
 #ifdef SHARED_HANDLERS
-void CDrawDoc::InitializeSearchContent ()
+void CDrawDoc::InitializeSearchContent()
 {
 	SetAuthor(m_pSummInfo->GetAuthor());
 	SetTitle(m_pSummInfo->GetTitle());
@@ -625,14 +643,14 @@ void CDrawDoc::InitializeSearchContent ()
 
 	CString strContent;
 
-	LPCTSTR szTypes[] = 
+	LPCTSTR szTypes[] =
 	{
-		_T ("line"),
-		_T ("rectangle"),
-		_T ("rounded rectangle"),
-		_T ("ellipse"),
-		_T ("polyline"),
-		_T ("ole object"),
+		_T("line"),
+		_T("rectangle"),
+		_T("rounded rectangle"),
+		_T("ellipse"),
+		_T("polyline"),
+		_T("ole object"),
 	};
 
 	struct XColor
@@ -641,25 +659,25 @@ void CDrawDoc::InitializeSearchContent ()
 		COLORREF clr;
 	};
 
-	XColor szColors[] = 
+	XColor szColors[] =
 	{
-		{_T("black")  , RGB(  0,   0,   0)},
+		{_T("black")  , RGB(0,   0,   0)},
 		{_T("gray")   , RGB(128, 128, 128)},
 		{_T("white")  , RGB(255, 255, 255)},
 		{_T("maroon") , RGB(128,   0,   0)},
-		{_T("green")  , RGB(  0, 128,   0)},
+		{_T("green")  , RGB(0, 128,   0)},
 		{_T("olive")  , RGB(128, 128,   0)},
-		{_T("navy")   , RGB(  0,   0, 128)},
+		{_T("navy")   , RGB(0,   0, 128)},
 		{_T("purple") , RGB(128,   0, 128)},
-		{_T("teal")   , RGB(  0, 128, 128)},
+		{_T("teal")   , RGB(0, 128, 128)},
 		{_T("red")    , RGB(255,   0,   0)},
-		{_T("lime")   , RGB(  0, 255,   0)},
+		{_T("lime")   , RGB(0, 255,   0)},
 		{_T("yellow") , RGB(255, 255,   0)},
-		{_T("blue")   , RGB(  0,   0, 255)},
+		{_T("blue")   , RGB(0,   0, 255)},
 		{_T("fuchsia"), RGB(255,   0, 255)},
-		{_T("aqua")   , RGB(  0, 255, 255)}
+		{_T("aqua")   , RGB(0, 255, 255)}
 	};
-	BYTE nColorIndex[] = {0, 128, 255};
+	BYTE nColorIndex[] = { 0, 128, 255 };
 
 	POSITION pos = m_objects.GetHeadPosition();
 	while (pos != NULL)
@@ -753,12 +771,12 @@ void CDrawDoc::InitializeSearchContent ()
 		{
 			COLORREF clrOrig = clr;
 			clr = RGB
-				(
+			(
 				nColorIndex[GetRValue(clr) / 86],
 				nColorIndex[GetGValue(clr) / 86],
 				nColorIndex[GetBValue(clr) / 86]
 			);
-			for (int i = 0; i < sizeof(szColors)/ sizeof(XColor); i++)
+			for (int i = 0; i < sizeof(szColors) / sizeof(XColor); i++)
 			{
 				if (szColors[i].clr == clr)
 				{
@@ -767,9 +785,9 @@ void CDrawDoc::InitializeSearchContent ()
 				}
 			}
 
-			if (strClr.IsEmpty ())
+			if (strClr.IsEmpty())
 			{
-				strClr.Format (_T("#%0X"), clrOrig);
+				strClr.Format(_T("#%0X"), clrOrig);
 			}
 		}
 		else
@@ -805,7 +823,7 @@ void CDrawDoc::SetTitle(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Title, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -819,7 +837,7 @@ void CDrawDoc::SetAuthor(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Author, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -833,7 +851,7 @@ void CDrawDoc::SetCompany(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Company, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -847,7 +865,7 @@ void CDrawDoc::SetComment(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Comment, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -861,8 +879,8 @@ void CDrawDoc::SetCopyright(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
-		pChunk->SetTextValue(PKEY_Copyright, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);	
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
+		pChunk->SetTextValue(PKEY_Copyright, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
 }
@@ -875,7 +893,7 @@ void CDrawDoc::SetKeywords(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Keywords, value);
 		SetChunkValue(pChunk);
 	}
@@ -889,7 +907,7 @@ void CDrawDoc::SetLastAuthor(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Document_LastAuthor, value, CHUNK_VALUE, 0, 0, 0, CHUNK_EOP);
 		SetChunkValue(pChunk);
 	}
@@ -903,7 +921,7 @@ void CDrawDoc::SetSearchContents(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = new CMFCFilterChunkValueImpl;
+		CMFCFilterChunkValueImpl* pChunk = new CMFCFilterChunkValueImpl;
 		pChunk->SetTextValue(PKEY_Search_Contents, value, CHUNK_TEXT);
 		SetChunkValue(pChunk);
 	}
@@ -915,8 +933,8 @@ void CDrawDoc::SetSearchContents(const CString& value)
 void CDrawDoc::OnAffinetranformMirror()
 {
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppMirror(imgSrc, imgDst);
+		ByteImage imgDst;
+	Mirror(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
@@ -929,13 +947,13 @@ void CDrawDoc::OnAffinetranformRotation()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst;
 		switch (dlg.m_nRotate)
 		{
-		case 0: IppRotate90(imgSrc, imgDst); break;
-		case 1: IppRotate180(imgSrc, imgDst); break;
-		case 2: IppRotate270(imgSrc, imgDst); break;
-		case 3: IppRotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+		case 0: Rotate90(imgSrc, imgDst); break;
+		case 1: Rotate180(imgSrc, imgDst); break;
+		case 2: Rotate270(imgSrc, imgDst); break;
+		case 3: Rotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
 		}
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
@@ -946,7 +964,7 @@ void CDrawDoc::OnAffinetranformRotation()
 		else
 			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
 		AfxNewBitmap(dib);*/
-		
+
 	}
 }
 
@@ -959,14 +977,14 @@ void CDrawDoc::OnAffinetranformScaling()
 	if (dlg.DoModal() == IDOK)
 	{
 		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst;
 		switch (dlg.m_nInterpolation)
 		{
-		case 0: IppResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
+		case 0: ResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
 			ht); break;
-		case 1: IppResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
+		case 1: ResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
 			ght); break;
-		case 2: IppResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
+		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
 			t); break;
 		}
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
@@ -997,15 +1015,14 @@ void CDrawDoc::OnAffinetranformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB dib;
+		//dib.CreateRgbBitmap();
+		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
+		//ByteImage imgDst;
+		//Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		//CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppTranslate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
-			AfxPrintInfo(_T("[이동 변환] 입력 영상: %s, 가로 이동: %d, 세로 이동: %d"),
-				GetTitle(), dlg.m_nNewSX, dlg.m_nNewSY);
-		AfxNewBitmap(dib);*/
+		//AfxNewBitmap(dib);
 	}
 }
 
@@ -1013,8 +1030,8 @@ void CDrawDoc::OnAffinetranformTranslation()
 void CDrawDoc::OnAffinetransformFlip()
 {
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppFlip(imgSrc, imgDst);
+		ByteImage imgDst;
+	Flip(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
 		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
@@ -1028,12 +1045,12 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
+			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지 
 
 		if (dlg.m_nNoiseType == 0)
-			IppNoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
 		else
-			IppNoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
+			NoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
@@ -1051,8 +1068,8 @@ void CDrawDoc::OnFeatureextractionBlur()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppFloatImage imgDst;
-		IppFilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
+			FloatImage imgDst;
+		FilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
 			AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
@@ -1066,10 +1083,8 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 	CReduceNoise dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppFilterMedian(imgSrc, imgDst);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
+		/*
+		FilterMedian(imgSrc, imgDst);
 
 			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
@@ -1079,12 +1094,13 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		IppByteImage imgDst;
-	IppFilterLaplacian(imgSrc, imgDst);
-	CONVERT_IMAGE_TO_DIB(imgDst, dib)
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
+		ByteImage imgDst; 
+	FilterLaplacian(imgSrc, imgDst);//영상 처리 
+	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib 
 		AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);*/
+	AfxNewBitmap(dib);//bitmap new  
+	*/ 
 }
 
 #include "CBrightnessDlg.h"
@@ -1117,21 +1133,6 @@ void CDrawDoc::OnFilteringBrightness()
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
-#include "CFilterMedian.h"
-void CDrawDoc::OnFilteringRemovenoise()
-{
-	CTranslationDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			IppByteImage imgDst;
-		IppFilterMedian(imgSrc, imgDst);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
-		AfxNewBitmap(dib);*/
-	}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
 
 #include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
@@ -1140,7 +1141,8 @@ void CDrawDoc::OnFilteringTograyscale()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) {
+			if (m_vectorImageWnd[i]->m_bClicked) 
+			{
 				m_vectorImageWnd[i]->m_nMode = 4;
 			}
 		}
@@ -1155,8 +1157,7 @@ void CDrawDoc::OnFilteringHistogram()
 	CHistogramDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*CHistogramDlg dlg;
-		for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 			if (m_vectorImageWnd[i]->m_bClicked) {
 				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
 			}

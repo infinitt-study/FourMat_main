@@ -91,9 +91,6 @@
     <ClCompile Include="CBrightnessDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CFilterMedian.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CGrayDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -109,9 +106,8 @@
     <ClCompile Include="CWindowLevel.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="IppDib.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
+    <ClCompile Include="CConvertDataType.cpp" />
+    <ClCompile Include="CFourMatDIB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -195,7 +191,7 @@
     <ClInclude Include="CScalingDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="IppImage.h">
+    <ClInclude Include="AccessPixel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="RGBBYTE.h">
@@ -216,27 +212,23 @@
     <ClInclude Include="CBrightnessDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CFilterMedian.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CGrayDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CHistogramDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CReduceNoise.h">
+    <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CInverse.h">
+    <ClInclude Include="CReduceNoise.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CWindowLevel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="IppDib.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
+    <ClInclude Include="CConvertDataType.h" />
+    <ClInclude Include="CFourMatDIB.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

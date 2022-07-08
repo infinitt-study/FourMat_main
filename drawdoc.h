@@ -12,6 +12,9 @@
 #include "drawobj.h"
 #include "summinfo.h"
 
+#include "AccessPixel.h"
+#include "RGBBYTE.h"
+
 class CDrawView;
 
 class CDrawDoc : public COleDocument
@@ -35,7 +38,7 @@ public:
 		}
 	}
 
-	//¼öÁ¤ -> ¿¬°áµÈ°Å ´Ù ¼öÁ¤
+	//ìˆ˜ì • -> ì—°ê²°ëœê±° ë‹¤ ìˆ˜ì •
 	CDrawObjList* GetObjects(BOOL bLeftView)
 	{ 
 		return bLeftView ? m_pObjects : m_pRightObjects;
@@ -121,6 +124,16 @@ public:
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
+	//í˜„ë¯¼
+	CImage m_bmp;
+	LONG    m_nWidth;      // ë¹„íŠ¸ë§µ ê°€ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	LONG    m_nHeight;     // ë¹„íŠ¸ë§µ ì„¸ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	WORD    m_nBitCount;   // í”½ì…€ ë‹¹ ë¹„íŠ¸ ìˆ˜
+	DWORD   m_nDibSize;    // DIB ì „ì²´ í¬ê¸° (BITMAPINFOHEADER + ìƒ‰ìƒ í…Œì´ë¸” + í”½ì…€ ë°ì´í„°)
+	BYTE* m_pDib;        // DIB ì‹œì‘ ì£¼ì†Œ (BITMAPINFOHEADER ì‹œì‘ ì£¼ì†Œ)
+	int m_nPitch;
+	BYTE* lpvBits;
+	
 
 public:
 	CString m_strFolderPath;
@@ -129,7 +142,7 @@ public:
 	CString m_strRightFilePath;
 
 	void LoadDicom(BOOL bLeftView);
-	//DicomImage* m_pImage; // µû·Î Áö¿ì±â
+	//DicomImage* m_pImage; // ë”°ë¡œ ì§€ìš°ê¸°
 	BITMAPINFO m_bmiLeft;
 	BITMAPINFO m_bmiRight;
 	BITMAPINFO& GetBmi(BOOL bLeftView)
@@ -142,15 +155,14 @@ public:
 		return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
 	}
 
-
 	//std::vector<BITMAPINFO> m_listBitmap;
 	std::vector<void*> m_listData;
 	std::vector<void*> m_listRightData;
 
-	long m_nCurrentFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÇöÀçÆäÀÌÁö
+	long m_nCurrentFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ í˜„ì¬í˜ì´ì§€
 	long m_nCurrentRightFrameNo;
 
-	long m_nTotalFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÀüÃ¼ÆäÀÌÁö
+	long m_nTotalFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ ì „ì²´í˜ì´ì§€
 	long m_nTotalRightFrameNo;
 
 protected:
@@ -171,11 +183,11 @@ public:
 	afx_msg void OnFeatureextractionReducenoise();
 	afx_msg void OnFeatureextractionSharpening();
 	afx_msg void OnFilteringBrightness();
-	//afx_msg void OnFilteringContrast();
-	afx_msg void OnFilteringRemovenoise();
 	afx_msg void OnFilteringTograyscale();
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
+
 	void HelperLoadDicom(BOOL bLeftView);
+
 };

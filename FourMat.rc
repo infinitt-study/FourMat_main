@@ -754,7 +754,6 @@ BEGIN
         END
         POPUP "Filtering"
         BEGIN
-            MENUITEM "Remove Noise",                ID_FILTERING_REMOVENOISE
             MENUITEM "Brightness",                  ID_FILTERING_BRIGHTNESS
             MENUITEM "Inverse",                     ID_FILTERING_INVERSE
             MENUITEM "To gray scale",               ID_FILTERING_TOGRAYSCALE

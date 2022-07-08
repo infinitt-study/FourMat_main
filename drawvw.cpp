@@ -111,7 +111,6 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 //	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
 //	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
 //	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
-//	ON_COMMAND(ID_FILTERING_REMOVENOISE, &CDrawView::OnFilteringRemovenoise)
 //	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
 //	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
 //	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
@@ -277,13 +276,15 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	// these extents provide .01 logical inches
 
 	pDC->SetMapMode(MM_ANISOTROPIC);
-
+	CDrawDoc* pDoc = GetDocument();
 	float zoom = 1;
-	if (nullptr == pInfo) {
+
+	if (nullptr != pInfo) {
+		zoom = pDoc->m_zoom;
 		zoom = 1.0f;
 	}
 	//멤버 변수 ctrl flag : 
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)*zoom, pDC->GetDeviceCaps(LOGPIXELSY)*zoom);
+	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom, pDC->GetDeviceCaps(LOGPIXELSY)* zoom);
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
@@ -291,6 +292,8 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+
+
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -360,11 +363,13 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	const int width = bmi.bmiHeader.biWidth;
 	const int height = abs(bmi.bmiHeader.biHeight);
-
-	SetDIBitsToDevice(pDrawDC->m_hDC, 
+	//이미지를 그려주는 함수
+	SetDIBitsToDevice(pDrawDC->m_hDC,  
 		-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
 		0, 0, 0, height, 
+
 		pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
+
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
@@ -805,6 +810,8 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
+
+
 }
 
 void CDrawView::OnLButtonUp(UINT nFlags, CPoint point)
@@ -1812,33 +1819,15 @@ void CDrawView::ResetPreviewState()
 
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	/*if ((nFlags & MK_CONTROL) != MK_CONTROL)
-		return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-		
-	if (zDelta < 0)
+
+   if ((nFlags & MK_SHIFT) == MK_SHIFT)
 	{
-
-		zoom += 10;
-		if (zoom > 100) zoom = 100;
-
-	}
-	else
-	{
-		zoom -= 10;
-		if (zoom > 100) zoom = 1;
-	}
-	RedrawWindow();
-	1. 다시 부를 수 있는지, 
-	2. 안된다면 ondraw 에서 다시 불러올수 있는지 
-		*/
-
-	if ((nFlags & MK_SHIFT) == MK_SHIFT) {
-
 		CDrawDoc* pDoc = GetDocument();
 		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}
-
+	else
 	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-}
+
+	}
 
