@@ -81,6 +81,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame construction/destruction
 
+
 CMainFrame::CMainFrame()
 {
 	m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_SCENIC);

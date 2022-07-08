@@ -90,14 +90,14 @@ void CSearchFileView::OnInitialUpdate()
 	char pBuf[256];
 	GetCurrentDirectory(256, pBuf);
 
-    //실행되는 위치 -> 파일폴더
-    strcat(pBuf, "\\파일");
+    //실행되는 위치 -> "목록" 폴더
+    strcat(pBuf, "\\목록");
 
 	m_strFileLocation.Format("%s", pBuf);
 	UpdateData(FALSE);
 
 
-    //처음 시작할 때는 바로 뜨게
+    //처음 시작 최초 1회는 자동으로 목록 출력
     m_lstResult.DeleteAllItems();
 
     m_strToken = m_strFileName;
@@ -239,8 +239,8 @@ void CSearchFileView::OnClickedButtonStart()
     UpdateData(TRUE);
     m_lstResult.DeleteAllItems();
 
-    m_strToken = m_strFileName;
-    m_strToken.MakeUpper();
+    //m_strToken = m_strFileName;
+    //m_strToken.MakeUpper();
 
     if (m_bSub == TRUE) {
         SearFile(m_strFileLocation);

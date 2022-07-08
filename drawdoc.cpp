@@ -147,6 +147,7 @@ void CDrawDoc::OnUnloadHandler()
 
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
+
 }
 
 BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화  
@@ -552,16 +553,14 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
 
 				listData.push_back(data);
+
 				objectList.push_back(new CDrawObjList());
 
 				//이미지의 주소를 메모리 해제 한다
 				//delete[] data;
 				data = nullptr;
 			}
-
-
 			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
-
 		}
 		SetCurrentFrameNo(bLeftView, 0);
 		delete ptrDicomImage;
