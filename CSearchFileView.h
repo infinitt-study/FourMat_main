@@ -30,7 +30,6 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	BOOL m_bStop;
 	CString m_strToken;
 	CImageList m_img;
 	CButton m_btnStart;
@@ -45,7 +44,6 @@ public:
 	void SearFileNotSub();
 	void SearFile(CString strStartFolder);
 	afx_msg void OnClickedButtonStart();
-	afx_msg void OnClickedButtonStop();
 	afx_msg void OnClickedButtonSingle();
 };
 

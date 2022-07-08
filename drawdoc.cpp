@@ -245,7 +245,7 @@ void CDrawDoc::Serialize(CArchive& ar)
 /////////////////////////////////////////////////////////////////////////////
 // CDrawDoc implementation
 
-//수정 못함
+//수정
 void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 {
 	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
