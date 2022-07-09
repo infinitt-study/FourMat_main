@@ -17,10 +17,7 @@ public:
 	BOOL CreateRgbBitmap(LONG nWidth, LONG nHeight, BYTE* pImageData);
 	void DestroyBitmap();
 
-	// 파일 입출력
-	BOOL Load(const char* filename);
-	BOOL Save(const char* filename);
-
+	
 	// 비트맵 화면 출력
 	void Draw(HDC hdc, int dx = 0, int dy = 0);
 	void Draw(HDC hdc, int dx, int dy, int dw, int dh, DWORD dwRop = SRCCOPY);
@@ -44,11 +41,7 @@ public:
 	int         GetPaletteNums() const;
 	BOOL        IsValid() const { return (m_pDib != NULL); }
 
-private:
-	// BMP 파일 입출력
-	BOOL        LoadBMP(const char* filename);
-	BOOL        SaveBMP(const char* filename);
-
+	
 private:
 	LONG    m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
 	LONG    m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)

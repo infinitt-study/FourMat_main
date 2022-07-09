@@ -34,7 +34,7 @@
 #include "splitfrm.h"
 #include "CConvertDataType.h"
 #include "CAffineTransform.h"
-
+#include "CFilter.h"
 
 //#include "CConvert.h"
 
@@ -945,6 +945,12 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 void CDrawDoc::OnAffinetranformMirror()
 {
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage imgSrc;
+	ByteImage imgDst;
+	Mirror(imgSrc, imgDst);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 		ByteImage imgDst;
 	Mirror(imgSrc, imgDst);
@@ -959,6 +965,26 @@ void CDrawDoc::OnAffinetranformRotation()
 	CRotationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+
+		FourMatDIBToGrayImage(dib, imgSrc);
+		switch (dlg.m_nRotate)
+		{
+		case 0: Rotate90(imgSrc, imgDst); break;
+		case 1: Rotate180(imgSrc, imgDst); break;
+		case 2: Rotate270(imgSrc, imgDst); break;
+		case 3: Rotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
+		}
+		FourMatGrayToDIBImage(imgDst, dib);
+		//TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
+		//if (dlg.m_nRotate != 3)
+			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+		//else
+			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 			ByteImage imgDst;
 		switch (dlg.m_nRotate)
@@ -985,9 +1011,27 @@ void CDrawDoc::OnAffinetranformRotation()
 void CDrawDoc::OnAffinetranformScaling()
 {
 	CScalingDlg dlg;
-	/*dlg.m_nOldWidth = m_Dib.GetWidth();
-	dlg.m_nOldHeight = m_Dib.GetHeight();
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	dlg.m_nOldWidth = dib.GetWidth();
+	dlg.m_nOldHeight = dib.GetHeight();
 	if (dlg.DoModal() == IDOK)
+	{
+		ByteImage imgSrc;
+		ByteImage imgDst;
+
+		FourMatDIBToGrayImage(dib, imgSrc);
+		switch (dlg.m_nInterpolation)
+		{
+		case 0: ResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
+		case 1: ResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
+		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
+		}
+		FourMatGrayToDIBImage(imgDst, dib);
+	//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	}
+	/*if (dlg.DoModal() == IDOK)
 	{
 		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 			ByteImage imgDst;
@@ -1052,6 +1096,12 @@ void CDrawDoc::OnAffinetranformTranslation()
 
 void CDrawDoc::OnAffinetransformFlip()
 {
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage imgSrc;
+	ByteImage imgDst;
+	Flip(imgSrc, imgDst);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 		ByteImage imgDst;
 	Flip(imgSrc, imgDst);
@@ -1117,6 +1167,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
+
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
 		ByteImage imgDst; 
 	FilterLaplacian(imgSrc, imgDst);//영상 처리 
