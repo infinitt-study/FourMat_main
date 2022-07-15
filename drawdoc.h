@@ -199,4 +199,8 @@ public:
 
 	afx_msg void OnFeatureextractionHistogramequalization();
 	afx_msg void OnFeatureextractionHistogramstretching();
+	afx_msg void OnMolphologyClosing();
+	afx_msg void OnMolphologyDilation();
+	afx_msg void OnMolphologyErosion();
+	afx_msg void OnMolphologyOpening();
 };

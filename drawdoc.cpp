@@ -36,6 +36,7 @@
 #include "CAffineTransform.h"
 #include "CFilter.h"
 #include "CImprovement.h"
+#include "CMorphology.h"
 //#include "CConvert.h"
 
 #include <math.h>
@@ -95,6 +96,10 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnFeatureextractionHistogramequalization)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, &CDrawDoc::OnFeatureextractionHistogramstretching)
+	ON_COMMAND(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnMolphologyClosing)
+	ON_COMMAND(ID_MOLPHOLOGY_DILATION, &CDrawDoc::OnMolphologyDilation)
+	ON_COMMAND(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnMolphologyErosion)
+	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -955,7 +960,9 @@ void CDrawDoc::OnAffinetranformMirror()
 	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
 	ByteImage imgSrc;
 	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, imgSrc);
 	Mirror(imgSrc, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
@@ -1106,7 +1113,9 @@ void CDrawDoc::OnAffinetransformFlip()
 	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
 	ByteImage imgSrc;
 	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, imgSrc);
 	Flip(imgSrc, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
@@ -1333,5 +1342,52 @@ void CDrawDoc::OnFeatureextractionHistogramstretching()
 	HistogramStretching(img);
 	FourMatGrayToDIBImage(img, dib);
 
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+}
+
+
+void CDrawDoc::OnMolphologyClosing()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, img);
+	MorphologyClosing(img, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+}
+
+
+void CDrawDoc::OnMolphologyDilation()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, img);
+	MorphologyGrayDilation(img, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+}
+
+void CDrawDoc::OnMolphologyErosion()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, img);
+	MorphologyGrayErosion(img, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+}
+
+
+void CDrawDoc::OnMolphologyOpening()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, img);
+	MorphologyOpening(img, imgDst);
+	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 }
