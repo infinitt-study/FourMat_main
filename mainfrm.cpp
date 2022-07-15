@@ -390,12 +390,12 @@ void CMainFrame::InitMainButton()
 
 	CMFCRibbonMainPanel* pMainPanel = m_wndRibbonBar.AddMainCategory(_T("File"), IDB_RIBBON_FILESMALL, IDB_RIBBON_FILELARGE);
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_NEW, _T("&New"), 0, 0));
-	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_OPEN, _T("&Open..."), 1, 1));
+	/*pMainPanel->Add(new CMFCRibbonButton(ID_FILE_OPEN, _T("&Open..."), 1, 1));
 
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE, _T("&Save"), 2, 2));
-	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE_AS, _T("Save &As..."), 3, 3));
+	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE_AS, _T("Save &As..."), 3, 3));*/
 
-	std::auto_ptr<CMFCRibbonButton> apBtnPrint(new CMFCRibbonButton(ID_FILE_PRINT, _T("&Print"), 4, 4));
+	/*std::auto_ptr<CMFCRibbonButton> apBtnPrint(new CMFCRibbonButton(ID_FILE_PRINT, _T("&Print"), 4, 4));
 
 	apBtnPrint->AddSubItem(new CMFCRibbonLabel(_T("Preview and print the document")));
 	apBtnPrint->AddSubItem(new CMFCRibbonButton(ID_FILE_PRINT_DIRECT, _T("&Quick Print"), 7, 7, TRUE));
@@ -406,13 +406,14 @@ void CMainFrame::InitMainButton()
 
 	pMainPanel->AddSeparator();
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SEND_MAIL, _T("Sen&d..."), 8, 8));
-	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SUMMARYINFO, _T("Summary &Info..."), 9, 9));
+	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SUMMARYINFO, _T("Summary &Info..."), 9, 9));*/
 
-	pMainPanel->AddSeparator();
+	//pMainPanel->AddSeparator();
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_CLOSE, _T("&Close"), 5, 5));
+	pMainPanel->Add(new CMFCRibbonButton(ID_TOOLS_OPTIONS, _T("Opt&ions"), 9, 9));
 
-	pMainPanel->AddRecentFilesList(_T("Recent Documents"));
-	pMainPanel->AddToBottom(new CMFCRibbonMainPanelButton(ID_TOOLS_OPTIONS, _T("Opt&ions"), 10));
+	//pMainPanel->AddRecentFilesList(_T("Recent Documents"));
+	//pMainPanel->AddToBottom(new CMFCRibbonMainPanelButton(ID_TOOLS_OPTIONS, _T("Opt&ions"), 10));
 	pMainPanel->AddToBottom(new CMFCRibbonMainPanelButton(ID_APP_EXIT, _T("E&xit"), 11));
 }
 
