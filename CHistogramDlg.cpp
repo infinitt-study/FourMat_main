@@ -4,19 +4,14 @@
 #include "FourMat.h"
 #include "CHistogramDlg.h"
 #include "afxdialogex.h"
-
-
 // CHistogramDlg 대화 상자
-
 IMPLEMENT_DYNAMIC(CHistogramDlg, CDialogEx)
-
 CHistogramDlg::CHistogramDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HISTOGRAM, pParent)
 	, m_nHistogram(0)
 {
 
 }
-
 CHistogramDlg::~CHistogramDlg()
 {
 }
@@ -36,7 +31,6 @@ END_MESSAGE_MAP()
 
 
 // CHistogramDlg 메시지 처리기
-
 
 BOOL CHistogramDlg::OnInitDialog()
 {
@@ -63,3 +57,4 @@ void CHistogramDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
+

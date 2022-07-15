@@ -90,7 +90,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
-	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
+	//ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnFeatureextractionHistogramequalization)
@@ -1221,33 +1221,21 @@ void CDrawDoc::OnFeatureextractionSharpening()
 #include "CBrightnessDlg.h"
 void CDrawDoc::OnFilteringBrightness()
 {
-
 	CBrightnessDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) {
-				m_vectorImageWnd[i]->m_nChangeBright = dlg.m_nBright;
-				m_vectorImageWnd[i]->m_nChangeContrast = dlg.m_nContrast;
-				m_vectorImageWnd[i]->m_nMode = 1;
-			}
-		}
-		Invalidate(TRUE);*/
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage img;
+
+		FourMatDIBToByteImage(dib, img);
+		Brightness(img, dlg.m_nBrightness);
+		Contrast(img, dlg.m_nContrast);
+		FourMatGrayToDIBImage(img, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
-
-//void CDrawDoc::OnFilteringContrast()
-//{
-//	CTranslationDlg dlg;
-//	if (dlg.DoModal() == IDOK)
-//	{
-//
-//	}
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
 
 #include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
@@ -1255,13 +1243,17 @@ void CDrawDoc::OnFilteringTograyscale()
 	CGrayDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) 
-			{
-				m_vectorImageWnd[i]->m_nMode = 4;
-			}
-		}
-		Invalidate(TRUE);*/
+			//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+			//ByteImage img;
+
+			//FourMatDIBToByteImage(dib, img);
+	  //       //(img, dlg.m);
+			//
+			//FourMatGrayToDIBImage(img, dib);
+
+			//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+		
+
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -1272,6 +1264,8 @@ void CDrawDoc::OnFilteringHistogram()
 	CHistogramDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+
+	
 		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 			if (m_vectorImageWnd[i]->m_bClicked) {
 				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
@@ -1296,6 +1290,14 @@ void CDrawDoc::OnFilteringWindowlevel()
 
 void CDrawDoc::OnFilteringInverse()
 {
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage img;
+
+		FourMatDIBToByteImage(dib, img);
+		Inverse(img);
+		FourMatGrayToDIBImage(img, dib);
+	
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 		if (m_vectorImageWnd[i]->m_bClicked) {
 			m_vectorImageWnd[i]->m_nMode = 2;

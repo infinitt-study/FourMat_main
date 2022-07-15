@@ -21,8 +21,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	
+	
 	CSliderCtrl m_sliderHistogram;
 	int m_nHistogram;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+
+	
 };
