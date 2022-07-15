@@ -258,10 +258,12 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		Invalidate();
 		break;
 		
-	//수정
 	case HINT_UPDATE_MULTIFILEPATH:
-		pDrawDoc->LoadDicom(TRUE);
-		pDrawDoc->LoadDicom(FALSE);
+		if (pDrawDoc->m_bFirstLoad) {
+			pDrawDoc->LoadDicom(TRUE);
+			pDrawDoc->LoadDicom(FALSE);
+			pDrawDoc->m_bFirstLoad = false;
+		}
 		break;
 
 	case HINT_DICOM_IMAGE_REDRAW:
