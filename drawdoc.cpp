@@ -125,16 +125,6 @@ CDrawDoc::~CDrawDoc()
 
 void CDrawDoc::OnUnloadHandler()
 {
-	if (m_bIsChange) {
-		if (IDYES == AfxMessageBox(_T("저장하시겠습니까?"), MB_YESNO)) {
-			OnObjectSavedraw();
-		}
-		/*else if(IDNO)
-		{
-			AfxMessageBox(_T("NO선택"));
-		}*/
-	}
-
 	for (auto& pObjects : m_pageLeftObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -1200,7 +1190,10 @@ void CDrawDoc::OnFilteringInverse()
 
 void CDrawDoc::OnObjectSavedraw()
 {
-	
+	if (!m_bIsChange) {
+		AfxMessageBox(_T("변경된 사항이 없습니다."));
+		return;
+	}
 	SaveDraw(m_strFileName, m_pageLeftObjects);
 	if (!m_strRightFileName.IsEmpty()) {
 		SaveDraw(m_strRightFileName, m_pageRightObjects);

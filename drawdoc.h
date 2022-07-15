@@ -159,7 +159,9 @@ public:
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 	long m_nTotalRightFrameNo;
 
-	bool m_bIsChange;
+	bool m_bIsChange; // 변경사항 있있으면 true
+
+
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
