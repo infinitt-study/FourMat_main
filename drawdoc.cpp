@@ -1,4 +1,4 @@
-// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
+ï»¿// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
 // included with the MFC C++ library software.  
@@ -121,11 +121,20 @@ CDrawDoc::CDrawDoc()
 CDrawDoc::~CDrawDoc()
 {
 	OnUnloadHandler();
-	//m_listData.clear();
 }
 
 void CDrawDoc::OnUnloadHandler()
 {
+	if (m_bIsChange) {
+		if (IDYES == AfxMessageBox(_T("ì €ì¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"), MB_YESNO)) {
+			OnObjectSavedraw();
+		}
+		/*else if(IDNO)
+		{
+			AfxMessageBox(_T("NOì„ íƒ"));
+		}*/
+	}
+
 	for (auto& pObjects : m_pageLeftObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -134,8 +143,7 @@ void CDrawDoc::OnUnloadHandler()
 		delete pObjects;
 	}
 	m_pageLeftObjects.clear();
-
-	//¼öÁ¤
+	
 	for (auto& pObjects : m_pageRightObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -145,26 +153,12 @@ void CDrawDoc::OnUnloadHandler()
 	}
 	m_pageRightObjects.clear();
 
-
-
-	//for (const auto& bitmapData : m_listData) {
-	//	free(bitmapData);
-	//}
-	//m_listData.clear();
-
-	////¼öÁ¤
-	//for (const auto& bitmapData : m_listRightData) {
-	//	free(bitmapData);
-	//}
-	//m_listRightData.clear();
-
-
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
 
 }
 
-BOOL CDrawDoc::OnNewDocument() //doc º¯¼ö ÃÊ±âÈ­  
+BOOL CDrawDoc::OnNewDocument() //doc ë³€ìˆ˜ ì´ˆê¸°í™”  
 {
 	if (!COleDocument::OnNewDocument())
 		return FALSE;
@@ -181,7 +175,7 @@ BOOL CDrawDoc::OnNewDocument() //doc º¯¼ö ÃÊ±âÈ­
 	m_pSummInfo->RecordCreateDate();
 	m_pSummInfo->SetNumPages(1);
 	// NumWords, NumChars default to 0
-	m_pSummInfo->SetAppname(_T("DrawCli")); // ¼Ó¼º º¯°æÇØº¸±â
+	m_pSummInfo->SetAppname(_T("FourMat")); // ì†ì„± ë³€ê²½í•´ë³´ê¸°
 	// Security defaults to 0
 
 	m_bPen = TRUE;
@@ -206,6 +200,7 @@ BOOL CDrawDoc::OnNewDocument() //doc º¯¼ö ÃÊ±âÈ­
 	m_zoom = 1;
 
 	m_bFirstLoad = true;
+	m_bIsChange = false;
 
 	return TRUE;
 }
@@ -262,7 +257,7 @@ void CDrawDoc::Serialize(CArchive& ar)
 /////////////////////////////////////////////////////////////////////////////
 // CDrawDoc implementation
 
-//¼öÁ¤
+//ìˆ˜ì •
 void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 {
 	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
@@ -312,7 +307,8 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 
 	pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 }
 
 void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
@@ -325,7 +321,8 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 	if (pos != NULL)
 		pObjects->RemoveAt(pos);
 	// set document modified flag
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 
 #ifndef SHARED_HANDLERS
 	// call remove for each view so that the view can remove from m_selection
@@ -400,7 +397,9 @@ void CDrawDoc::OnViewPaperColor()
 	m_paperColor = color == (COLORREF)-1 ? RGB(255, 255, 255) : color;
 	m_paperColorLast = m_paperColor;
 
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
+
 	UpdateAllViews(NULL);
 #endif
 }
@@ -463,7 +462,8 @@ void CDrawDoc::OnFileSummaryInfo()
 	m_pSummInfo->SetTemplate(summ.m_strTempl);
 	m_pSummInfo->SetTitle(summ.m_strTitle);
 
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 #endif
 }
 
@@ -500,26 +500,26 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
 
 		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
-		// ¾ĞÃàµÈ ÆÄÀÏ(¿©·¯ÀåÀº ¹«Á¶°Ç ¾ĞÃà µÇ¾î ÀÖÀ½)
+		// ì••ì¶•ëœ íŒŒì¼(ì—¬ëŸ¬ì¥ì€ ë¬´ì¡°ê±´ ì••ì¶• ë˜ì–´ ìˆìŒ)
 		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
-			//jpeg ÀÏ °æ¿ì  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
-			//¿©·¯ÀåÀÇ ÀÌ¹ÌÁö°¡ Á¸ÀçÇÔ ÇÁ·¹ÀÓ ¼ö¸¦ ÀĞ´Â´Ù 
+			//jpeg ì¼ ê²½ìš°  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
+			//ì—¬ëŸ¬ì¥ì˜ ì´ë¯¸ì§€ê°€ ì¡´ì¬í•¨ í”„ë ˆì„ ìˆ˜ë¥¼ ì½ëŠ”ë‹¤ 
 			bLeftView ? dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalFrameNo) : dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalRightFrameNo);
 		}
 
-		// ¾ĞÃà¾ÈµÈ ÆÄÀÏ
+		// ì••ì¶•ì•ˆëœ íŒŒì¼
 		else if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2")) {
-			//dicom ±âº» ¿µ»óÀ¸·Î 1°³ÀÇ ÇÁ·¹ÀÓ ¸¸ Á¸ÀçÇÔ ("1.2.840.10008.1.2")
+			//dicom ê¸°ë³¸ ì˜ìƒìœ¼ë¡œ 1ê°œì˜ í”„ë ˆì„ ë§Œ ì¡´ì¬í•¨ ("1.2.840.10008.1.2")
 			bLeftView ? m_nTotalFrameNo = 1 : m_nTotalRightFrameNo = 1;
 		}
 
 
 		E_TransferSyntax xfer = dataset->getOriginalXfer();
-		//µ¥ÀÌÅÍ ¼ÂÀ¸·Î ÀÌ¹ÌÁö¸¦ ¾ĞÃà ÇØÁ¦ ÇØ¼­ »ı¼ºÇÑ´Ù 
+		//ë°ì´í„° ì…‹ìœ¼ë¡œ ì´ë¯¸ì§€ë¥¼ ì••ì¶• í•´ì œ í•´ì„œ ìƒì„±í•œë‹¤ 
 		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalFrameNo) : new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalRightFrameNo);
 
 		if (ptrDicomImage) {
-			//ÀÌ¹ÌÁöÀÇ Æø°ú ³ôÀÌ¸¦ ¾ò´Â´Ù 
+			//ì´ë¯¸ì§€ì˜ í­ê³¼ ë†’ì´ë¥¼ ì–»ëŠ”ë‹¤ 
 			int width = (int)ptrDicomImage->getWidth();
 			int height = (int)ptrDicomImage->getHeight();
 			void* data = nullptr;
@@ -532,9 +532,9 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
-				//ÇÁ·¹ÀÓÀÇ À§Ä¡¿¡ ÀÖ´Â ¿µ»ó Á¤º¸¸¦ À©µµ¿ì ÀÌ¹ÌÁö 24bit·Î »ı¼ºÇÏ¿© ¾ò´Â´Ù 
+				//í”„ë ˆì„ì˜ ìœ„ì¹˜ì— ìˆëŠ” ì˜ìƒ ì •ë³´ë¥¼ ìœˆë„ìš° ì´ë¯¸ì§€ 24bitë¡œ ìƒì„±í•˜ì—¬ ì–»ëŠ”ë‹¤ 
 				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
-				//ÀÌ¹ÌÁöÀÇ ÁÖ¼Ò¸¦ Ãâ·ÂÇÑ´Ù
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ì¶œë ¥í•œë‹¤
 
 				CFourMatDIB fourMatDIB;
 				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*) data);
@@ -543,7 +543,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 				objectList.push_back(new CDrawObjList());
 
-				//ÀÌ¹ÌÁöÀÇ ÁÖ¼Ò¸¦ ¸Ş¸ğ¸® ÇØÁ¦ ÇÑ´Ù
+				//ì´ë¯¸ì§€ì˜ ì£¼ì†Œë¥¼ ë©”ëª¨ë¦¬ í•´ì œ í•œë‹¤
 				delete[] data;
 				data = nullptr;
 			}
@@ -917,7 +917,7 @@ void CDrawDoc::OnAffinetranformMirror()
 		ByteImage imgDst;
 	Mirror(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[ÁÂ¿ì ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ì¢Œìš° ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
@@ -939,11 +939,11 @@ void CDrawDoc::OnAffinetranformRotation()
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			TCHAR* rotate[] = { _T("90µµ"), _T("180µµ"), _T("270µµ") };
+			TCHAR* rotate[] = { _T("90ë„"), _T("180ë„"), _T("270ë„") };
 		if (dlg.m_nRotate != 3)
-			AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %s"), GetTitle(), rotate[dlg.m_nRotate]);
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %s"), GetTitle(), rotate[dlg.m_nRotate]);
 		else
-			AfxPrintInfo(_T("[È¸Àü º¯È¯] ÀÔ·Â ¿µ»ó: %s, È¸Àü °¢µµ: %4.2fµµ"), GetTitle(), dlg.m_fAngle);
+			AfxPrintInfo(_T("[íšŒì „ ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, íšŒì „ ê°ë„: %4.2fë„"), GetTitle(), dlg.m_fAngle);
 		AfxNewBitmap(dib);*/
 
 	}
@@ -969,10 +969,10 @@ void CDrawDoc::OnAffinetranformScaling()
 			t); break;
 		}
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			TCHAR* interpolation[] = { _T("ÃÖ±Ù¹æ ÀÌ¿ô º¸°£¹ı"), _T("¾ç¼±Çü º¸°£¹ı"
-			), _T("3Â÷ È¸¼± º¸°£¹ı") };
-		AfxPrintInfo(_T("[Å©±â º¯È¯] ÀÔ·Â ¿µ»ó: %s, , »õ °¡·Î Å©±â: %d, »õ ¼¼·Î
-			Å©±â: % d, º¸°£¹ı : % s"),
+			TCHAR* interpolation[] = { _T("ìµœê·¼ë°© ì´ì›ƒ ë³´ê°„ë²•"), _T("ì–‘ì„ í˜• ë³´ê°„ë²•"
+			), _T("3ì°¨ íšŒì„  ë³´ê°„ë²•") };
+		AfxPrintInfo(_T("[í¬ê¸° ë³€í™˜] ì…ë ¥ ì˜ìƒ: %s, , ìƒˆ ê°€ë¡œ í¬ê¸°: %d, ìƒˆ ì„¸ë¡œ
+			í¬ê¸°: % d, ë³´ê°„ë²• : % s"),
 			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
 			Interpolation]);
 		AfxNewBitmap(dib);
@@ -1040,7 +1040,7 @@ void CDrawDoc::OnAffinetransformFlip()
 		ByteImage imgDst;
 	Flip(imgSrc, imgDst);
 	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[»óÇÏ ´ëÄª] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ìƒí•˜ ëŒ€ì¹­] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
@@ -1052,7 +1052,7 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	if (dlg.DoModal() == IDOK)
 	{
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			ByteImage imgDst; // º¯°æ Àü ÀÌ¹ÌÁö , º¯°æ ÈÄ ÀÌ¹ÌÁö 
+			ByteImage imgDst; // ë³€ê²½ ì „ ì´ë¯¸ì§€ , ë³€ê²½ í›„ ì´ë¯¸ì§€ 
 
 		if (dlg.m_nNoiseType == 0)
 			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
@@ -1061,8 +1061,8 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			TCHAR* noise[] = { _T("°¡¿ì½Ã¾È"), _T("¼Ò±İ&ÈÄÃß") };
-		AfxPrintInfo(_T("[ÀâÀ½ Ãß°¡] ÀÔ·Â ¿µ»ó: %s, ÀâÀ½ Á¾·ù: %s, ÀâÀ½ ¾ç: %d"),
+			TCHAR* noise[] = { _T("ê°€ìš°ì‹œì•ˆ"), _T("ì†Œê¸ˆ&í›„ì¶”") };
+		AfxPrintInfo(_T("[ì¡ìŒ ì¶”ê°€] ì…ë ¥ ì˜ìƒ: %s, ì¡ìŒ ì¢…ë¥˜: %s, ì¡ìŒ ì–‘: %d"),
 			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
 		AfxNewBitmap(dib);*/
 	}
@@ -1079,7 +1079,7 @@ void CDrawDoc::OnFeatureextractionBlur()
 		FilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
 		CONVERT_IMAGE_TO_DIB(imgDst, dib)
 
-			AfxPrintInfo(_T("[°¡¿ì½Ã¾È ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
+			AfxPrintInfo(_T("[ê°€ìš°ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
 		AfxNewBitmap(dib);*/
 	}
 }
@@ -1093,7 +1093,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 		/*
 		FilterMedian(imgSrc, imgDst);
 
-			AfxPrintInfo(_T("[¹Ìµğ¾ğ ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+			AfxPrintInfo(_T("[ë¯¸ë””ì–¸ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
 	}
 }
@@ -1103,9 +1103,9 @@ void CDrawDoc::OnFeatureextractionSharpening()
 {
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
 		ByteImage imgDst; 
-	FilterLaplacian(imgSrc, imgDst);//¿µ»ó Ã³¸® 
+	FilterLaplacian(imgSrc, imgDst);//ì˜ìƒ ì²˜ë¦¬ 
 	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib 
-		AfxPrintInfo(_T("[¶óÇÃ¶ó½Ã¾È ÇÊÅÍ] ÀÔ·Â ¿µ»ó: %s"), GetTitle());
+		AfxPrintInfo(_T("[ë¼í”Œë¼ì‹œì•ˆ í•„í„°] ì…ë ¥ ì˜ìƒ: %s"), GetTitle());
 	AfxNewBitmap(dib);//bitmap new  
 	*/ 
 }
@@ -1126,7 +1126,7 @@ void CDrawDoc::OnFilteringBrightness()
 		}
 		Invalidate(TRUE);*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
@@ -1137,7 +1137,7 @@ void CDrawDoc::OnFilteringBrightness()
 //	{
 //
 //	}
-//	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+//	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 //}
 
 
@@ -1155,7 +1155,7 @@ void CDrawDoc::OnFilteringTograyscale()
 		}
 		Invalidate(TRUE);*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 #include "CHistogramDlg.h"
@@ -1171,7 +1171,7 @@ void CDrawDoc::OnFilteringHistogram()
 		}
 		dlg.DoModal();*/
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 #include"CWindowLevel.h"
@@ -1182,7 +1182,7 @@ void CDrawDoc::OnFilteringWindowlevel()
 	{
 
 	}
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
@@ -1194,7 +1194,7 @@ void CDrawDoc::OnFilteringInverse()
 		}
 	}
 	Invalidate(TRUE);*/
-	// TODO: ¿©±â¿¡ ¸í·É Ã³¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ëª…ë ¹ ì²˜ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
@@ -1205,7 +1205,7 @@ void CDrawDoc::OnObjectSavedraw()
 	if (!m_strRightFileName.IsEmpty()) {
 		SaveDraw(m_strRightFileName, m_pageRightObjects);
 	}
-	AfxMessageBox(_T("ÆÄÀÏÀ» ÀúÀåÇß½À´Ï´Ù."));
+	AfxMessageBox(_T("íŒŒì¼ì„ ì €ì¥í–ˆìŠµë‹ˆë‹¤."));
 
 }
 
@@ -1214,7 +1214,7 @@ void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObj
 
 	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
 	if (file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
-		// modeCreate : ÆÄÀÏÀ» »õ·Î ¸¸µé°Å³ª ±âÁ¸ÀÇ ÆÄÀÏÀ» ÃÊ±âÈ­
+		// modeCreate : íŒŒì¼ì„ ìƒˆë¡œ ë§Œë“¤ê±°ë‚˜ ê¸°ì¡´ì˜ íŒŒì¼ì„ ì´ˆê¸°í™”
 		CArchive ar(&file, CArchive::store);
 
 		ar << pageObjects.size();
@@ -1237,12 +1237,12 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 			ar.m_pDocument = this;
 			size_t size;
 			ar >> size;
-			if (size == pageObjects.size()) { // .drw ¹Ş¾Æµå¸²
+			if (size == pageObjects.size()) { // .drw ë°›ì•„ë“œë¦¼
 				for each (auto pDrawObjList in pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
 			}
-			else { // .drw ¾È¹Ş¾Æµå¸²
+			else { // .drw ì•ˆë°›ì•„ë“œë¦¼
 			}
 			ar.Close();
 			file.Close();

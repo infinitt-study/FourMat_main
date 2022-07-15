@@ -39,7 +39,7 @@ public:
 		}
 	}
 
-	//ìˆ˜ì • -> ì—°ê²°ëœê±° ë‹¤ ìˆ˜ì •
+	//¼öÁ¤ -> ¿¬°áµÈ°Å ´Ù ¼öÁ¤
 	CDrawObjList* GetObjects(BOOL bLeftView)
 	{ 
 		return bLeftView ? m_pObjects : m_pRightObjects;
@@ -126,13 +126,13 @@ public:
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
-	//í˜„ë¯¼
+	//Çö¹Î
 	CImage m_bmp;
-	LONG    m_nWidth;      // ë¹„íŠ¸ë§µ ê°€ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
-	LONG    m_nHeight;     // ë¹„íŠ¸ë§µ ì„¸ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
-	WORD    m_nBitCount;   // í”½ì…€ ë‹¹ ë¹„íŠ¸ ìˆ˜
-	DWORD   m_nDibSize;    // DIB ì „ì²´ í¬ê¸° (BITMAPINFOHEADER + ìƒ‰ìƒ í…Œì´ë¸” + í”½ì…€ ë°ì´í„°)
-	BYTE* m_pDib;        // DIB ì‹œì‘ ì£¼ì†Œ (BITMAPINFOHEADER ì‹œì‘ ì£¼ì†Œ)
+	LONG    m_nWidth;      // ºñÆ®¸Ê °¡·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
+	LONG    m_nHeight;     // ºñÆ®¸Ê ¼¼·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
+	WORD    m_nBitCount;   // ÇÈ¼¿ ´ç ºñÆ® ¼ö
+	DWORD   m_nDibSize;    // DIB ÀüÃ¼ Å©±â (BITMAPINFOHEADER + »ö»ó Å×ÀÌºí + ÇÈ¼¿ µ¥ÀÌÅÍ)
+	BYTE* m_pDib;        // DIB ½ÃÀÛ ÁÖ¼Ò (BITMAPINFOHEADER ½ÃÀÛ ÁÖ¼Ò)
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
@@ -149,32 +149,17 @@ public:
 	void LoadDicom(BOOL bLeftView);
 	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
-	//DicomImage* m_pImage; // ë”°ë¡œ ì§€ìš°ê¸°
-
-	//BITMAPINFO m_bmiLeft;
-	//BITMAPINFO m_bmiRight;
-	//BITMAPINFO& GetBmi(BOOL bLeftView)
-	//{
-	//	return bLeftView ? m_bmiLeft : m_bmiRight;
-	//}
-
-	//void* GetDib(BOOL bLeftView)
-	//{
-	//	return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
-	//}
-
-	//std::vector<BITMAPINFO> m_listBitmap;
-	//std::vector<void*> m_listData;
-	//std::vector<void*> m_listRightData;
 
 	std::vector <CFourMatDIB> m_listLeftDIB;
 	std::vector <CFourMatDIB> m_listRightDIB;
 
-	long m_nCurrentFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ í˜„ì¬í˜ì´ì§€
+	long m_nCurrentFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÇöÀçÆäÀÌÁö
 	long m_nCurrentRightFrameNo;
 
-	long m_nTotalFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ ì „ì²´í˜ì´ì§€
+	long m_nTotalFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÀüÃ¼ÆäÀÌÁö
 	long m_nTotalRightFrameNo;
+
+	bool m_bIsChange;
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
