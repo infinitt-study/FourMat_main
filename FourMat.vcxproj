@@ -1667,6 +1667,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="RibbonListButton.cpp" />
+    <ClCompile Include="CMorphology.cpp" />
     <ClCompile Include="splitfrm.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1882,6 +1883,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RGBBYTE.h" />
     <ClInclude Include="RibbonListButton.h" />
+    <ClInclude Include="CMorphology.h" />
     <ClInclude Include="splitfrm.h" />
     <ClInclude Include="statpage.h" />
     <ClInclude Include="stdafx.h" />

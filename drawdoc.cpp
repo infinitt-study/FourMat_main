@@ -35,7 +35,7 @@
 #include "CConvertDataType.h"
 #include "CAffineTransform.h"
 #include "CFilter.h"
-
+#include "CImprovement.h"
 //#include "CConvert.h"
 
 #include <math.h>
@@ -93,6 +93,8 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
+	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnFeatureextractionHistogramequalization)
+	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, &CDrawDoc::OnFeatureextractionHistogramstretching)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -969,7 +971,7 @@ void CDrawDoc::OnAffinetranformRotation()
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
-		FourMatDIBToGrayImage(dib, imgSrc);
+		FourMatDIBToByteImage(dib, imgSrc);
 		switch (dlg.m_nRotate)
 		{
 		case 0: Rotate90(imgSrc, imgDst); break;
@@ -1019,7 +1021,7 @@ void CDrawDoc::OnAffinetranformScaling()
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
-		FourMatDIBToGrayImage(dib, imgSrc);
+		FourMatDIBToByteImage(dib, imgSrc);
 		switch (dlg.m_nInterpolation)
 		{
 		case 0: ResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
@@ -1077,7 +1079,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
-		FourMatDIBToGrayImage(dib, imgSrc);
+		FourMatDIBToByteImage(dib, imgSrc);
 		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
 		FourMatGrayToDIBImage(imgDst, dib);
 
@@ -1117,6 +1119,20 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	CAddNoiseDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+		FourMatDIBToByteImage(dib, imgSrc);
+		
+		if (dlg.m_nNoiseType == 0)
+			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
+		else
+			NoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
+
+		FourMatGrayToDIBImage(imgDst, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지 
 
@@ -1140,6 +1156,15 @@ void CDrawDoc::OnFeatureextractionBlur()
 	CBlurDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage imgsrc;
+		FloatImage imgDst;
+		FourMatDIBToByteImage(dib, imgsrc);
+		FilterGaussian(imgsrc, imgDst, dlg.m_fSigma);
+
+		FloatImageToFourMatDIB(imgDst, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
 			FloatImage imgDst;
 		FilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
@@ -1156,6 +1181,13 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 	CReduceNoise dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+		FourMatDIBToByteImage(dib, imgSrc);
+		FilterMedian(imgSrc, imgDst);
+		FourMatGrayToDIBImage(imgDst, dib);
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 		/*
 		FilterMedian(imgSrc, imgDst);
 
@@ -1167,6 +1199,15 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage imgSrc;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(dib, imgSrc);
+	FilterLaplacian(imgSrc, imgDst);
+	//RgbImageToFourMatDIB(imgDst, dib);
+	FourMatGrayToDIBImage(imgDst, dib);
+	
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
 		ByteImage imgDst; 
@@ -1262,4 +1303,30 @@ void CDrawDoc::OnFilteringInverse()
 	}
 	Invalidate(TRUE);*/
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionHistogramequalization()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	
+	FourMatDIBToByteImage(dib, img);
+	HistogramEqualization(img);
+	FourMatGrayToDIBImage(img, dib);
+
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
+}
+
+
+void CDrawDoc::OnFeatureextractionHistogramstretching()
+{
+	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	ByteImage img;
+	FourMatDIBToByteImage(dib, img);
+	HistogramStretching(img);
+	FourMatGrayToDIBImage(img, dib);
+
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 }

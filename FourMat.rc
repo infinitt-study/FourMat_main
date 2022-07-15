@@ -241,9 +241,7 @@ BEGIN
     IDD_SEARCH_FORM, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 518
         TOPMARGIN, 7
-        BOTTOMMARGIN, 246
     END
 
     IDD_HISTORY_FORM, DIALOG
@@ -766,6 +764,8 @@ BEGIN
             MENUITEM "Sharpening",                  ID_FEATUREEXTRACTION_SHARPENING
             MENUITEM "Add Noise",                   ID_FEATUREEXTRACTION_ADDNOISE
             MENUITEM "Reduce Noise",                ID_FEATUREEXTRACTION_REDUCENOISE
+            MENUITEM "Histogram Equalization",      ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION
+            MENUITEM "Histogram Stretching ",       ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING
         END
     END
     POPUP "&Help"

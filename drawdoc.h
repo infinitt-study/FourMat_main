@@ -196,4 +196,6 @@ public:
 
 	void HelperLoadDicom(BOOL bLeftView);
 
+	afx_msg void OnFeatureextractionHistogramequalization();
+	afx_msg void OnFeatureextractionHistogramstretching();
 };
