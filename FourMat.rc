@@ -728,6 +728,8 @@ BEGIN
         MENUITEM "Move To Back\tCtrl+Minus",    ID_OBJECT_MOVETOBACK
         MENUITEM "Move Forward\tPlus",          ID_OBJECT_MOVEFORWARD
         MENUITEM "Move Back\tMinus",            ID_OBJECT_MOVEBACK
+        MENUITEM SEPARATOR
+        MENUITEM "Save Draw",                   ID_OBJECT_SAVEDRAW
     END
     POPUP "&Window"
     BEGIN
@@ -1060,8 +1062,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "DrawClient Application"
-    IDR_DRAWCLTYPE          "\nDrawClient\nDrawClient Document\nDrawClient Files (*.drw)\n.drw\nDrawClient.Document\nDrawClient Document\nDCLI\nDrawClient Files"
+    IDR_MAINFRAME           "Fourmat DICOM"
+    IDR_DRAWCLTYPE          "\nViewer\nDrawClient Document\nDrawClient Files (*.drw)\n.drw\nDrawClient.Document\nDrawClient Document\nDCLI\nDrawClient Files"
 END
 
 STRINGTABLE
@@ -1079,7 +1081,7 @@ END
 
 STRINGTABLE
 BEGIN
-    AFX_IDS_APP_TITLE       "DrawClient Application"
+    AFX_IDS_APP_TITLE       "Fourmat DICOM"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 

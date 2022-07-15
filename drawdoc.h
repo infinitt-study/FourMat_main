@@ -143,7 +143,12 @@ public:
 	CString m_strFilePath;
 	CString m_strRightFilePath;
 
+	CString m_strFileName;
+	CString m_strRightFileName;
+
 	void LoadDicom(BOOL bLeftView);
+	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
+	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 	//DicomImage* m_pImage; // 따로 지우기
 
 	//BITMAPINFO m_bmiLeft;
@@ -196,4 +201,5 @@ public:
 
 	void HelperLoadDicom(BOOL bLeftView);
 
+	afx_msg void OnObjectSavedraw();
 };
