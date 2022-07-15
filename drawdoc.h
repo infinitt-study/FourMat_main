@@ -72,6 +72,7 @@ public:
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
 	void Draw (BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
+	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
@@ -198,4 +199,8 @@ public:
 
 	afx_msg void OnFeatureextractionHistogramequalization();
 	afx_msg void OnFeatureextractionHistogramstretching();
+	afx_msg void OnMolphologyClosing();
+	afx_msg void OnMolphologyDilation();
+	afx_msg void OnMolphologyErosion();
+	afx_msg void OnMolphologyOpening();
 };

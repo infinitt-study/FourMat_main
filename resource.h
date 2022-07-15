@@ -116,7 +116,7 @@
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158
-#define IDC_NOISE_RADIO2                158
+#define IDC_NOISE_RADIO2                168
 #define IDC_NOISE_AMOUNT                159
 #define IDC_SPIN_AMOUNT                 160
 #define IDC_SIGMA_EDIT                  161
@@ -206,13 +206,18 @@
 #define ID_FILTERING_INVERSE            32877
 #define ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION 32878
 #define ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING 32879
+#define ID_IMAGEPROCESSING_MOLPHOLOGY   32880
+#define ID_MOLPHOLOGY_EROSION           32881
+#define ID_MOLPHOLOGY_DILATION          32882
+#define ID_MOLPHOLOGY_OPENING           32883
+#define ID_MOLPHOLOGY_CLOSING           32884
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32880
+#define _APS_NEXT_COMMAND_VALUE         32885
 #define _APS_NEXT_CONTROL_VALUE         166
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
