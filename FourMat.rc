@@ -1083,7 +1083,7 @@ END
 
 STRINGTABLE
 BEGIN
-    AFX_IDS_APP_TITLE       "DrawClient Application"
+    AFX_IDS_APP_TITLE       "Fourmat DICOM"
     AFX_IDS_IDLEMESSAGE     "Ready"
 END
 
