@@ -135,7 +135,8 @@ CDrawView::CDrawView()
 	m_bGrid = TRUE;
 	m_gridColor = RGB(0, 0, 128);
 	m_bActive = FALSE;
-	m_bLeftView = TRUE;
+	//m_bLeftView = TRUE;
+	m_bLeftView = true;
 
 	// new
 	if ( m_cfObjectDescriptor == NULL )
@@ -247,7 +248,10 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 
 	case HINT_UPDATE_FILEPATH:
 		//AfxMessageBox(m_strPath);
-		pDrawDoc->LoadDicom(m_bLeftView);
+		if (pDrawDoc->m_bFirstLoad) {
+			pDrawDoc->LoadDicom(m_bLeftView);
+			pDrawDoc->m_bFirstLoad = false;
+		}
 		break;
 
 	case HINT_LAOD_DICOMIMAGE:
@@ -296,8 +300,6 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
-
-
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -790,6 +792,7 @@ void CDrawView::CloneSelection()
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
 		pObj->Clone(m_bLeftView, pObj->m_pDocument);
+
 		// copies object and adds it to the document
 	}
 }
@@ -818,7 +821,9 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
 
-
+	///
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	pDrawDoc->m_bClickedView = m_bLeftView;
 }
 
 void CDrawView::OnLButtonUp(UINT nFlags, CPoint point)

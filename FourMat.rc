@@ -218,15 +218,15 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Add Noise"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "확인",IDOK,167,157,50,14
-    PUSHBUTTON      "취소",IDCANCEL,110,157,50,14
     GROUPBOX        "Add Noise ",IDC_STATIC,24,20,177,122
-    CONTROL         "Gaussian",IDC_NOISE_RADIO1,"Button",BS_AUTORADIOBUTTON,51,48,45,10
-    CONTROL         "Salt n Pepper",IDC_NOISE_RADIO2,"Button",BS_AUTORADIOBUTTON,51,71,60,10
+    CONTROL         "Gaussian",IDC_NOISE_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,51,48,45,10
+    CONTROL         "Salt n Pepper", IDC_NOISE_RADIO2, "Button", BS_AUTORADIOBUTTON, 51, 71, 60, 10
     LTEXT           "잡음의 양 (A) : ",IDC_STATIC,51,100,47,8
     EDITTEXT        IDC_NOISE_AMOUNT,106,100,40,14,ES_AUTOHSCROLL
     LTEXT           "%",IDC_STATIC,149,100,8,8
     CONTROL         "",IDC_SPIN_AMOUNT,"msctls_updown32",UDS_ARROWKEYS,166,100,12,14
+    PUSHBUTTON      "취소",IDCANCEL,110,157,50,14
+    DEFPUSHBUTTON   "확인",IDOK,167,157,50,14
 END
 
 
@@ -428,8 +428,6 @@ END
 //
 
 IDB_LIST                BITMAP                  "res\\IDB_LIST.BMP"
-
-IDB_BITMAP2             BITMAP                  "res\\explorer.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -472,8 +472,8 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files (x86)\Visual Leak Detector\include;$(SolutionDir)DCMTKlib\DCMTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;$(SolutionDir)DCMTKlib\DCMTK\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\zlib-1.2.12\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\libxml2-iconv-2.9.13\lib;$(SolutionDir)DCMTKlib\dcmtk-3.6.7-win64-support-MD-iconv-msvc-15.9\openjpeg-2.4.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release CLR|Win32'">
     <OutDir>$(Configuration)\</OutDir>
@@ -1920,6 +1920,7 @@
     <Image Include="res\explorer.bmp" />
     <Image Include="RES\FourMat.ICO" />
     <Image Include="res\IDB_LIST.BMP" />
+    <Image Include="res\IDB_LIST2.BMP" />
     <Image Include="res\main.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

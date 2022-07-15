@@ -34,7 +34,7 @@ public:
 		}
 		else {
 			m_nCurrentRightFrameNo -= nDelta;
-			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listLeftDIB.size();
+			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listRightDIB.size();
 			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
 		}
 	}
@@ -135,8 +135,8 @@ public:
 	BYTE* m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
 	int m_nPitch;
 	BYTE* lpvBits;
-	
-
+	BOOL m_bFirstLoad;
+	BOOL m_bClickedView;
 public:
 	CString m_strFolderPath;
 
