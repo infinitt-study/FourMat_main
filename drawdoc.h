@@ -29,22 +29,20 @@ public:
 	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
 		if (bLeftView) {
 			m_nCurrentFrameNo -= nDelta;
-			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listLeftDIB.size();
+			m_nCurrentFrameNo = (m_listLeftDIB.size() + m_nCurrentFrameNo) % m_listLeftDIB.size();
 			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
 		}
 		else {
 			m_nCurrentRightFrameNo -= nDelta;
-			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listRightDIB.size();
+			m_nCurrentRightFrameNo = (m_listRightDIB.size() + m_nCurrentRightFrameNo) % m_listRightDIB.size();
 			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
 		}
 	}
 
-	//수정 -> 연결된거 다 수정
 	CDrawObjList* GetObjects(BOOL bLeftView)
 	{ 
 		return bLeftView ? m_pObjects : m_pRightObjects;
 	}
-
 
 
 	const CSize& GetSize() const { return m_size; }
@@ -158,6 +156,9 @@ public:
 
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 	long m_nTotalRightFrameNo;
+
+	long m_nRepFrameNo; // 다이콤 내부 대표 이미지
+	long m_nRepRightFrameNo;
 
 	bool m_bIsChange; // 변경사항 있있으면 true
 
