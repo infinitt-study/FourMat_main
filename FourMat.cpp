@@ -10,6 +10,7 @@
 // All rights reserved.
 
 #include "stdafx.h"
+
 #include "FourMat.h"
 
 #include "mainfrm.h"

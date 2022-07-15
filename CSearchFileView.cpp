@@ -1,6 +1,5 @@
 ﻿// CSearchFileView.cpp: 구현 파일
 //
-
 #include "stdafx.h"
 #include "FourMat.h"
 #include "CSearchFileView.h"
@@ -18,7 +17,6 @@ CSearchFileView::CSearchFileView()
 	, m_strFileLocation(_T(""))
 	, m_bSub(FALSE)
 {
-
 	m_strToken = _T("");
 }
 
@@ -66,13 +64,12 @@ void CSearchFileView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
-
     CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
     pSplitFrame->SetSearchFileView(this);
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	// 리스트 컨트롤에 이미지 연결
-	m_img.Create(IDB_LIST, 16, 2, RGB(255, 255, 255));
+	m_img.Create(IDB_LIST, 16, 1, RGB(255, 255, 255));
 	m_lstResult.SetImageList(&m_img, LVSIL_SMALL);
 
 	// InsertColumn() : 리스트 컨트롤의 필드에 입력하는 함수

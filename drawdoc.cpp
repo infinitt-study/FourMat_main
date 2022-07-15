@@ -201,6 +201,8 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
   
 	m_zoom = 1;
 
+	m_bFirstLoad = true;
+
 	return TRUE;
 }
 
@@ -1029,6 +1031,21 @@ void CDrawDoc::OnAffinetranformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		std::vector <CFourMatDIB>& listDib = m_bClickedView ? m_listLeftDIB : m_listRightDIB;
+		long currentFrameNo = m_bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
+
+		CFourMatDIB& dib = listDib[currentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+
+		FourMatDIBToGrayImage(dib, imgSrc);
+		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		FourMatGrayToDIBImage(imgDst, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
+
+		/*
 		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
 		ByteImage imgSrc;
 		ByteImage imgDst;
@@ -1038,6 +1055,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		FourMatGrayToDIBImage(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+		*/
 
 		//dib.CreateRgbBitmap();
 		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)

@@ -143,7 +143,7 @@ void CHistoryView::FolderSearch()
 	int nRow = 0;
 	do
 	{
-		if (strstr(fd.name, ".DCM") != NULL) {
+		if (strstr(fd.name, ".DCM") != NULL || strstr(fd.name, ".dcm") != NULL) {
 			m_lstHistory.InsertItem(nRow, fd.name, 0);
 			nRow++;
 		}
