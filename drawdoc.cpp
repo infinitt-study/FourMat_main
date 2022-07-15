@@ -298,9 +298,14 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
 {
 	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2);
+	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2); // dlg -> paint dc  
 }
+void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
+{
+	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(),SRCCOPY); // dlg -> paint dc  
 
+}
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
 	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
@@ -1116,7 +1121,7 @@ void CDrawDoc::OnAffinetransformFlip()
 #include "CAddNoiseDlg.h"
 void CDrawDoc::OnFeatureextractionAddnoise()
 {
-	CAddNoiseDlg dlg;
+	CAddNoiseDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];

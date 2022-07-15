@@ -538,7 +538,12 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 0)); // dlg
 
+	pPanelWindow = pCategory->AddPanel(_T("Molphology\nzw"), m_PanelImages.ExtractIcon(7));
 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_EROSION, _T("Erosion\nn"), 0, 0)); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_DILATION, _T("Dilation\nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_OPENING, _T("Opening\nn"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_CLOSING, _T("Closing\nn"), 0, 0)); // dlg
 }
 
 

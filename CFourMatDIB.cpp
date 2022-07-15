@@ -171,7 +171,7 @@ void CFourMatDIB::DestroyBitmap()
 	m_nDibSize = 0;
 }
 
-void CFourMatDIB::Draw(HDC hdc, int dx, int dy)
+void CFourMatDIB::Draw(HDC hdc, int dx, int dy) //출력 위치 
 {
 	if (m_pDib == NULL)
 		return;
@@ -193,13 +193,13 @@ void CFourMatDIB::Draw(HDC hdc, int dx, int dy)
 		DIB_RGB_COLORS);	// wUsage
 }
 
-void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh, DWORD dwRop)
+void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh, DWORD dwRop) // 출력위치 시작 좌표, 폭 높이  
 {
 	Draw(hdc, dx, dy, dw, dh, 0, 0, m_nWidth, m_nHeight, dwRop);
 }
 
 void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh,
-	int sx, int sy, int sw, int sh, DWORD dwRop)
+	int sx, int sy, int sw, int sh, DWORD dwRop) // 찐 그려주는 애  
 {
 	if (m_pDib == NULL)
 		return;
