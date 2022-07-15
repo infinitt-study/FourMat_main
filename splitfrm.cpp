@@ -81,9 +81,6 @@ void CSplitFrame::SwitchView(int nID)
 	CView* pOldView = GetActiveFrame()->GetActiveView();
 	CView* pNewView = NULL;
 
-	//
-	//CHistoryView* pHistoryView = NULL;
-
 	switch (nID)
 	{
 	case VIEWID_SEARCH:
@@ -122,18 +119,9 @@ void CSplitFrame::SwitchView(int nID)
 	}
 }
 
-//void CSplitFrame::OnDrawTest()
-//{
-//	SwitchView(VIEWID_DRAW);
-//}
-
-
 BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	//width height
-	//
 	m_wndSplitter.CreateStatic(this, 1, 2);
 	
 	CRect rect;
