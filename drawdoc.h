@@ -147,8 +147,8 @@ public:
 	CString m_strRightFileName;
 
 	void LoadDicom(BOOL bLeftView);
-	void SaveDraw(CFile& file, CString m_strFileName);
-	void LoadDraw();
+	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
+	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 	//DicomImage* m_pImage; // 따로 지우기
 
 	//BITMAPINFO m_bmiLeft;

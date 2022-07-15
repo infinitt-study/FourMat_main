@@ -527,7 +527,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 //			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
 			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
 			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
-
+			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -545,6 +545,9 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 				delete[] data;
 				data = nullptr;
 			}
+
+			LoadDraw(strFileName, objectList);
+
 			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
 		}
 		SetCurrentFrameNo(bLeftView, 0);
@@ -1179,33 +1182,54 @@ void CDrawDoc::OnFilteringInverse()
 
 void CDrawDoc::OnObjectSavedraw()
 {
-	CFile file;
 	
-	SaveDraw(file, m_strFileName);
+	SaveDraw(m_strFileName, m_pageLeftObjects);
 	if (!m_strRightFileName.IsEmpty()) {
-		SaveDraw(file, m_strRightFileName);
+		SaveDraw(m_strRightFileName, m_pageRightObjects);
 	}
 	AfxMessageBox(_T("파일을 저장했습니다."));
 
 }
 
-void CDrawDoc::SaveDraw(CFile& file, CString m_strFileName) {
-	CString strFilePath = m_strFolderPath + _T("\\") + m_strFileName;
-	if (!strFilePath.IsEmpty()) {
-		if (file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
-			// modeCreate : 파일을 새로 만들거나 기존의 파일을 초기화
-			CArchive ar(&file, CArchive::store);
+void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObjects) {
+	CFile file;
 
-			ar << m_pageLeftObjects.size();
-			for each (auto pDrawObjList in m_pageLeftObjects) {
-				pDrawObjList->Serialize(ar);
+	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
+	if (file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
+		// modeCreate : 파일을 새로 만들거나 기존의 파일을 초기화
+		CArchive ar(&file, CArchive::store);
+
+		ar << pageObjects.size();
+		for each (auto pDrawObjList in pageObjects) {
+			pDrawObjList->Serialize(ar);
+		}
+		ar.Close();
+		file.Close();
+
+		
+	}
+}
+void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
+	CFile file;
+
+	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
+	if (!strFileName.IsEmpty()) {
+		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
+			CArchive ar(&file, CArchive::load);
+			ar.m_pDocument = this;
+			size_t size;
+			ar >> size;
+			if (size == pageObjects.size()) { // .drw 받아드림
+				for each (auto pDrawObjList in pageObjects) {
+					pDrawObjList->Serialize(ar);
+				}
+			}
+			else { // .drw 안받아드림
 			}
 			ar.Close();
 			file.Close();
 
 		}
 	}
-}
-void CDrawDoc::LoadDraw() {
 }
 
