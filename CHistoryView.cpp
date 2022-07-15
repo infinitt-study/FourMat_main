@@ -106,7 +106,14 @@ void CHistoryView::OnBnClickedOk()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName;
+	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
+
+	auto isFileExtDCM = IsFileExtDCMName(strFileName);
+	if (isFileExtDCM.first)
+		pDrawDoc->m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
+	else
+		pDrawDoc->m_strFileName = strFileName + _T(".drw");
+
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
@@ -173,9 +180,21 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[0];
-	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + "\\" + strFileName[1];
-  
+	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
+	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
+	
+	auto isFileExtDCM = IsFileExtDCMName(strFileName[0]);
+	if (isFileExtDCM.first)
+		pDrawDoc->m_strFileName = strFileName[0].Left(isFileExtDCM.second) + _T(".drw");
+	else
+		pDrawDoc->m_strFileName = strFileName[0] + _T(".drw");
+
+	isFileExtDCM = IsFileExtDCMName(strFileName[1]);
+	if (isFileExtDCM.first)
+		pDrawDoc->m_strRightFileName = strFileName[1].Left(isFileExtDCM.second) + _T(".drw");
+	else
+		pDrawDoc->m_strRightFileName = strFileName[1] + _T(".drw");
+
 	//수정
 	//pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_MULTIFILEPATH);
@@ -185,4 +204,11 @@ void CHistoryView::OnClickedButtonMulti()
 	//
 	//
 	pSplitFrame->SwitchView(VIEWID_MULTIDRAW);
+}
+
+std::pair<bool, int> CHistoryView::IsFileExtDCMName(CString strFindDCM) {
+	strFindDCM.MakeUpper();
+
+	int nIndex = strFindDCM.ReverseFind(TCHAR('.'));
+	return make_pair((nIndex != -1 && strFindDCM.Mid(nIndex) == _T(".DCM")), nIndex);
 }

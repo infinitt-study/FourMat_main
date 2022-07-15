@@ -475,6 +475,9 @@ void CMainFrame::InitHomeCategory()
 	// Add not-in-ribbon commands
 	CMFCRibbonButton* pUndo = new CMFCRibbonButton(ID_EDIT_UNDO, _T("Undo"), 20);
 	pCategory->AddHidden(pUndo);
+
+	pPanelArrange = pCategory->AddPanel(_T("File\nzj"), m_PanelImages.ExtractIcon(3));
+	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_SAVEDRAW, _T("Save Draw\nmf"), 15, 3));
 }
 
 void CMainFrame::InitViewCategory()

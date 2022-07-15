@@ -241,9 +241,7 @@ BEGIN
     IDD_SEARCH_FORM, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 518
         TOPMARGIN, 7
-        BOTTOMMARGIN, 246
     END
 
     IDD_HISTORY_FORM, DIALOG
@@ -732,6 +730,8 @@ BEGIN
         MENUITEM "Move To Back\tCtrl+Minus",    ID_OBJECT_MOVETOBACK
         MENUITEM "Move Forward\tPlus",          ID_OBJECT_MOVEFORWARD
         MENUITEM "Move Back\tMinus",            ID_OBJECT_MOVEBACK
+        MENUITEM SEPARATOR
+        MENUITEM "Save Draw",                   ID_OBJECT_SAVEDRAW
     END
     POPUP "&Window"
     BEGIN
