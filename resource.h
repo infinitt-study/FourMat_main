@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ì…ë‹ˆë‹¤.
-// FourMat.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìˆìŠµë‹ˆë‹¤.
+// Microsoft Visual C++¿¡¼­ »ı¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
+// FourMat.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -88,6 +88,7 @@
 #define IDD_HISTORY_FORM                140
 #define IDC_ROTATE180                   140
 #define IDC_ROTATE270                   141
+#define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
 #define IDD_AFFINETRANSFORM_SLICE       143
 #define IDC_EDIT1                       143
@@ -211,14 +212,14 @@
 #define ID_MOLPHOLOGY_DILATION          32882
 #define ID_MOLPHOLOGY_OPENING           32883
 #define ID_MOLPHOLOGY_CLOSING           32884
-#define ID_OBJECT_SAVEDRAW              33000
+#define ID_OBJECT_SAVEDRAW              32885
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32885
+#define _APS_NEXT_COMMAND_VALUE         32886
 #define _APS_NEXT_CONTROL_VALUE         167
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

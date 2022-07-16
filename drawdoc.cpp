@@ -1052,7 +1052,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
-		FourMatDIBToGrayImage(dib, imgSrc);
+		FourMatDIBToByteImage(dib, imgSrc);
 		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
 		FourMatGrayToDIBImage(imgDst, dib);
 
