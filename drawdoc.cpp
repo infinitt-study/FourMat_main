@@ -1240,50 +1240,52 @@ void CDrawDoc::OnFilteringBrightness()
 #include"CGrayDlg.h"
 void CDrawDoc::OnFilteringTograyscale()
 {
-	CGrayDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-			//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-			//ByteImage img;
+	//CGrayDlg dlg;
+	//if (dlg.DoModal() == IDOK)
+	//{
+	//		//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	//		//ByteImage img;
 
-			//FourMatDIBToByteImage(dib, img);
-	  //       //(img, dlg.m);
-			//
-			//FourMatGrayToDIBImage(img, dib);
+	//		//FourMatDIBToByteImage(dib, img);
+	//  //       //(img, dlg.m);
+	//		//
+	//		//FourMatGrayToDIBImage(img, dib);
 
-			//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-		
+	//		//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	//	
 
-	}
+	//}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 #include "CHistogramDlg.h"
 void CDrawDoc::OnFilteringHistogram()
 {
-	CHistogramDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
+		CHistogramDlg dlg;
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		
 
-	
+		dlg.SetImage(dib);
+		dlg.DoModal();
+
 		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 			if (m_vectorImageWnd[i]->m_bClicked) {
 				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
 			}
 		}
 		dlg.DoModal();*/
-	}
+	
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 #include"CWindowLevel.h"
 void CDrawDoc::OnFilteringWindowlevel()
 {
-	CWindowLevel dlg;
+	/*CWindowLevel dlg;
 	if (dlg.DoModal() == IDOK)
 	{
 
-	}
+	}*/
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
