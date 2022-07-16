@@ -128,14 +128,14 @@ public:
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
 	//현민
-	CImage m_bmp;
+	CImage	m_bmp;
 	LONG    m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
 	LONG    m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
 	WORD    m_nBitCount;   // 픽셀 당 비트 수
 	DWORD   m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
-	BYTE* m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
-	int m_nPitch;
-	BYTE* lpvBits;
+	BYTE*	m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
+	int		m_nPitch;
+	BYTE*	lpvBits;
 	
 
 public:

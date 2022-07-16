@@ -27,13 +27,7 @@ public:
 	}
 };
 
-////void Binarization(ByteImage& imgSrc, ByteImage& imgDst, int threshold);
-////int  BinarizationIterative(ByteImage& imgSrc);
-////
-////int  Labeling(ByteImage& imgSrc, IntImage& imgDst, std::vector<LabelInfo>& labels);
-////
-////void ContourTracing(ByteImage& imgSrc, int sx, int sy, std::vector<Point>& cp);
-//
+
 void MorphologyErosion(ByteImage& imgSrc, ByteImage& imgDst);
 void MorphologyDilation(ByteImage& imgSrc, ByteImage& imgDst);
 void MorphologyOpening(ByteImage& imgSrc, ByteImage& imgDst);

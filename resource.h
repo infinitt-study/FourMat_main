@@ -116,7 +116,6 @@
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158
-#define IDC_NOISE_RADIO2                168
 #define IDC_NOISE_AMOUNT                159
 #define IDC_SPIN_AMOUNT                 160
 #define IDC_SIGMA_EDIT                  161
@@ -127,7 +126,9 @@
 #define IDD_AFFINETRANSFORM_SCALING     164
 #define IDC_HISTOGRAM_SLIDER            164
 #define IDC_HISTOGRAM_EDIT              165
+#define IDC_RESULTPICTURE               166
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
@@ -218,7 +219,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32885
-#define _APS_NEXT_CONTROL_VALUE         166
+#define _APS_NEXT_CONTROL_VALUE         167
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
