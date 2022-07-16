@@ -959,11 +959,11 @@ BEGIN
     "N",            ID_DRAW_ROUNDRECT,      ASCII,  NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "n",            ID_DRAW_ROUNDRECT,      ASCII,  NOINVERT
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    //"O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    //"P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "R",            ID_DRAW_RECT,           ASCII,  NOINVERT
     "r",            ID_DRAW_RECT,           ASCII,  NOINVERT
-    "S",            ID_DRAW_SELECT,         ASCII,  NOINVERT
+    //"S",            ID_DRAW_SELECT,         ASCII,  NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     "s",            ID_DRAW_SELECT,         ASCII,  NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
@@ -986,9 +986,9 @@ END
 IDR_DRAWCLTYPE_CNTR_IP ACCELERATORS
 BEGIN
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
-    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
-    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    //"O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    //"S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    //"P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
     VK_F6,          ID_NEXT_PANE,           VIRTKEY 
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
     VK_ESCAPE,      ID_CANCEL_EDIT,         VIRTKEY, NOINVERT
