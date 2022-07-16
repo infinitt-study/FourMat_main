@@ -1199,7 +1199,7 @@ void CDrawDoc::OnObjectSavedraw()
 		SaveDraw(m_strRightFileName, m_pageRightObjects);
 	}
 	AfxMessageBox(_T("파일을 저장했습니다."));
-
+	m_bIsChange = false;
 }
 
 void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObjects) {
@@ -1234,6 +1234,7 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 				for each (auto pDrawObjList in pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
+				//ar >> m_nRepFrameNo;
 			}
 			else { // .drw 안받아드림
 			}
