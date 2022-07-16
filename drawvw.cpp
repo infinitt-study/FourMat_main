@@ -135,7 +135,8 @@ CDrawView::CDrawView()
 	m_bGrid = TRUE;
 	m_gridColor = RGB(0, 0, 128);
 	m_bActive = FALSE;
-	m_bLeftView = TRUE;
+	//m_bLeftView = TRUE;
+	m_bLeftView = true;
 
 	// new
 	if ( m_cfObjectDescriptor == NULL )
@@ -247,17 +248,22 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 
 	case HINT_UPDATE_FILEPATH:
 		//AfxMessageBox(m_strPath);
-		pDrawDoc->LoadDicom(m_bLeftView);
+		if (pDrawDoc->m_bFirstLoad) {
+			pDrawDoc->LoadDicom(m_bLeftView);
+			pDrawDoc->m_bFirstLoad = false;
+		}
 		break;
 
 	case HINT_LAOD_DICOMIMAGE:
 		Invalidate();
 		break;
 		
-	//ìˆ˜ì •
 	case HINT_UPDATE_MULTIFILEPATH:
-		pDrawDoc->LoadDicom(TRUE);
-		pDrawDoc->LoadDicom(FALSE);
+		if (pDrawDoc->m_bFirstLoad) {
+			pDrawDoc->LoadDicom(TRUE);
+			pDrawDoc->LoadDicom(FALSE);
+			pDrawDoc->m_bFirstLoad = false;
+		}
 		break;
 
 	case HINT_DICOM_IMAGE_REDRAW:
@@ -287,7 +293,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 		zoom = pDoc->m_zoom;
 		zoom = 1.0f;
 	}
-	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
+	//¸â¹ö º¯¼ö ctrl flag : 
 	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom, pDC->GetDeviceCaps(LOGPIXELSY)* zoom);
 	pDC->SetWindowExt(100, -100);
 
@@ -296,8 +302,6 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
-
-
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -370,7 +374,7 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	//const int width = bmi.bmiHeader.biWidth;
 	//const int height = abs(bmi.bmiHeader.biHeight);
-	////ì´ë¯¸ì§€ë¥¼ ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜
+	////ÀÌ¹ÌÁö¸¦ ±×·ÁÁÖ´Â ÇÔ¼ö
 	//SetDIBitsToDevice(pDrawDC->m_hDC,  
 	//	-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
 	//	0, 0, 0, height, 
@@ -790,6 +794,7 @@ void CDrawView::CloneSelection()
 	{
 		CDrawObj* pObj = m_selection.GetNext(pos);
 		pObj->Clone(m_bLeftView, pObj->m_pDocument);
+
 		// copies object and adds it to the document
 	}
 }
@@ -818,7 +823,9 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
 
-
+	///
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	pDrawDoc->m_bClickedView = m_bLeftView;
 }
 
 void CDrawView::OnLButtonUp(UINT nFlags, CPoint point)
@@ -1488,7 +1495,8 @@ void CDrawView::OnEditPaste()
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
 
-	GetDocument()->SetModifiedFlag();
+	GetDocument()->SetModifiedFlag(false);
+	GetDocument()->m_bIsChange = true;
 
 	// invalidate new pasted stuff
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_SELECTION, &m_selection);
@@ -1666,7 +1674,8 @@ BOOL CDrawView::OnDrop(COleDataObject* pDataObject, DROPEFFECT /*dropEffect*/, C
 		PasteEmbedded(*pDataObject, point);
 
 	// update the document and views
-	GetDocument()->SetModifiedFlag();
+	GetDocument()->SetModifiedFlag(false);
+	GetDocument()->m_bIsChange = true;
 	GetDocument()->UpdateAllViews(NULL, 0, NULL);      // including this view
 
 	return TRUE;

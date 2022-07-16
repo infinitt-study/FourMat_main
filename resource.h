@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -88,7 +88,6 @@
 #define IDD_HISTORY_FORM                140
 #define IDC_ROTATE180                   140
 #define IDC_ROTATE270                   141
-#define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
 #define IDD_AFFINETRANSFORM_SLICE       143
 #define IDC_EDIT1                       143
@@ -116,7 +115,6 @@
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158
-#define IDC_NOISE_RADIO2                168
 #define IDC_NOISE_AMOUNT                159
 #define IDC_SPIN_AMOUNT                 160
 #define IDC_SIGMA_EDIT                  161
@@ -128,6 +126,7 @@
 #define IDC_HISTOGRAM_SLIDER            164
 #define IDC_HISTOGRAM_EDIT              165
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
@@ -204,20 +203,21 @@
 #define ID_FEATUREEXTRACTION_REDUCENOISE 32875
 #define ID_FILTERING_WINDOWLEVEL        32876
 #define ID_FILTERING_INVERSE            32877
-#define ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION 32878
-#define ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING 32879
-#define ID_IMAGEPROCESSING_MOLPHOLOGY   32880
-#define ID_MOLPHOLOGY_EROSION           32881
-#define ID_MOLPHOLOGY_DILATION          32882
-#define ID_MOLPHOLOGY_OPENING           32883
-#define ID_MOLPHOLOGY_CLOSING           32884
+#define ID_OBJECT_SAVEDRAW              32878
+#define ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION 32879
+#define ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING 32880
+#define ID_IMAGEPROCESSING_MOLPHOLOGY   32881
+#define ID_MOLPHOLOGY_EROSION           32882
+#define ID_MOLPHOLOGY_DILATION          32883
+#define ID_MOLPHOLOGY_OPENING           32884
+#define ID_MOLPHOLOGY_CLOSING           32885
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32885
+#define _APS_NEXT_COMMAND_VALUE         32886
 #define _APS_NEXT_CONTROL_VALUE         166
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
