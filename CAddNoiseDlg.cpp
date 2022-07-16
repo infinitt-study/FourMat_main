@@ -6,7 +6,7 @@
 #include "CAddNoiseDlg.h"
 #include "afxdialogex.h"
 #include "drawdoc.h"
-
+#include "mainfrm.h"
 
 // CAddNoiseDlg 대화 상자
 
@@ -54,7 +54,7 @@ BOOL CAddNoiseDlg::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-#include "mainfrm.h"
+
 void CAddNoiseDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
@@ -63,10 +63,14 @@ void CAddNoiseDlg::OnPaint()
 	//CDrawDoc* pDrawDoc = (CDrawDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame()->GetActiveDocument();//
 	//이미지 정보 접근 
 	
-	m_pDrawDoc->DIBDraw(true,&dc,100,100,200,200);
+	m_pDrawDoc->DIBDraw(true,&dc,100,260,200,-200);
+
+
 	
 	
 }
+
+
 
 
 
