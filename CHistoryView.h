@@ -37,6 +37,8 @@ public:
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 	void FolderSearch();
 	afx_msg void OnClickedButtonMulti();
+
+	std::pair<bool, int> IsFileExtDCMName(CString strFindDCM);
 };
 
 
