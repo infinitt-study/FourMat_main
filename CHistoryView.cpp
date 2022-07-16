@@ -92,18 +92,24 @@ void CHistoryView::OnBnClickedOk()
 	const int nCount = m_lstHistory.GetItemCount();
 	CString strFileName;
 
-	int nRow;
+	int nRow = 0;
 	for (int i = nCount - 1; i >= 0; --i) {
 		if (m_lstHistory.GetCheck(i)) {
 			strFileName = m_lstHistory.GetItemText(i, 0);
-			nRow = i;
-			break;
+			nRow++;
 		}
 	}
+
 	if (strFileName.IsEmpty()) {
 		AfxMessageBox(_T("파일을 선택해 주세요"));
 		return;
 	}
+
+	if (nRow >= 2) {
+		AfxMessageBox(_T("파일을 한 개만 선택해 주세요"));
+		return;
+	}
+
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
@@ -174,6 +180,7 @@ void CHistoryView::OnClickedButtonMulti()
 			nRow = i;
 		}
 	}
+
 	if (strFileName.size() != 2) {
 		AfxMessageBox(_T("두 개의 파일을 선택해 주세요"));
 		return;

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ìž…ë‹ˆë‹¤.
-// FourMat.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìžˆìŠµë‹ˆë‹¤.
+// Microsoft Visual C++¿¡¼­ »ý¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
+// FourMat.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -114,7 +114,6 @@
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
-#define IDC_NOISE_RADIO2                168
 #define IDD_HISTOGRAM                   158
 #define IDC_NOISE_AMOUNT                159
 #define IDC_SPIN_AMOUNT                 160
@@ -127,6 +126,7 @@
 #define IDC_HISTOGRAM_SLIDER            164
 #define IDC_HISTOGRAM_EDIT              165
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
