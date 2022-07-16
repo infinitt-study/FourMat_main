@@ -1,14 +1,17 @@
 ﻿#pragma once
-
+#include "CFourMatDIB.h"
+//#include "DrawDoc.h"
 
 // CAddNoiseDlg 대화 상자
+
+class CDrawDoc;
 
 class CAddNoiseDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CAddNoiseDlg)
 
 public:
-	CAddNoiseDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CAddNoiseDlg(CDrawDoc* DrawDoc,CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CAddNoiseDlg();
 
 // 대화 상자 데이터입니다.
@@ -23,5 +26,7 @@ protected:
 public:
 	int m_nNoiseType;
 	int m_nAmount;
+	CDrawDoc* m_pDrawDoc;
 	virtual BOOL OnInitDialog();
+	afx_msg void OnPaint();
 };

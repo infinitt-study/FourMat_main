@@ -94,9 +94,6 @@
     <ClCompile Include="CGrayDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CHistogramDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CInverse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -110,6 +107,10 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CFourMatDIB.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphology.cpp" />
+    <ClCompile Include="CHistogramDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -219,9 +220,6 @@
     <ClInclude Include="CGrayDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CHistogramDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -235,6 +233,10 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CFourMatDIB.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphology.h" />
+    <ClInclude Include="CHistogramDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

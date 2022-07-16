@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -125,6 +125,7 @@
 #define IDD_AFFINETRANSFORM_SCALING     164
 #define IDC_HISTOGRAM_SLIDER            164
 #define IDC_HISTOGRAM_EDIT              165
+#define IDC_RESULTPICTURE               166
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
 #define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
@@ -203,15 +204,22 @@
 #define ID_FEATUREEXTRACTION_REDUCENOISE 32875
 #define ID_FILTERING_WINDOWLEVEL        32876
 #define ID_FILTERING_INVERSE            32877
-#define ID_OBJECT_SAVEDRAW              32878
+#define ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION 32878
+#define ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING 32879
+#define ID_IMAGEPROCESSING_MOLPHOLOGY   32880
+#define ID_MOLPHOLOGY_EROSION           32881
+#define ID_MOLPHOLOGY_DILATION          32882
+#define ID_MOLPHOLOGY_OPENING           32883
+#define ID_MOLPHOLOGY_CLOSING           32884
+#define ID_OBJECT_SAVEDRAW              33000
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32879
-#define _APS_NEXT_CONTROL_VALUE         166
+#define _APS_NEXT_COMMAND_VALUE         32885
+#define _APS_NEXT_CONTROL_VALUE         167
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

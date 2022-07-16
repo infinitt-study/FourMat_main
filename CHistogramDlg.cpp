@@ -1,9 +1,15 @@
 ﻿// CHistogramDlg.cpp: 구현 파일
 //
+
 #include "stdafx.h"
 #include "FourMat.h"
 #include "CHistogramDlg.h"
 #include "afxdialogex.h"
+
+#include "AccessPixel.h"
+#include "CFourMatDIB.h"
+#include "CConvertDataType.h"
+#include "CImprovement.h"
 
 
 // CHistogramDlg 대화 상자
@@ -12,9 +18,8 @@ IMPLEMENT_DYNAMIC(CHistogramDlg, CDialogEx)
 
 CHistogramDlg::CHistogramDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HISTOGRAM, pParent)
-	, m_nHistogram(0)
 {
-
+	memset(m_Histogram, 0, sizeof(int) * 256);
 }
 
 CHistogramDlg::~CHistogramDlg()
@@ -24,42 +29,69 @@ CHistogramDlg::~CHistogramDlg()
 void CHistogramDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_HISTOGRAM_SLIDER, m_sliderHistogram);
-	DDX_Text(pDX, IDC_HISTOGRAM_EDIT, m_nHistogram);
-	DDV_MinMaxInt(pDX, m_nHistogram, 0, 255);
 }
+
 
 
 BEGIN_MESSAGE_MAP(CHistogramDlg, CDialogEx)
-	ON_WM_HSCROLL()
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
+
 // CHistogramDlg 메시지 처리기
-
-
-BOOL CHistogramDlg::OnInitDialog()
+void CHistogramDlg::SetImage(CFourMatDIB& dib)
 {
-	CDialogEx::OnInitDialog();
-
-	// TODO:  여기에 추가 초기화 작업을 추가합니다.
-	m_sliderHistogram.SetRange(0, 255);
-	m_sliderHistogram.SetTicFreq(32);
-	m_sliderHistogram.SetPageSize(32);
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
-}
-
-
-void CHistogramDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (m_sliderHistogram.GetSafeHwnd() == pScrollBar->GetSafeHwnd())
+	if (dib.GetBitCount() == 24)
 	{
-		m_nHistogram = m_sliderHistogram.GetPos();
-		UpdateData(FALSE);
+		ByteImage img;
+		FourMatDIBToByteImage(dib, img);
+		// 정규화된 히스토그램을 구한다.
+		float histo[256] = { 0.f, };
+		Histogram(img, histo);
+		// 정규화된 히스토그램에서 최댓값을 구한다.
+		float max_histo = histo[0];
+		for (int i = 1; i < 256; i++)
+			if (histo[i] > max_histo) max_histo = histo[i];
+		// m_Histogram 배열의 최댓값이 100이 되도록 전체 배열의 값을 조절한다.
+		for (int i = 0; i < 256; i++)
+		{
+			m_Histogram[i] = static_cast<int>(histo[i] * 100 / max_histo);
+		}
 	}
-
-	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+	else
+	{
+		memset(m_Histogram, 0, sizeof(int) * 256);
+	}
 }
+
+void CHistogramDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+
+	CGdiObject* pOldPen = dc.SelectStockObject(DC_PEN);
+	// 히스토그램 박스
+	dc.SetDCPenColor(RGB(128, 128, 128));
+	dc.MoveTo(20, 20);
+	dc.LineTo(20, 350);
+	dc.LineTo(900, 350);
+	dc.LineTo(900, 20);
+	// 각 그레이스케일에 해당하는 히스토그램 출력
+	dc.SetDCPenColor(RGB(0, 0, 0));
+	for (int i = 0; i < 256; i++)
+	{
+		dc.MoveTo(20 + i, 120);
+		dc.LineTo(20 + i, 120 - m_Histogram[i]);
+	}
+	// 그레이스케일 레벨 출력
+	for (int i = 0; i < 256; i++)
+	{
+		dc.SetDCPenColor(RGB(i, i, i));
+		dc.MoveTo(20 + i, 430);
+		dc.LineTo(20 + i, 350);
+	}
+	dc.SelectObject(pOldPen);
+}
+

@@ -70,6 +70,7 @@ public:
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
 	void Draw (BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
+	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
@@ -124,17 +125,18 @@ public:
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
-	//Çö¹Î
+  
 	CImage m_bmp;
-	LONG    m_nWidth;      // ºñÆ®¸Ê °¡·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	LONG    m_nHeight;     // ºñÆ®¸Ê ¼¼·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	WORD    m_nBitCount;   // ÇÈ¼¿ ´ç ºñÆ® ¼ö
-	DWORD   m_nDibSize;    // DIB ÀüÃ¼ Å©±â (BITMAPINFOHEADER + »ö»ó Å×ÀÌºí + ÇÈ¼¿ µ¥ÀÌÅÍ)
-	BYTE* m_pDib;        // DIB ½ÃÀÛ ÁÖ¼Ò (BITMAPINFOHEADER ½ÃÀÛ ÁÖ¼Ò)
+	LONG    m_nWidth;      // ë¹„íŠ¸ë§µ ê°€ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	LONG    m_nHeight;     // ë¹„íŠ¸ë§µ ì„¸ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	WORD    m_nBitCount;   // í”½ì…€ ë‹¹ ë¹„íŠ¸ ìˆ˜
+	DWORD   m_nDibSize;    // DIB ì „ì²´ í¬ê¸° (BITMAPINFOHEADER + ìƒ‰ìƒ í…Œì´ë¸” + í”½ì…€ ë°ì´í„°)
+	BYTE* m_pDib;        // DIB ì‹œì‘ ì£¼ì†Œ (BITMAPINFOHEADER ì‹œì‘ ì£¼ì†Œ)
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
 	BOOL m_bClickedView;
+  
 public:
 	CString m_strFolderPath;
 
@@ -151,16 +153,16 @@ public:
 	std::vector <CFourMatDIB> m_listLeftDIB;
 	std::vector <CFourMatDIB> m_listRightDIB;
 
-	long m_nCurrentFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÇöÀçÆäÀÌÁö
+	long m_nCurrentFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ í˜„ì¬í˜ì´ì§€
 	long m_nCurrentRightFrameNo;
 
-	long m_nTotalFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ÀÌ¹ÌÁö ÀüÃ¼ÆäÀÌÁö
+	long m_nTotalFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ì´ë¯¸ì§€ ì „ì²´í˜ì´ì§€
 	long m_nTotalRightFrameNo;
 
-	long m_nRepFrameNo; // ´ÙÀÌÄŞ ³»ºÎ ´ëÇ¥ ÀÌ¹ÌÁö
+	long m_nRepFrameNo; // ë‹¤ì´ì½¤ ë‚´ë¶€ ëŒ€í‘œ ì´ë¯¸ì§€
 	long m_nRepRightFrameNo;
 
-	bool m_bIsChange; // º¯°æ»çÇ× ÀÖÀÖÀ¸¸é true
+	bool m_bIsChange; // ë³€ê²½ì‚¬í•­ ìˆìˆìœ¼ë©´ true
 
 
 
@@ -189,5 +191,11 @@ public:
 
 	void HelperLoadDicom(BOOL bLeftView);
 
+	afx_msg void OnFeatureextractionHistogramequalization();
+	afx_msg void OnFeatureextractionHistogramstretching();
+	afx_msg void OnMolphologyClosing();
+	afx_msg void OnMolphologyDilation();
+	afx_msg void OnMolphologyErosion();
+	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 };
