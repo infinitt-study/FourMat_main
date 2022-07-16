@@ -94,9 +94,6 @@
     <ClCompile Include="CGrayDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CHistogramDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CInverse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -109,6 +106,9 @@
     <ClCompile Include="CConvertDataType.cpp" />
     <ClCompile Include="CFourMatDIB.cpp" />
     <ClCompile Include="CMorphology.cpp" />
+    <ClCompile Include="CHistogramDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -216,9 +216,6 @@
     <ClInclude Include="CGrayDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CHistogramDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -231,6 +228,9 @@
     <ClInclude Include="CConvertDataType.h" />
     <ClInclude Include="CFourMatDIB.h" />
     <ClInclude Include="CMorphology.h" />
+    <ClInclude Include="CHistogramDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">
