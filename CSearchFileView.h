@@ -33,7 +33,6 @@ public:
 	CString m_strToken;
 	CImageList m_img;
 	CButton m_btnStart;
-	CButton m_btnStop;
 	CString m_strFileName;
 	CString m_strFileLocation;
 	BOOL m_bSub;

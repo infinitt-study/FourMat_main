@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	ON_WM_CREATE()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 void CSplitFrame::OnFilePrint ()
@@ -80,9 +81,6 @@ void CSplitFrame::SwitchView(int nID)
 {
 	CView* pOldView = GetActiveFrame()->GetActiveView();
 	CView* pNewView = NULL;
-
-	//
-	//CHistoryView* pHistoryView = NULL;
 
 	switch (nID)
 	{
@@ -122,18 +120,9 @@ void CSplitFrame::SwitchView(int nID)
 	}
 }
 
-//void CSplitFrame::OnDrawTest()
-//{
-//	SwitchView(VIEWID_DRAW);
-//}
-
-
 BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	//width height
-	//
 	m_wndSplitter.CreateStatic(this, 1, 2);
 	
 	CRect rect;
@@ -161,4 +150,18 @@ int CSplitFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	return 0;
+}
+
+
+void CSplitFrame::OnClose()
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CDrawDoc* pDoc = (CDrawDoc*)GetActiveDocument();
+	if (pDoc->m_bIsChange) {
+		if (IDYES == AfxMessageBox(_T("변경 내용을 저장하시겠습니까 ?"), MB_YESNO)) {
+			pDoc->OnObjectSavedraw();
+		}
+	}
+
+	CMDIChildWndEx::OnClose();
 }

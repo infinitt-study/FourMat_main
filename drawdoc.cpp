@@ -1,4 +1,4 @@
-// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
+﻿// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
 // (the "Fluent UI") and is provided only as referential material to supplement the 
 // Microsoft Foundation Classes Reference and related electronic documentation 
 // included with the MFC C++ library software.  
@@ -100,6 +100,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_DILATION, &CDrawDoc::OnMolphologyDilation)
 	ON_COMMAND(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnMolphologyErosion)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
+	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,12 +120,14 @@ CDrawDoc::CDrawDoc()
 
 	m_strFilePath.Empty();
 	m_strRightFilePath.Empty();
+
+	m_strFileName.Empty();
+	m_strRightFileName.Empty();
 }
 
 CDrawDoc::~CDrawDoc()
 {
 	OnUnloadHandler();
-	//m_listData.clear();
 }
 
 void CDrawDoc::OnUnloadHandler()
@@ -137,8 +140,7 @@ void CDrawDoc::OnUnloadHandler()
 		delete pObjects;
 	}
 	m_pageLeftObjects.clear();
-
-	//수정
+	
 	for (auto& pObjects : m_pageRightObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -147,20 +149,6 @@ void CDrawDoc::OnUnloadHandler()
 		delete pObjects;
 	}
 	m_pageRightObjects.clear();
-
-
-
-	//for (const auto& bitmapData : m_listData) {
-	//	free(bitmapData);
-	//}
-	//m_listData.clear();
-
-	////수정
-	//for (const auto& bitmapData : m_listRightData) {
-	//	free(bitmapData);
-	//}
-	//m_listRightData.clear();
-
 
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
@@ -184,7 +172,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_pSummInfo->RecordCreateDate();
 	m_pSummInfo->SetNumPages(1);
 	// NumWords, NumChars default to 0
-	m_pSummInfo->SetAppname(_T("DrawCli"));
+	m_pSummInfo->SetAppname(_T("FourMat")); // 속성 변경해보기
 	// Security defaults to 0
 
 	m_bPen = TRUE;
@@ -207,6 +195,9 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_strFilePath.Empty();
   
 	m_zoom = 1;
+
+	m_bFirstLoad = true;
+	m_bIsChange = false;
 
 	return TRUE;
 }
@@ -318,7 +309,8 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 
 	pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 }
 
 void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
@@ -331,7 +323,8 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 	if (pos != NULL)
 		pObjects->RemoveAt(pos);
 	// set document modified flag
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 
 #ifndef SHARED_HANDLERS
 	// call remove for each view so that the view can remove from m_selection
@@ -406,7 +399,9 @@ void CDrawDoc::OnViewPaperColor()
 	m_paperColor = color == (COLORREF)-1 ? RGB(255, 255, 255) : color;
 	m_paperColorLast = m_paperColor;
 
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
+
 	UpdateAllViews(NULL);
 #endif
 }
@@ -469,7 +464,8 @@ void CDrawDoc::OnFileSummaryInfo()
 	m_pSummInfo->SetTemplate(summ.m_strTempl);
 	m_pSummInfo->SetTitle(summ.m_strTitle);
 
-	SetModifiedFlag();
+	SetModifiedFlag(false);
+	m_bIsChange = true;
 #endif
 }
 
@@ -482,38 +478,6 @@ void CDrawDoc::SetPreviewColor(COLORREF clr)
 void CDrawDoc::LoadDicom(BOOL bLeftView) {
 
 	HelperLoadDicom(bLeftView);
-
-//	DicomImage* m_pImage = new DicomImage(m_strFilePath);
-//
-//	m_listData.clear();
-//
-//	if (m_pImage) {
-//		const int width = (int)m_pImage->getWidth();
-//		const int height = (int)m_pImage->getHeight();
-//		void* data = nullptr;
-//
-//		// bitmapinfo로 변환
-//		if (m_pImage->createWindowsDIB(data, width * height, 0, 24) && data) //24bytes
-//		{
-//			m_bmi = { sizeof(BITMAPINFO) };
-//			//m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
-//			m_bmi.bmiHeader.biWidth = width;
-//			m_bmi.bmiHeader.biHeight = -height;
-//			m_bmi.bmiHeader.biPlanes = 1;
-//			m_bmi.bmiHeader.biBitCount = 24;
-//			m_bmi.bmiHeader.biCompression = BI_RGB;
-//			//m_bitmapinfo.bmiHeader.biSizeImage = 0;
-//			
-//
-//			m_listData.push_back(data);
-//		}
-//
-////		delete[] static_cast <char*> (data);
-//		data = nullptr;
-//
-//		UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
-//	}
-//	delete m_pImage;
 }
 
 void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
@@ -567,6 +531,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 //			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
 			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
 			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
+			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -578,22 +543,15 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 				listData.emplace_back(std::move(fourMatDIB));
 
-				//bmi = { sizeof(BITMAPINFO) };
-				////m_bitmapinfo.bmiHeader.biSize = sizeof(m_bitmapinfo);
-				//bmi.bmiHeader.biWidth = width;
-				//bmi.bmiHeader.biHeight = -height;
-				//bmi.bmiHeader.biPlanes = 1;
-				//bmi.bmiHeader.biBitCount = 24;
-				//bmi.bmiHeader.biCompression = BI_RGB;
-				//m_bitmapinfo.bmiHeader.biSizeImage = 0;
-				//listData.push_back(data);
-
 				objectList.push_back(new CDrawObjList());
 
 				//이미지의 주소를 메모리 해제 한다
 				delete[] data;
 				data = nullptr;
 			}
+
+			LoadDraw(strFileName, objectList);
+
 			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
 		}
 		SetCurrentFrameNo(bLeftView, 0);
@@ -1087,6 +1045,21 @@ void CDrawDoc::OnAffinetranformTranslation()
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
+		std::vector <CFourMatDIB>& listDib = m_bClickedView ? m_listLeftDIB : m_listRightDIB;
+		long currentFrameNo = m_bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
+
+		CFourMatDIB& dib = listDib[currentFrameNo];
+		ByteImage imgSrc;
+		ByteImage imgDst;
+
+		FourMatDIBToGrayImage(dib, imgSrc);
+		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
+		FourMatGrayToDIBImage(imgDst, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+
+
+		/*
 		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
 		ByteImage imgSrc;
 		ByteImage imgDst;
@@ -1096,6 +1069,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		FourMatGrayToDIBImage(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+		*/
 
 		//dib.CreateRgbBitmap();
 		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
@@ -1323,7 +1297,6 @@ void CDrawDoc::OnFilteringInverse()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-
 void CDrawDoc::OnFeatureextractionHistogramequalization()
 {
 	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
@@ -1394,4 +1367,61 @@ void CDrawDoc::OnMolphologyOpening()
 	MorphologyOpening(img, imgDst);
 	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+}
+
+void CDrawDoc::OnObjectSavedraw()
+{
+	if (!m_bIsChange) {
+		AfxMessageBox(_T("변경된 사항이 없습니다."));
+		return;
+	}
+	SaveDraw(m_strFileName, m_pageLeftObjects);
+	if (!m_strRightFileName.IsEmpty()) {
+		SaveDraw(m_strRightFileName, m_pageRightObjects);
+	}
+	AfxMessageBox(_T("파일을 저장했습니다."));
+	m_bIsChange = false;
+}
+
+void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObjects) {
+	CFile file;
+
+	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
+	if (file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
+		// modeCreate : 파일을 새로 만들거나 기존의 파일을 초기화
+		CArchive ar(&file, CArchive::store);
+
+		ar << pageObjects.size();
+		for each (auto pDrawObjList in pageObjects) {
+			pDrawObjList->Serialize(ar);
+		}
+		ar.Close();
+		file.Close();
+
+		
+	}
+}
+void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
+	CFile file;
+
+	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
+	if (!strFileName.IsEmpty()) {
+		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
+			CArchive ar(&file, CArchive::load);
+			ar.m_pDocument = this;
+			size_t size;
+			ar >> size;
+			if (size == pageObjects.size()) { // .drw 받아드림
+				for each (auto pDrawObjList in pageObjects) {
+					pDrawObjList->Serialize(ar);
+				}
+				//ar >> m_nRepFrameNo;
+			}
+			else { // .drw 안받아드림
+			}
+			ar.Close();
+			file.Close();
+
+		}
+	}
 }

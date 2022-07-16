@@ -103,8 +103,12 @@
     <ClCompile Include="CWindowLevel.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CConvertDataType.cpp" />
-    <ClCompile Include="CFourMatDIB.cpp" />
+    <ClCompile Include="CConvertDataType.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CFourMatDIB.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="CMorphology.cpp" />
     <ClCompile Include="CHistogramDlg.cpp">
       <Filter>소스 파일</Filter>
@@ -225,8 +229,12 @@
     <ClInclude Include="CWindowLevel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CConvertDataType.h" />
-    <ClInclude Include="CFourMatDIB.h" />
+    <ClInclude Include="CConvertDataType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CFourMatDIB.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="CMorphology.h" />
     <ClInclude Include="CHistogramDlg.h">
       <Filter>헤더 파일</Filter>
@@ -312,5 +320,6 @@
     <Image Include="RES\FourMat.ICO" />
     <Image Include="res\IDB_LIST.BMP" />
     <Image Include="res\explorer.bmp" />
+    <Image Include="res\IDB_LIST2.BMP" />
   </ItemGroup>
 </Project>
