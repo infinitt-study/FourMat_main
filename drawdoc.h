@@ -29,22 +29,20 @@ public:
 	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
 		if (bLeftView) {
 			m_nCurrentFrameNo -= nDelta;
-			m_nCurrentFrameNo = m_nCurrentFrameNo % m_listLeftDIB.size();
+			m_nCurrentFrameNo = (m_listLeftDIB.size() + m_nCurrentFrameNo) % m_listLeftDIB.size();
 			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
 		}
 		else {
 			m_nCurrentRightFrameNo -= nDelta;
-			m_nCurrentRightFrameNo = m_nCurrentRightFrameNo % m_listLeftDIB.size();
+			m_nCurrentRightFrameNo = (m_listRightDIB.size() + m_nCurrentRightFrameNo) % m_listRightDIB.size();
 			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
 		}
 	}
 
-	//수정 -> 연결된거 다 수정
 	CDrawObjList* GetObjects(BOOL bLeftView)
 	{ 
 		return bLeftView ? m_pObjects : m_pRightObjects;
 	}
-
 
 
 	const CSize& GetSize() const { return m_size; }
@@ -72,6 +70,7 @@ public:
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
 	void Draw (BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
+	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
 	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
@@ -126,7 +125,7 @@ public:
 	int m_nMapMode;
 	COLORREF m_paperColor;
 	COLORREF m_paperColorLast;
-	//현민
+  
 	CImage m_bmp;
 	LONG    m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
 	LONG    m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
@@ -135,32 +134,21 @@ public:
 	BYTE* m_pDib;        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
 	int m_nPitch;
 	BYTE* lpvBits;
-	
-
+	BOOL m_bFirstLoad;
+	BOOL m_bClickedView;
+  
 public:
 	CString m_strFolderPath;
 
 	CString m_strFilePath;
 	CString m_strRightFilePath;
 
+	CString m_strFileName;
+	CString m_strRightFileName;
+
 	void LoadDicom(BOOL bLeftView);
-	//DicomImage* m_pImage; // 따로 지우기
-
-	//BITMAPINFO m_bmiLeft;
-	//BITMAPINFO m_bmiRight;
-	//BITMAPINFO& GetBmi(BOOL bLeftView)
-	//{
-	//	return bLeftView ? m_bmiLeft : m_bmiRight;
-	//}
-
-	//void* GetDib(BOOL bLeftView)
-	//{
-	//	return bLeftView ? m_listData[m_nCurrentFrameNo] : m_listRightData[m_nCurrentRightFrameNo];
-	//}
-
-	//std::vector<BITMAPINFO> m_listBitmap;
-	//std::vector<void*> m_listData;
-	//std::vector<void*> m_listRightData;
+	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
+	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 
 	std::vector <CFourMatDIB> m_listLeftDIB;
 	std::vector <CFourMatDIB> m_listRightDIB;
@@ -170,6 +158,13 @@ public:
 
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 	long m_nTotalRightFrameNo;
+
+	long m_nRepFrameNo; // 다이콤 내부 대표 이미지
+	long m_nRepRightFrameNo;
+
+	bool m_bIsChange; // 변경사항 있있으면 true
+
+
 
 protected:
 	//{{AFX_MSG(CDrawDoc)
@@ -196,4 +191,11 @@ public:
 
 	void HelperLoadDicom(BOOL bLeftView);
 
+	afx_msg void OnFeatureextractionHistogramequalization();
+	afx_msg void OnFeatureextractionHistogramstretching();
+	afx_msg void OnMolphologyClosing();
+	afx_msg void OnMolphologyDilation();
+	afx_msg void OnMolphologyErosion();
+	afx_msg void OnMolphologyOpening();
+	afx_msg void OnObjectSavedraw();
 };

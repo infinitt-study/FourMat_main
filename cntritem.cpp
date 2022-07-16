@@ -85,7 +85,8 @@ BOOL CDrawItem::OnChangeItemPosition(const CRect& rectPos)
 		m_pDrawObj->Invalidate();
 
 		// mark document as dirty
-		GetDocument()->SetModifiedFlag();
+		GetDocument()->SetModifiedFlag(false);
+		GetDocument()->m_bIsChange = true;
 	}
 #endif
 	return COleClientItem::OnChangeItemPosition(rectPos);
