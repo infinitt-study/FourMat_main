@@ -1217,26 +1217,8 @@ void CDrawDoc::OnFilteringBrightness()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-#include"CGammaDlg.h"
-//void CDrawDoc::OnFilteringTograyscale()
-//{
-//	//CGrayDlg dlg;
-//	//if (dlg.DoModal() == IDOK)
-//	//{
-//	//		//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-//	//		//ByteImage img;
-//
-//	//		//FourMatDIBToByteImage(dib, img);
-//	//  //       //(img, dlg.m);
-//	//		//
-//	//		//FourMatGrayToDIBImage(img, dib);
-//
-//	//		//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-//	//	
-//
-//	//}
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
+
+
 
 #include "CHistogramDlg.h"
 void CDrawDoc::OnFilteringHistogram()
@@ -1418,8 +1400,21 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 	}
 }
 
-
+// 교수님께 질문하기 ! 되긴 되는데 화면을 바꿔야 사진이 바껴여ㅠㅠ
 void CDrawDoc::OnFilteringGamma()
 {
+	CGammaDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+
+		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		ByteImage img;
+
+		FourMatDIBToByteImage(dib, img);
+		GammaCorrection(img, dlg.m_fGamma);
+		FourMatGrayToDIBImage(img, dib);
+
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
