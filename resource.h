@@ -99,6 +99,7 @@
 #define IDC_EDIT4                       145
 #define IDC_DIFFUSION_K                 145
 #define IDC_CONTRAST_SLIDER             145
+#define IDD_HISTORY_COMPARE             145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -128,8 +129,10 @@
 #define IDC_HISTOGRAM_EDIT              165
 #define IDC_RESULTPICTURE               166
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDC_BUTTON_COMPARE              167
 #define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
+#define IDC_COMPARE_EDIT                169
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -220,7 +223,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
 #define _APS_NEXT_COMMAND_VALUE         32886
-#define _APS_NEXT_CONTROL_VALUE         167
+#define _APS_NEXT_CONTROL_VALUE         170
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

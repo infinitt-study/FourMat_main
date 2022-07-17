@@ -1440,6 +1440,7 @@
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBrightnessDlg.cpp" />
+    <ClCompile Include="CCompareDlg.cpp" />
     <ClCompile Include="CConvertDataType.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
@@ -1853,6 +1854,7 @@
     <ClInclude Include="CAffineTransform.h" />
     <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CBrightnessDlg.h" />
+    <ClInclude Include="CCompareDlg.h" />
     <ClInclude Include="CConvertDataType.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
