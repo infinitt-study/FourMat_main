@@ -108,22 +108,7 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 
 	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
-//	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawView::OnFilteringBrightness)
-//	ON_COMMAND(ID_FILTERING_CONTRAST, &CDrawView::OnFilteringContrast)
-//	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawView::OnFilteringHistogram)
-//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawView::OnFilteringTograyscale)
-//	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawView::OnAffinetransformRotation)
-//	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawView::OnAffinetransformScaling)
-//	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawView::OnAffinetransformSlice)
-//	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawView::OnAffinetransformMirror)
 
-//	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawView::OnAffinetransformTranslation)
-//	ON_WM_MOUSEHWHEEL()
-//	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawView::OnAffinetransformFlip)
-//	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawView::OnFeatureextractionAddnoise)
-//	ON_COMMAND(ID_FEATUREEXTRACTION_BLUR, &CDrawView::OnFeatureextractionBlur)
-//	ON_COMMAND(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawView::OnFeatureextractionReducenoise)
-//	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawView::OnFeatureextractionSharpening)
     ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 

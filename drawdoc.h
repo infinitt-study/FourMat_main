@@ -176,7 +176,6 @@ public:
 	afx_msg void OnAffinetranformMirror();
 	afx_msg void OnAffinetranformRotation();
 	afx_msg void OnAffinetranformScaling();
-	afx_msg void OnAffinetranformSlice();
 	afx_msg void OnAffinetranformTranslation();
 	afx_msg void OnAffinetransformFlip();
 	afx_msg void OnFeatureextractionAddnoise();
@@ -184,7 +183,6 @@ public:
 	afx_msg void OnFeatureextractionReducenoise();
 	afx_msg void OnFeatureextractionSharpening();
 	afx_msg void OnFilteringBrightness();
-//	afx_msg void OnFilteringTograyscale();
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();

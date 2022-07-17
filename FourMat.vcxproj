@@ -1481,7 +1481,6 @@
     <ClCompile Include="CRotationDlg.cpp" />
     <ClCompile Include="CScalingDlg.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
-    <ClCompile Include="CSliceDlg.cpp" />
     <ClCompile Include="CWindowLevel.cpp" />
     <ClCompile Include="drawdoc.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1870,7 +1869,6 @@
     <ClInclude Include="CRotationDlg.h" />
     <ClInclude Include="CScalingDlg.h" />
     <ClInclude Include="CSearchFileView.h" />
-    <ClInclude Include="CSliceDlg.h" />
     <ClInclude Include="CWindowLevel.h" />
     <ClInclude Include="drawdoc.h" />
     <ClInclude Include="drawobj.h" />

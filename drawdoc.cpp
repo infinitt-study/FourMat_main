@@ -81,7 +81,6 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_AFFINETRANFORM_MIRROR, &CDrawDoc::OnAffinetranformMirror)
 	ON_COMMAND(ID_AFFINETRANFORM_ROTATION, &CDrawDoc::OnAffinetranformRotation)
 	ON_COMMAND(ID_AFFINETRANFORM_SCALING, &CDrawDoc::OnAffinetranformScaling)
-	ON_COMMAND(ID_AFFINETRANFORM_SLICE, &CDrawDoc::OnAffinetranformSlice)
 	ON_COMMAND(ID_AFFINETRANFORM_TRANSLATION, &CDrawDoc::OnAffinetranformTranslation)
 	ON_COMMAND(ID_AFFINETRANSFORM_FLIP, &CDrawDoc::OnAffinetransformFlip)
 	ON_COMMAND(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawDoc::OnFeatureextractionAddnoise)
@@ -1030,16 +1029,7 @@ void CDrawDoc::OnAffinetranformScaling()
 
 }
 
-#include "CSliceDlg.h"
-void CDrawDoc::OnAffinetranformSlice()
-{
-	CSliceDlg dlg;
-	if (dlg.DoModal() == IDOK)
-	{
-		CFourMatDIB dib;
 
-	}
-}
 
 #include "CTranslationDlg.h"
 void CDrawDoc::OnAffinetranformTranslation()

@@ -63,18 +63,12 @@
 #define IDB_RIBBON_FORMATLARGE          132
 #define IDC_BUTTON1                     132
 #define IDB_RIBBON_FORMATSMALL          133
-#define IDC_BUTTON2                     133
 #define IDB_LINEWEIGHT                  134
-#define IDC_BUTTON3                     134
 #define IDD_LINEWEIGHT                  135
-#define IDC_BUTTON4                     135
 #define IDB_STYLES                      136
-#define IDC_BUTTON5                     136
 #define IDD_DIALOG1                     137
 #define IDD_SEARCH_FORM                 137
-#define IDC_BUTTON6                     137
 #define IDC_SLIDER1                     137
-#define IDC_BUTTON7                     138
 #define IDC_NEW_SX                      138
 #define IDC_SLIDER3                     138
 #define IDC_SLIDER2                     138
@@ -90,7 +84,6 @@
 #define IDC_ROTATE270                   141
 #define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
-#define IDD_AFFINETRANSFORM_SLICE       143
 #define IDC_EDIT1                       143
 #define IDC_ANGLE                       143
 #define IDC_EDIT3                       144

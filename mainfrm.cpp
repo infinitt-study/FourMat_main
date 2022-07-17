@@ -518,7 +518,6 @@ void CMainFrame::InitImageProcessingCategory()
 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("Rotation\ng"), 0, 0)); //90,-90, 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSLATION, _T("Translation\ng"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SLICE, _T("Slice\ng"), 0, 0)); //dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SCALING, _T("Scaling\ng"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_MIRROR, _T("Mirror\ng"), 0, 0)); // 
 	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANSFORM_FLIP, _T("Flip\ng"), 0, 0)); // 

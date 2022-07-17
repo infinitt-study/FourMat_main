@@ -64,9 +64,6 @@
     <ClCompile Include="CRotationDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CSliceDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CTranslationDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -179,9 +176,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CRotationDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CSliceDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CTranslationDlg.h">
