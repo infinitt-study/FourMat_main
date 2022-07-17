@@ -63,18 +63,12 @@
 #define IDB_RIBBON_FORMATLARGE          132
 #define IDC_BUTTON1                     132
 #define IDB_RIBBON_FORMATSMALL          133
-#define IDC_BUTTON2                     133
 #define IDB_LINEWEIGHT                  134
-#define IDC_BUTTON3                     134
 #define IDD_LINEWEIGHT                  135
-#define IDC_BUTTON4                     135
 #define IDB_STYLES                      136
-#define IDC_BUTTON5                     136
 #define IDD_DIALOG1                     137
 #define IDD_SEARCH_FORM                 137
-#define IDC_BUTTON6                     137
 #define IDC_SLIDER1                     137
-#define IDC_BUTTON7                     138
 #define IDC_NEW_SX                      138
 #define IDC_SLIDER3                     138
 #define IDC_SLIDER2                     138
@@ -90,7 +84,6 @@
 #define IDC_ROTATE270                   141
 #define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
-#define IDD_AFFINETRANSFORM_SLICE       143
 #define IDC_EDIT1                       143
 #define IDC_ANGLE                       143
 #define IDC_EDIT3                       144
@@ -99,6 +92,7 @@
 #define IDC_EDIT4                       145
 #define IDC_DIFFUSION_K                 145
 #define IDC_CONTRAST_SLIDER             145
+#define IDD_HISTORY_COMPARE             145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -111,6 +105,7 @@
 #define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
 #define IDC_BUTTON_MULTI                154
+#define IDD_FILTERING_GAMMA             154
 #define IDC_DIFFUSION_LAMBDA            155
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
@@ -128,8 +123,12 @@
 #define IDC_HISTOGRAM_EDIT              165
 #define IDC_RESULTPICTURE               166
 #define IDD_FEATUREEXTRACTION_REDUCENOISE 167
+#define IDC_BUTTON_COMPARE              167
 #define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
+#define IDC_COMPARE_EDIT                169
+#define IDC_GAMMA_SLIDER                170
+#define IDC_GAMMA_EDIT                  171
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -213,14 +212,15 @@
 #define ID_MOLPHOLOGY_OPENING           32883
 #define ID_MOLPHOLOGY_CLOSING           32884
 #define ID_OBJECT_SAVEDRAW              32885
+#define ID_FILTERING_GAMMA              32886
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32886
-#define _APS_NEXT_CONTROL_VALUE         167
+#define _APS_NEXT_COMMAND_VALUE         32887
+#define _APS_NEXT_CONTROL_VALUE         172
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
