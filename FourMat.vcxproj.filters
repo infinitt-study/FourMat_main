@@ -91,9 +91,6 @@
     <ClCompile Include="CBrightnessDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CGrayDlg.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CInverse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -112,6 +109,7 @@
     <ClCompile Include="CCompareDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CGammaDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -216,9 +214,6 @@
     <ClInclude Include="CBrightnessDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CGrayDlg.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -237,6 +232,7 @@
     <ClInclude Include="CCompareDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CGammaDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

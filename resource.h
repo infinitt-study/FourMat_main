@@ -112,6 +112,7 @@
 #define IDC_ASPECT_RATIO                153
 #define IDD_FILTERING_GRAY              154
 #define IDC_BUTTON_MULTI                154
+#define IDD_FILTERING_GAMMA             154
 #define IDC_DIFFUSION_LAMBDA            155
 #define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
@@ -133,6 +134,8 @@
 #define IDC_NOISE_RADIO2                168
 #define IDD_FEATUREEXTRACTION_ADDNOISE  169
 #define IDC_COMPARE_EDIT                169
+#define IDC_GAMMA_SLIDER                170
+#define IDC_GAMMA_EDIT                  171
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -216,14 +219,15 @@
 #define ID_MOLPHOLOGY_OPENING           32883
 #define ID_MOLPHOLOGY_CLOSING           32884
 #define ID_OBJECT_SAVEDRAW              32885
+#define ID_FILTERING_GAMMA              32886
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32886
-#define _APS_NEXT_CONTROL_VALUE         170
+#define _APS_NEXT_COMMAND_VALUE         32887
+#define _APS_NEXT_CONTROL_VALUE         172
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

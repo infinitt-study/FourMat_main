@@ -529,7 +529,7 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_BRIGHTNESS, _T("Brightness\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_HISTOGRAM, _T("Histogram\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_TOGRAYSCALE, _T("To gray scale\nn"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_GAMMA, _T("Gamma\nn"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_WINDOWLEVEL, _T("Window_Level\nn"), 0, 0));
 
 

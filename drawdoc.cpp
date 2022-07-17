@@ -38,6 +38,7 @@
 #include "CImprovement.h"
 #include "CMorphology.h"
 //#include "CConvert.h"
+#include"CGammaDlg.h"
 
 #include <math.h>
 
@@ -89,7 +90,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
@@ -101,6 +102,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnMolphologyErosion)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
+	ON_COMMAND(ID_FILTERING_GAMMA, &CDrawDoc::OnFilteringGamma)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1225,26 +1227,26 @@ void CDrawDoc::OnFilteringBrightness()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-#include"CGrayDlg.h"
-void CDrawDoc::OnFilteringTograyscale()
-{
-	//CGrayDlg dlg;
-	//if (dlg.DoModal() == IDOK)
-	//{
-	//		//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-	//		//ByteImage img;
-
-	//		//FourMatDIBToByteImage(dib, img);
-	//  //       //(img, dlg.m);
-	//		//
-	//		//FourMatGrayToDIBImage(img, dib);
-
-	//		//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-	//	
-
-	//}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
+#include"CGammaDlg.h"
+//void CDrawDoc::OnFilteringTograyscale()
+//{
+//	//CGrayDlg dlg;
+//	//if (dlg.DoModal() == IDOK)
+//	//{
+//	//		//CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+//	//		//ByteImage img;
+//
+//	//		//FourMatDIBToByteImage(dib, img);
+//	//  //       //(img, dlg.m);
+//	//		//
+//	//		//FourMatGrayToDIBImage(img, dib);
+//
+//	//		//UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+//	//	
+//
+//	//}
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
 
 #include "CHistogramDlg.h"
 void CDrawDoc::OnFilteringHistogram()
@@ -1424,4 +1426,10 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 
 		}
 	}
+}
+
+
+void CDrawDoc::OnFilteringGamma()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

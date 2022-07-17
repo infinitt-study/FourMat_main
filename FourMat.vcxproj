@@ -1445,7 +1445,7 @@
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CFourMatDIB.cpp" />
-    <ClCompile Include="CGrayDlg.cpp" />
+    <ClCompile Include="CGammaDlg.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
     <ClCompile Include="CImprovement.cpp" />
@@ -1859,7 +1859,7 @@
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
     <ClInclude Include="CFourMatDIB.h" />
-    <ClInclude Include="CGrayDlg.h" />
+    <ClInclude Include="CGammaDlg.h" />
     <ClInclude Include="CHistogramDlg.h" />
     <ClInclude Include="CHistoryView.h" />
     <ClInclude Include="CImprovement.h" />
