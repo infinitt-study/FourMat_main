@@ -39,6 +39,7 @@ public:
 	afx_msg void OnClickedButtonMulti();
 
 	std::pair<bool, int> IsFileExtDCMName(CString strFindDCM);
+	afx_msg void OnBnClickedButtonCompare();
 };
 
 

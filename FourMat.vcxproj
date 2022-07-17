@@ -1440,11 +1440,12 @@
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBrightnessDlg.cpp" />
+    <ClCompile Include="CCompareDlg.cpp" />
     <ClCompile Include="CConvertDataType.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
     <ClCompile Include="CFilter.cpp" />
     <ClCompile Include="CFourMatDIB.cpp" />
-    <ClCompile Include="CGrayDlg.cpp" />
+    <ClCompile Include="CGammaDlg.cpp" />
     <ClCompile Include="CHistogramDlg.cpp" />
     <ClCompile Include="CHistoryView.cpp" />
     <ClCompile Include="CImprovement.cpp" />
@@ -1480,7 +1481,6 @@
     <ClCompile Include="CRotationDlg.cpp" />
     <ClCompile Include="CScalingDlg.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
-    <ClCompile Include="CSliceDlg.cpp" />
     <ClCompile Include="CWindowLevel.cpp" />
     <ClCompile Include="drawdoc.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1853,11 +1853,12 @@
     <ClInclude Include="CAffineTransform.h" />
     <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CBrightnessDlg.h" />
+    <ClInclude Include="CCompareDlg.h" />
     <ClInclude Include="CConvertDataType.h" />
     <ClInclude Include="CFileFindEx.h" />
     <ClInclude Include="CFilter.h" />
     <ClInclude Include="CFourMatDIB.h" />
-    <ClInclude Include="CGrayDlg.h" />
+    <ClInclude Include="CGammaDlg.h" />
     <ClInclude Include="CHistogramDlg.h" />
     <ClInclude Include="CHistoryView.h" />
     <ClInclude Include="CImprovement.h" />
@@ -1868,7 +1869,6 @@
     <ClInclude Include="CRotationDlg.h" />
     <ClInclude Include="CScalingDlg.h" />
     <ClInclude Include="CSearchFileView.h" />
-    <ClInclude Include="CSliceDlg.h" />
     <ClInclude Include="CWindowLevel.h" />
     <ClInclude Include="drawdoc.h" />
     <ClInclude Include="drawobj.h" />
