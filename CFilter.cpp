@@ -74,7 +74,7 @@ void FilterWeightedMean(ByteImage& imgSrc, ByteImage& imgDst)
 
 void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma)
 {
-	register int i, j, k, x;
+	register int i, j, k, x; //register는 속도를 얻기 위한 방법으로 메모리 대신 프로세서 레지스터에 지정된 변수를 저장하도록 컴파일러에 요청하는 것입니다. 
 
 	int w = imgSrc.GetWidth();
 	int h = imgSrc.GetHeight();
@@ -84,10 +84,8 @@ void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma)
 	BYTE** pSrc = imgSrc.GetPixels2D();
 	float** pDst = imgDst.GetPixels2D();
 
-	//-------------------------------------------------------------------------
 	// 1차원 가우시안 마스크 & 실수 연산을 위한 버퍼 이미지 생성
-	//-------------------------------------------------------------------------
-
+	
 	int dim = static_cast<int>(2 * 4 * sigma + 1.0);
 	if (dim < 3) dim = 3;
 	if (dim % 2 == 0) dim++;
@@ -105,10 +103,7 @@ void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma)
 	FloatImage imgBuf(w, h);
 	float** pBuf = imgBuf.GetPixels2D();
 
-	//-------------------------------------------------------------------------
 	// 세로 방향 마스크 연산
-	//-------------------------------------------------------------------------
-
 	float sum1, sum2;
 	for (i = 0; i < w; i++)
 		for (j = 0; j < h; j++)
@@ -129,10 +124,8 @@ void FilterGaussian(ByteImage& imgSrc, FloatImage& imgDst, float sigma)
 			pBuf[j][i] = sum2 / sum1;
 		}
 
-	//-------------------------------------------------------------------------
 	// 가로 방향 마스크 연산
-	//-------------------------------------------------------------------------
-
+	
 	for (j = 0; j < h; j++)
 		for (i = 0; i < w; i++)
 		{

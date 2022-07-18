@@ -91,10 +91,10 @@
     <ClCompile Include="CInverse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CReduceNoise.cpp">
+    <ClCompile Include="CReduceNoiseDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CWindowLevel.cpp">
+    <ClCompile Include="CWindowLevelDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CConvertDataType.cpp" />
@@ -211,10 +211,10 @@
     <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CReduceNoise.h">
+    <ClInclude Include="CReduceNoiseDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CWindowLevel.h">
+    <ClInclude Include="CWindowLevelDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CConvertDataType.h" />

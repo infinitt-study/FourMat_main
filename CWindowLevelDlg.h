@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 
-// CWindowLevel 대화 상자
+// CWindowLevelDlg 대화 상자
 
-class CWindowLevel : public CDialogEx
+class CWindowLevelDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CWindowLevel)
+	DECLARE_DYNAMIC(CWindowLevelDlg)
 
 public:
-	CWindowLevel(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CWindowLevel();
+	CWindowLevelDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CWindowLevelDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

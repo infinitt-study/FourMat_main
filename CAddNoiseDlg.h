@@ -13,6 +13,9 @@ class CAddNoiseDlg : public CDialogEx
 public:
 	CAddNoiseDlg(CDrawDoc* DrawDoc,CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CAddNoiseDlg();
+	int m_Histogram[256];
+
+	void SetImage(CFourMatDIB& dib);
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -29,4 +32,6 @@ public:
 	CDrawDoc* m_pDrawDoc;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
+//	afx_msg void OnEnVscrollNoiseAmount();
+	afx_msg void OnEnChangeNoiseAmount();
 };
