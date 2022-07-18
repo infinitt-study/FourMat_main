@@ -350,7 +350,7 @@ CDrawObj* CDrawDoc::ObjectAt(BOOL bLeftView, const CPoint& point)
 void CDrawDoc::ComputePageSize()
 {
 	CSize new_size(850, 1100);  // 8.5" x 11" default
-
+	
 	CPrintDialog dlg(FALSE);
 	if (AfxGetApp()->GetPrinterDeviceDefaults(&dlg.m_pd))
 	{

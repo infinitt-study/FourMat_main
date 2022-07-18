@@ -288,30 +288,6 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
 }
 
-void CDrawView::OnPrepareDC_100(CDC* pDC)
-{
-	CScrollView::OnPrepareDC(pDC, NULL);
-
-	// mapping mode is MM_ANISOTROPIC
-	// these extents setup a mode similar to MM_LOENGLISH
-	// MM_LOENGLISH is in .01 physical inches
-	// these extents provide .01 logical inches
-
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	CDrawDoc* pDoc = GetDocument();
-	float zoom = 1;
-
-	//¸â¹ö º¯¼ö ctrl flag : 
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX) , pDC->GetDeviceCaps(LOGPIXELSY));
-	pDC->SetWindowExt(100, -100);
-
-	// set the origin of the coordinate system to the center of the page
-	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
-
-	// ptOrg is in logical coordinates
-	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
-}
-
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 {
 	// do the scroll
@@ -376,15 +352,13 @@ void CDrawView::OnDraw(CDC* pDC)
 		DrawGrid(pDrawDC);
 	CSize pageSize = pDoc->GetSize();
 	CPoint leftTop{ 0, 0 };
+	CSize pageSizeLD = pDoc->GetPageSizeLD();
 //	CRect imgRect(leftTop, pDoc->GetDibSize(m_bLeftView));
-	CRect imgRect(leftTop, CSize(pageSize.cx/2, pageSize.cy/2));
 	ClientToDoc(leftTop);
-	ClientToDoc_100(imgRect);
 	//ClientToDoc(imgRect);
 	TRACE("leftTop = %d, %d\n", leftTop.x, leftTop.y);
-	TRACE("imgRect = %d, %d,%d, %d\n", imgRect.left, imgRect.top, imgRect.right, imgRect.bottom);
-	TRACE("imgRect2 = %d, %d\n", leftTop.x, leftTop.y + imgRect.Height());
-	pDoc->DIBDraw(m_bLeftView, pDrawDC, leftTop.x, leftTop.y + imgRect.Height());
+	TRACE("imgRect2 = %d, %d\n", leftTop.x, leftTop.y + pageSizeLD.cy/2);
+	pDoc->DIBDraw(m_bLeftView, pDrawDC, leftTop.x, leftTop.y + pageSizeLD.cy / 2);
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
@@ -553,12 +527,18 @@ void CDrawView::OnInitialUpdate()
 {
 	//CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
 	//pSplitFrame->SetDrawView(this);
+	CDrawDoc* pDoc = GetDocument();
+	CSize size = pDoc->GetSize();
+	CRect imgRect(CPoint(0,0), size);
 
-	CSize size = GetDocument()->GetSize();
 	CClientDC dc(NULL);
 	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100);
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
+
+	ClientToDoc(imgRect);
+	pDoc->SetPageSizeLD(CSize(imgRect.Width(), imgRect.Height()));
+
 }
 
 void CDrawView::SetPageSize(CSize size)
@@ -709,26 +689,10 @@ void CDrawView::ClientToDoc(CPoint& point)
 	dc.DPtoLP(&point);
 }
 
-void CDrawView::ClientToDoc_100(CPoint& point)
-{
-	CClientDC dc(this);
-	OnPrepareDC_100(&dc);
-	dc.DPtoLP(&point);
-}
-
 void CDrawView::ClientToDoc(CRect& rect)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc, NULL);
-	dc.DPtoLP(rect);
-	ASSERT(rect.left <= rect.right);
-	ASSERT(rect.bottom <= rect.top);
-}
-
-void CDrawView::ClientToDoc_100(CRect& rect)
-{
-	CClientDC dc(this);
-	OnPrepareDC_100(&dc);
 	dc.DPtoLP(rect);
 	ASSERT(rect.left <= rect.right);
 	ASSERT(rect.bottom <= rect.top);
