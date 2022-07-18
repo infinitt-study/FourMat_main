@@ -44,6 +44,8 @@ public:
 		return bLeftView ? m_pObjects : m_pRightObjects;
 	}
 
+	CFourMatDIB& GetFourMatDIB(BOOL bClickedView);
+
 
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
@@ -120,7 +122,6 @@ public:
 	CDrawObjList* m_pObjects;
 	CDrawObjList* m_pRightObjects;
 
-
 	CSize m_size;
 	int m_nMapMode;
 	COLORREF m_paperColor;
@@ -164,6 +165,8 @@ public:
 
 	bool m_bIsChange; // 변경사항 있있으면 true
 
+	void HelperLoadDicom(BOOL bLeftView);
+	void EnableDrawView(CCmdUI* pCmdUI);
 
 
 protected:
@@ -186,9 +189,6 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
-
-	void HelperLoadDicom(BOOL bLeftView);
-
 	afx_msg void OnFeatureextractionHistogramequalization();
 	afx_msg void OnFeatureextractionHistogramstretching();
 	afx_msg void OnMolphologyClosing();
@@ -198,27 +198,5 @@ public:
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
 
-	CFourMatDIB& SelectFourMatDIB(BOOL bClickedView);
-	void EnableDrawView(CCmdUI* pCmdUI);
-
-	afx_msg void OnUpdateAffinetranformRotation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformMirror(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformScaling(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformTranslation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetransformFlip(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionAddnoise(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionBlur(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionHistogramequalization(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionHistogramstretching(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionReducenoise(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionSharpening(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringBrightness(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringGamma(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringHistogram(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringInverse(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringWindowlevel(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyErosion(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyDilation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyOpening(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyClosing(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 };
