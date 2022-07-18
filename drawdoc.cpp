@@ -40,6 +40,9 @@
 //#include "CConvert.h"
 #include"CGammaDlg.h"
 
+
+//#include "AccessObject.h"
+
 #include <math.h>
 
 const double PI = 3.14159265358979323846;
@@ -107,7 +110,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDrawDoc construction/destruction
 
-CDrawDoc::CDrawDoc()
+CDrawDoc::CDrawDoc() : m_leftDrawObj(), m_rightDrawObj()
 {
 	EnableCompoundFile();
 
@@ -118,12 +121,6 @@ CDrawDoc::CDrawDoc()
 	ComputePageSize();
 
 	m_strFolderPath.Empty();
-
-	m_strFilePath.Empty();
-	m_strRightFilePath.Empty();
-
-	m_strFileName.Empty();
-	m_strRightFileName.Empty();
 }
 
 CDrawDoc::~CDrawDoc()
@@ -133,7 +130,7 @@ CDrawDoc::~CDrawDoc()
 
 void CDrawDoc::OnUnloadHandler()
 {
-	for (auto& pObjects : m_pageLeftObjects) {
+	/*for (auto& pObjects : m_pageLeftObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
 			delete pObjects->GetNext(pos);
@@ -149,7 +146,7 @@ void CDrawDoc::OnUnloadHandler()
 		pObjects->RemoveAll();
 		delete pObjects;
 	}
-	m_pageRightObjects.clear();
+	m_pageRightObjects.clear();*/
 
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
@@ -193,7 +190,6 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_pObjects = nullptr;
 
 	m_strFolderPath.Empty();
-	m_strFilePath.Empty();
   
 	m_zoom = 1;
 
@@ -294,12 +290,12 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	CFourMatDIB& dib = bLeftView ? m_leftDrawObj.m_listDIB[m_nCurrentFrameNo] : m_rightDrawObj.m_listDIB[m_nCurrentRightFrameNo];
 	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2); // dlg -> paint dc  
 }
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	CFourMatDIB& dib = bLeftView ? m_leftDrawObj.m_listDIB[m_nCurrentFrameNo] : m_rightDrawObj.m_listDIB[m_nCurrentRightFrameNo];
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(),SRCCOPY); // dlg -> paint dc  
 
 }
@@ -487,12 +483,12 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 	OFFilename filePath;
 
 	if (bLeftView) {
-		filePath = (OFFilename)m_strFilePath;
+		filePath = (OFFilename)m_leftDrawObj.m_strFilePath;
 		m_nCurrentFrameNo = 0;
 		m_nTotalFrameNo = 0;
 	}
 	else {
-		filePath = (OFFilename)m_strRightFilePath;
+		filePath = (OFFilename)m_rightDrawObj.m_strFilePath;
 		m_nCurrentRightFrameNo = 0;
 		m_nTotalRightFrameNo = 0;
 	}
@@ -528,11 +524,10 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			void* data = nullptr;
 
 			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
-//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
-//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
-			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
-			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
-			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
+
+			std::vector<CFourMatDIB>& listData = bLeftView ? m_leftDrawObj.m_listDIB : m_rightDrawObj.m_listDIB;
+			std::vector<CDrawObjList*>& objectList = bLeftView ? m_leftDrawObj.m_pageObjects : m_rightDrawObj.m_pageObjects;
+			CString strFileName = bLeftView ? m_leftDrawObj.m_strFileName : m_rightDrawObj.m_strFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -916,7 +911,7 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 void CDrawDoc::OnAffinetranformMirror()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = m_leftDrawObj.m_listDIB[m_nCurrentFrameNo];
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
@@ -1367,9 +1362,9 @@ void CDrawDoc::OnObjectSavedraw()
 		AfxMessageBox(_T("변경된 사항이 없습니다."));
 		return;
 	}
-	SaveDraw(m_strFileName, m_pageLeftObjects);
-	if (!m_strRightFileName.IsEmpty()) {
-		SaveDraw(m_strRightFileName, m_pageRightObjects);
+	SaveDraw(m_leftDrawObj.m_strFileName, m_leftDrawObj.m_pageObjects);
+	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
+		SaveDraw(m_rightDrawObj.m_strFileName, m_rightDrawObj.m_pageObjects);
 	}
 	AfxMessageBox(_T("파일을 저장했습니다."));
 	m_bIsChange = false;
@@ -1387,6 +1382,7 @@ void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObj
 		for each (auto pDrawObjList in pageObjects) {
 			pDrawObjList->Serialize(ar);
 		}
+		
 		ar.Close();
 		file.Close();
 
@@ -1403,14 +1399,15 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 			ar.m_pDocument = this;
 			size_t size;
 			ar >> size;
-			if (size == pageObjects.size()) { // .drw 받아드림
+			// .drw 받아드림
+			if (size == pageObjects.size()) {
 				for each (auto pDrawObjList in pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
 				//ar >> m_nRepFrameNo;
 			}
-			else { // .drw 안받아드림
-			}
+			// .drw 안받아드림
+
 			ar.Close();
 			file.Close();
 

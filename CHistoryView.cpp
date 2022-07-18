@@ -114,13 +114,14 @@ void CHistoryView::OnBnClickedOk()
 
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
+
 
 	auto isFileExtDCM = IsFileExtDCMName(strFileName);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strFileName = strFileName + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName + _T(".drw");
 
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
@@ -128,7 +129,7 @@ void CHistoryView::OnBnClickedOk()
 	pSplitFrame->SwitchView(VIEWID_DRAW);
 }
 
-void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
+void CHistoryView::OnUpdate(CView* /*pSender*/, LPARAM lHint, CObject* /*pHint*/)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
@@ -189,20 +190,20 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
-	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
+	pDrawDoc->m_rightDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
 	
 	auto isFileExtDCM = IsFileExtDCMName(strFileName[0]);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strFileName = strFileName[0].Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName[0].Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strFileName = strFileName[0] + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName[0] + _T(".drw");
 
 	isFileExtDCM = IsFileExtDCMName(strFileName[1]);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strRightFileName = strFileName[1].Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_rightDrawObj.m_strFileName = strFileName[1].Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strRightFileName = strFileName[1] + _T(".drw");
+		pDrawDoc->m_rightDrawObj.m_strFileName = strFileName[1] + _T(".drw");
 
 	//수정
 	//pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);

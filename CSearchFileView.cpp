@@ -152,7 +152,7 @@ void CSearchFileView::SearFileNotSub() {
             if (cfile.IsDirectory()) {            // 폴더이면
                 // 리스트 컨트롤에 데이터 입력
                 // 0번 그림과 함께 출력
-                m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
+                m_lstResult.AddItem(cfile.GetFileName(), i, 0, (UINT)-1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
@@ -212,7 +212,7 @@ void CSearchFileView::SearFile(CString strStartFolder)
  
         if (cfile.IsDirectory()) {            // 폴더이면
             if (strName.Find(m_strToken) != -1) {
-                m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
+                m_lstResult.AddItem(cfile.GetFileName(), i, 0, (UINT)-1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
