@@ -201,6 +201,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateSelection(CCmdUI* pCmdUI);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
@@ -209,12 +210,22 @@ private:
 	//COLORREF GetColorFromColorButton(int nButtonID);
 
 public:
-	CString m_strPath;
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
+	//CString m_strPath;
 	BOOL m_bLeftView;
+
+public:
+	//void setStrPath(CString strPath)
+	//{
+	//	m_strPath = strPath;
+	//}
+
 	void setLeftView(BOOL bLeftView)
 	{
 		m_bLeftView = bLeftView;
+	}
+	
+	BOOL getLeftView()
+	{
+		return m_bLeftView;
 	}
 };

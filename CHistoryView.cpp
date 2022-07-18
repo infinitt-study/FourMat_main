@@ -162,8 +162,6 @@ void CHistoryView::FolderSearch()
 			m_lstHistory.InsertItem(nRow, fd.name, 0);
 			nRow++;
 		}
-
-
 	} while (_findnext(handle, &fd) == 0);
 	_findclose(handle);
 }
@@ -204,14 +202,11 @@ void CHistoryView::OnClickedButtonMulti()
 	else
 		pDrawDoc->m_strRightFileName = strFileName[1] + _T(".drw");
 
-	//수정
-	//pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
+
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_MULTIFILEPATH);
 	
 
 	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-	//
-	//
 	pSplitFrame->SwitchView(VIEWID_MULTIDRAW);
 }
 
