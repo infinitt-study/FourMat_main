@@ -89,7 +89,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+	//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
@@ -141,7 +141,7 @@ void CDrawDoc::OnUnloadHandler()
 		delete pObjects;
 	}
 	m_pageLeftObjects.clear();
-	
+
 	for (auto& pObjects : m_pageRightObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -194,7 +194,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 
 	m_strFolderPath.Empty();
 	m_strFilePath.Empty();
-  
+
 	m_zoom = 1;
 
 	m_bFirstLoad = true;
@@ -273,7 +273,7 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
+void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 {
 	CSize szPage = m_rectDocumentBounds.Size();
 	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
@@ -285,7 +285,7 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 	pDC->SetWindowExt(100, -100);
 	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
 
-	Draw (bLeftView, pDC, NULL);
+	Draw(bLeftView, pDC, NULL);
 
 	pDC->SetViewportOrg(0, 0);
 	pDC->SetWindowOrg(0, 0);
@@ -295,12 +295,12 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
 {
 	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2); // dlg -> paint dc  
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
 }
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
 {
 	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(),SRCCOPY); // dlg -> paint dc  
+	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
@@ -528,11 +528,11 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			void* data = nullptr;
 
 			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
-//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
-//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
+			//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
+			//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
 			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
 			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
-			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
+			CString strFileName = bLeftView ? m_strFileName : m_strRightFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -540,7 +540,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 				//이미지의 주소를 출력한다
 
 				CFourMatDIB fourMatDIB;
-				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*) data);
+				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*)data);
 
 				listData.emplace_back(std::move(fourMatDIB));
 
@@ -913,10 +913,17 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 #endif
 
+CFourMatDIB& CDrawDoc::SelectFourMatDIB(BOOL bClickedView)
+{
+	std::vector <CFourMatDIB>& listDib = bClickedView ? m_listLeftDIB : m_listRightDIB;
+	long currentFrameNo = bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
+
+	return listDib[currentFrameNo];
+}
 
 void CDrawDoc::OnAffinetranformMirror()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
@@ -938,7 +945,7 @@ void CDrawDoc::OnAffinetranformRotation()
 	CRotationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
@@ -984,7 +991,7 @@ void CDrawDoc::OnAffinetranformRotation()
 void CDrawDoc::OnAffinetranformScaling()
 {
 	CScalingDlg dlg;
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	dlg.m_nOldWidth = dib.GetWidth();
 	dlg.m_nOldHeight = dib.GetHeight();
 	if (dlg.DoModal() == IDOK)
@@ -1000,7 +1007,7 @@ void CDrawDoc::OnAffinetranformScaling()
 		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
 		}
 		FourMatGrayToDIBImage(imgDst, dib);
-	//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
+		//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
@@ -1029,18 +1036,13 @@ void CDrawDoc::OnAffinetranformScaling()
 
 }
 
-
-
 #include "CTranslationDlg.h"
 void CDrawDoc::OnAffinetranformTranslation()
 {
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		std::vector <CFourMatDIB>& listDib = m_bClickedView ? m_listLeftDIB : m_listRightDIB;
-		long currentFrameNo = m_bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
-
-		CFourMatDIB& dib = listDib[currentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
@@ -1076,7 +1078,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 
 void CDrawDoc::OnAffinetransformFlip()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
@@ -1099,11 +1101,11 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	CAddNoiseDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 		FourMatDIBToByteImage(dib, imgSrc);
-		
+
 		if (dlg.m_nNoiseType == 0)
 			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
 		else
@@ -1114,7 +1116,7 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지 
+			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지
 
 		if (dlg.m_nNoiseType == 0)
 			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
@@ -1136,7 +1138,7 @@ void CDrawDoc::OnFeatureextractionBlur()
 	CBlurDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage imgsrc;
 		FloatImage imgDst;
 		FourMatDIBToByteImage(dib, imgsrc);
@@ -1161,7 +1163,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 	CReduceNoise dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 		FourMatDIBToByteImage(dib, imgSrc);
@@ -1179,23 +1181,22 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
 	FilterLaplacian(imgSrc, imgDst);
-	//RgbImageToFourMatDIB(imgDst, dib);
 	FourMatGrayToDIBImage(imgDst, dib);
-	
+
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
-		ByteImage imgDst; 
-	FilterLaplacian(imgSrc, imgDst);//영상 처리 
-	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib 
+	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp
+		ByteImage imgDst;
+	FilterLaplacian(imgSrc, imgDst);//영상 처리
+	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib
 		AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);//bitmap new  
-	*/ 
+	AfxNewBitmap(dib);//bitmap new
+	*/
 }
 
 #include "CBrightnessDlg.h"
@@ -1204,7 +1205,7 @@ void CDrawDoc::OnFilteringBrightness()
 	CBrightnessDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 		ByteImage img;
 
 		FourMatDIBToByteImage(dib, img);
@@ -1241,20 +1242,19 @@ void CDrawDoc::OnFilteringBrightness()
 #include "CHistogramDlg.h"
 void CDrawDoc::OnFilteringHistogram()
 {
-		CHistogramDlg dlg;
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-		
+	CHistogramDlg dlg;
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 
-		dlg.SetImage(dib);
-		dlg.DoModal();
+	dlg.SetImage(dib);
+	dlg.DoModal();
 
-		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) {
-				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
-			}
+	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
+		if (m_vectorImageWnd[i]->m_bClicked) {
+			dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
 		}
-		dlg.DoModal();*/
-	
+	}
+	dlg.DoModal();*/
+
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -1272,14 +1272,14 @@ void CDrawDoc::OnFilteringWindowlevel()
 
 void CDrawDoc::OnFilteringInverse()
 {
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-		ByteImage img;
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
+	ByteImage img;
 
-		FourMatDIBToByteImage(dib, img);
-		Inverse(img);
-		FourMatGrayToDIBImage(img, dib);
-	
-		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	FourMatDIBToByteImage(dib, img);
+	Inverse(img);
+	FourMatGrayToDIBImage(img, dib);
+
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 		if (m_vectorImageWnd[i]->m_bClicked) {
 			m_vectorImageWnd[i]->m_nMode = 2;
@@ -1291,9 +1291,9 @@ void CDrawDoc::OnFilteringInverse()
 
 void CDrawDoc::OnFeatureextractionHistogramequalization()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
-	
+
 	FourMatDIBToByteImage(dib, img);
 	HistogramEqualization(img);
 	FourMatGrayToDIBImage(img, dib);
@@ -1305,7 +1305,7 @@ void CDrawDoc::OnFeatureextractionHistogramequalization()
 
 void CDrawDoc::OnFeatureextractionHistogramstretching()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
 	FourMatDIBToByteImage(dib, img);
 	HistogramStretching(img);
@@ -1317,7 +1317,7 @@ void CDrawDoc::OnFeatureextractionHistogramstretching()
 
 void CDrawDoc::OnMolphologyClosing()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1329,7 +1329,7 @@ void CDrawDoc::OnMolphologyClosing()
 
 void CDrawDoc::OnMolphologyDilation()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1340,7 +1340,7 @@ void CDrawDoc::OnMolphologyDilation()
 
 void CDrawDoc::OnMolphologyErosion()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1352,7 +1352,7 @@ void CDrawDoc::OnMolphologyErosion()
 
 void CDrawDoc::OnMolphologyOpening()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1375,7 +1375,7 @@ void CDrawDoc::OnObjectSavedraw()
 	m_bIsChange = false;
 }
 
-void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObjects) {
+void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
 	CFile file;
 
 	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
@@ -1389,8 +1389,6 @@ void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObj
 		}
 		ar.Close();
 		file.Close();
-
-		
 	}
 }
 void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {

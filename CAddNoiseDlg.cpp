@@ -64,10 +64,6 @@ void CAddNoiseDlg::OnPaint()
 	//이미지 정보 접근 
 	
 	m_pDrawDoc->DIBDraw(true,&dc,100,260,200,-200);
-
-
-	
-	
 }
 
 

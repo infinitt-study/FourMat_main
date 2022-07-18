@@ -82,7 +82,6 @@ void CSearchFileView::OnInitialUpdate()
     DWORD dwExStyle = m_lstResult.GetExtendedStyle();
     m_lstResult.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
-
 	// GetCurrentDirectory() : 프로그램이 실행되는 위치(폴더)를 얻어옴. 얻어진 결과는 m_strFileLocation에 입력
 	char pBuf[256];
 	GetCurrentDirectory(256, pBuf);
@@ -94,14 +93,11 @@ void CSearchFileView::OnInitialUpdate()
 	UpdateData(FALSE);
 
 
-    //처음 시작 최초 1회는 자동으로 목록 출력
+    //최초 1회는 자동으로 목록 출력
     m_lstResult.DeleteAllItems();
-
     m_strToken = m_strFileName;
     m_strToken.MakeUpper();
-
     SearFileNotSub();
-
 }
 
 // 하위 폴더를 제외한 검색 구현
@@ -157,12 +153,6 @@ void CSearchFileView::SearFileNotSub() {
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
             }
-            //else {
-            //    m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 1);
-            //    m_lstResult.AddItem(strFolder, i, 1);
-            //    m_lstResult.AddItem(cfile.GetLengthString(), i, 2);
-            //    m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
-            //}
         }
     }
 }
@@ -219,14 +209,6 @@ void CSearchFileView::SearFile(CString strStartFolder)
             }
             SearFile(cfile.GetFilePath());    // 재귀함수 호출
         }
-        //else {
-        //    if (strName.Find(m_strToken) != -1) {
-        //        m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 1);
-        //        m_lstResult.AddItem(strFolder, i, 1);
-        //        m_lstResult.AddItem(cfile.GetLengthString(), i, 2);
-        //        m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
-        //    }
-        //}
     }
 }
 
@@ -270,12 +252,6 @@ void CSearchFileView::OnClickedButtonSingle()
 
     //뷰 스위칭
     CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-
-    //pSplitFrame->m_strTmpPath = m_strFileLocation + "\\" + strImageName + "\\*.*";
-
-    //CHistoryView* pView = (CHistoryView*)pSplitFrame->GetActiveView();
-    //pView->m_strPath = m_strFileLocation + "\\" + strImageName + "\\*.*";
-    //pView->Invalidate(TRUE);
 
     CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
     pDrawDoc->m_strFolderPath = m_strFileLocation + "\\" + strFolderName;
