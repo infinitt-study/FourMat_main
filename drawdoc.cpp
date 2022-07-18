@@ -133,6 +133,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateMolphologyClosing)
 	ON_COMMAND(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnFeatureextractionCannyedge)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnFeatureextractionHarriscorner)
+	ON_COMMAND(ID_COMPARE_COMPARE, &CDrawDoc::OnCompareCompare)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1527,4 +1528,14 @@ void CDrawDoc::OnFeatureextractionCannyedge()
 void CDrawDoc::OnFeatureextractionHarriscorner()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include "CCompareDlg.h"
+void CDrawDoc::OnCompareCompare() // 비교 dlg
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	//CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
+	CCompareDlg dlg(this);
+	dlg.DoModal();
 }

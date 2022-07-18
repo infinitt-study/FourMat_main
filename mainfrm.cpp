@@ -548,6 +548,9 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_DILATION, _T("Dilation\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_OPENING, _T("Opening\nn"), 0, 0));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_CLOSING, _T("Closing\nn"), 0, 0)); // dlg
+
+	pPanelWindow = pCategory->AddPanel(_T("Compare\nzw"), m_PanelImages.ExtractIcon(7));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_COMPARE_COMPARE, _T("Compare\nn"), 0, 0)); // dlg
 }
 
 

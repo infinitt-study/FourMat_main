@@ -226,4 +226,5 @@ public:
 	afx_msg void OnUpdateMolphologyClosing(CCmdUI* pCmdUI);
 	afx_msg void OnFeatureextractionCannyedge();
 	afx_msg void OnFeatureextractionHarriscorner();
+	afx_msg void OnCompareCompare(); // 비교 dlg
 };

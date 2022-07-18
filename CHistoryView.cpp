@@ -37,7 +37,7 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
 	ON_BN_CLICKED(IDOK, &CHistoryView::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
-	ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
+	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
 END_MESSAGE_MAP()
 
 
@@ -217,9 +217,9 @@ std::pair<bool, int> CHistoryView::IsFileExtDCMName(CString strFindDCM) {
 	return make_pair((nIndex != -1 && strFindDCM.Mid(nIndex) == _T(".DCM")), nIndex);
 }
 
-void CHistoryView::OnBnClickedButtonCompare()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CCompareDlg dlg;
-	dlg.DoModal();
-}
+//void CHistoryView::OnBnClickedButtonCompare()
+//{
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	CCompareDlg dlg;
+//	dlg.DoModal();
+//}
