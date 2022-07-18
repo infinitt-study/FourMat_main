@@ -539,6 +539,8 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_REDUCENOISE, _T("Reduce Noise\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 0)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_CANNYEDGE, _T("Canny Edge \nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HARRISCORNER, _T("Harris Corner \nn"), 0, 0)); // dlg
 
 	pPanelWindow = pCategory->AddPanel(_T("Molphology\nzw"), m_PanelImages.ExtractIcon(7));
 

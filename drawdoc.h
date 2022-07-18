@@ -224,4 +224,6 @@ public:
 	afx_msg void OnUpdateMolphologyDilation(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMolphologyOpening(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMolphologyClosing(CCmdUI* pCmdUI);
+	afx_msg void OnFeatureextractionCannyedge();
+	afx_msg void OnFeatureextractionHarriscorner();
 };

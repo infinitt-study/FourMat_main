@@ -131,6 +131,8 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_DILATION, &CDrawDoc::OnUpdateMolphologyDilation)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnUpdateMolphologyOpening)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateMolphologyClosing)
+	ON_COMMAND(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnFeatureextractionCannyedge)
+	ON_COMMAND(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnFeatureextractionHarriscorner)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1513,4 +1515,16 @@ void CDrawDoc::OnUpdateMolphologyClosing(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnFeatureextractionCannyedge()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionHarriscorner()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

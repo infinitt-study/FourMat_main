@@ -93,6 +93,7 @@
 #define IDC_DIFFUSION_K                 145
 #define IDC_CONTRAST_SLIDER             145
 #define IDD_HISTORY_COMPARE             145
+#define IDC_HIGH_THRESHOLD              145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -129,6 +130,12 @@
 #define IDC_COMPARE_EDIT                169
 #define IDC_GAMMA_SLIDER                170
 #define IDC_GAMMA_EDIT                  171
+#define IDD_FEATUREEXTRACTION_CANNY_EDGE 171
+#define IDC_RADIO1                      172
+#define IDC_CANNY_SIGMA                 174
+#define IDC_LOW_THRESHOLD               175
+#define IDD_FEATUREEXTRACTION_HARRIS_CORNER 175
+#define IDC_HARRIS_THRESHOLD            176
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -213,14 +220,17 @@
 #define ID_MOLPHOLOGY_CLOSING           32884
 #define ID_OBJECT_SAVEDRAW              32885
 #define ID_FILTERING_GAMMA              32886
+#define ID_FEATUREEXTRACTION_CANNYEDGE  32887
+#define ID_FEATUREEXTRACTION_HARRISCOR  32888
+#define ID_FEATUREEXTRACTION_HARRISCORNER 32889
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32887
-#define _APS_NEXT_CONTROL_VALUE         172
+#define _APS_NEXT_RESOURCE_VALUE        177
+#define _APS_NEXT_COMMAND_VALUE         32890
+#define _APS_NEXT_CONTROL_VALUE         177
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

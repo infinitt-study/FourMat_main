@@ -115,6 +115,8 @@
     <ClCompile Include="CMorphology.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CCannyEdgeDlg.cpp" />
+    <ClCompile Include="CHarrisCornerDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -243,6 +245,8 @@
     <ClInclude Include="CMorphology.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CCannyEdgeDlg.h" />
+    <ClInclude Include="CHarrisCornerDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">
