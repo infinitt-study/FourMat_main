@@ -1052,6 +1052,8 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 	{
 		
 		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		
+
 		ByteImage imgSrc;
 		ByteImage imgDst;
 		FourMatDIBToByteImage(dib, imgSrc);

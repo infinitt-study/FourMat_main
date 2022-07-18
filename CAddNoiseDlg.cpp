@@ -96,7 +96,7 @@ void CAddNoiseDlg::OnPaint()
 	//이미지 정보 접근 
 	
 	m_pDrawDoc->DIBDraw(true,&dc,100,300,200,-200);
-	AfxMessageBox("확인");
+	//AfxMessageBox("확인");
 
 	m_pDrawDoc->DIBDraw(true, &dc, 450, 300, 200, -200);
 }
@@ -114,9 +114,11 @@ void CAddNoiseDlg::OnPaint()
 void CAddNoiseDlg::OnEnChangeNoiseAmount()
 {
 	CFourMatDIB& dib = m_pDrawDoc->m_listLeftDIB[m_pDrawDoc->m_nCurrentFrameNo];
+	CFourMatDIB m_dib = dib;
+
 	ByteImage imgSrc;
 	ByteImage imgDst;
-	FourMatDIBToByteImage(dib, imgSrc);
+	FourMatDIBToByteImage(m_dib, imgSrc);
 	
 	
 	if (m_nNoiseType == 0)
@@ -124,7 +126,7 @@ void CAddNoiseDlg::OnEnChangeNoiseAmount()
 	else
 		NoiseSaltNPepper(imgSrc, imgDst, m_nAmount);
 
-	FourMatGrayToDIBImage(imgDst, dib);
+	FourMatGrayToDIBImage(imgDst, m_dib);
 
-	//Invalidate(true);	//m_pDrawDoc->UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	Invalidate(true);	//m_pDrawDoc->UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 }
