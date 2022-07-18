@@ -21,6 +21,8 @@ CAddNoiseDlg::CAddNoiseDlg(CDrawDoc* pDrawDoc, CWnd* pParent /*=nullptr*/)
 	, m_nNoiseType(0)
 	, m_nAmount(0)
 	,m_pDrawDoc(pDrawDoc)
+	, m_dibRef(pDrawDoc->m_listLeftDIB[pDrawDoc->m_nCurrentFrameNo])
+	, m_dib(pDrawDoc->m_listLeftDIB[pDrawDoc->m_nCurrentFrameNo])
 
 {
 	
@@ -95,10 +97,11 @@ void CAddNoiseDlg::OnPaint()
 	//CDrawDoc* pDrawDoc = (CDrawDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame()->GetActiveDocument();//
 	//이미지 정보 접근 
 	
-	m_pDrawDoc->DIBDraw(true,&dc,100,300,200,-200);
+	m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
 	//AfxMessageBox("확인");
 
-	m_pDrawDoc->DIBDraw(true, &dc, 450, 300, 200, -200);
+	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
+
 
 }
 
@@ -114,14 +117,14 @@ void CAddNoiseDlg::OnPaint()
 
 void CAddNoiseDlg::OnEnChangeNoiseAmount()
 {
-	CFourMatDIB& dib = m_pDrawDoc->m_listLeftDIB[m_pDrawDoc->m_nCurrentFrameNo];
-	CFourMatDIB m_dib = dib;
-
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(m_dib, imgSrc);
-	
-	
+
+	if (UpdateData() == FALSE) {
+		return;
+	}
+
 	if (m_nNoiseType == 0)
 		NoiseGaussian(imgSrc, imgDst, m_nAmount);
 	else
@@ -129,5 +132,5 @@ void CAddNoiseDlg::OnEnChangeNoiseAmount()
 
 	FourMatGrayToDIBImage(imgDst, m_dib);
 
-	Invalidate(true);	//m_pDrawDoc->UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	Invalidate(true);
 }

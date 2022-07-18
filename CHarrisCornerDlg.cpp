@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CHarrisCornerDlg, CDialogEx)
 
 CHarrisCornerDlg::CHarrisCornerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FEATUREEXTRACTION_HARRIS_CORNER, pParent)
-	, m_nHarrisTh(0)
+	, m_nHarrisTh(20000)
 {
 
 }
