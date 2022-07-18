@@ -1400,7 +1400,6 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 	}
 }
 
-// 교수님께 질문하기 ! 되긴 되는데 화면을 바꿔야 사진이 바껴여ㅠㅠ
 void CDrawDoc::OnFilteringGamma()
 {
 	CGammaDlg dlg;
