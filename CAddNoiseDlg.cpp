@@ -99,6 +99,7 @@ void CAddNoiseDlg::OnPaint()
 	//AfxMessageBox("확인");
 
 	m_pDrawDoc->DIBDraw(true, &dc, 450, 300, 200, -200);
+
 }
 
 

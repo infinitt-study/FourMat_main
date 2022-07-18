@@ -491,15 +491,14 @@ void CMainFrame::InitViewCategory()
 	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_GRID, _T("Grid Lines\ng")));
 
 	// Create "Window" panel:
-	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Window\nzw"), m_PanelImages.ExtractIcon(5));
+	//CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Window\nzw"), m_PanelImages.ExtractIcon(5));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_WINDOW_NEW, _T("New Window\nn"), 0, 0));
+	//pPanelWindow->Add(new CMFCRibbonButton(ID_WINDOW_NEW, _T("New Window\nn"), 0, 0));
 	
-
-	CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton(ID_WINDOWS_MENU, _T("Switch Windows\ns"), 1, 1);
-	pBtnWindows->SetMenu(IDR_WINDOWS_MENU, TRUE);
-	pBtnWindows->SetDefaultCommand(FALSE);
-	pPanelWindow->Add(pBtnWindows);
+	//CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton(ID_WINDOWS_MENU, _T("Switch Windows\ns"), 1, 1);
+	//pBtnWindows->SetMenu(IDR_WINDOWS_MENU, TRUE);
+	//pBtnWindows->SetDefaultCommand(FALSE);
+	//pPanelWindow->Add(pBtnWindows);
 
 #ifdef ENABLE_RIBBON_LAUNCH_BUTTON
 	// Add the launch button at the bottom of the panel:

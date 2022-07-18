@@ -126,24 +126,47 @@ void ByteImageToFourMatDIB(ByteImage& img, CFourMatDIB& dib)
 	}
 }
 
+//void FloatImageToFourMatDIB(FloatImage& img, CFourMatDIB& dib)
+//{
+//	assert(img.IsValid());
+//
+//
+//	int w = img.GetWidth();
+//	int h = img.GetHeight();
+//	int ws = (w + 3) & ~3;
+//
+//	float** pixels = img.GetPixels2D();
+//
+//	dib.CreateGrayBitmap(w, h);
+//	BYTE* pDIBits = dib.GetDIBitsAddr();
+//
+//	int i, j;
+//	for (j = 0; j < h; j++)
+//		for (i = 0; i < w; i++)
+//		{
+//			pDIBits[(h - 1 - j) * ws + i] = static_cast<BYTE>(limit(pixels[j][i] + 0.5f));
+//		}
+//}
+
 void FloatImageToFourMatDIB(FloatImage& img, CFourMatDIB& dib)
 {
-	assert(img.IsValid());
+	assert(dib.IsValid());
+	assert(dib.GetBitCount() == 24);
 
-	int w = img.GetWidth();
-	int h = img.GetHeight();
-	int ws = (w + 3) & ~3;
-	float** pixels = img.GetPixels2D();
+	int w = dib.GetWidth();
+	int h = dib.GetHeight();
+	int ws = (w * 3 + 3) & ~3; // 이미지 보수 처리 
+	BYTE* pDIBits = dib.GetDIBitsAddr(); //dib 주소 값 
+	float** pixels = img.GetPixels2D(); //2d pixel data 구하기 
 
-	dib.CreateGrayBitmap(w, h);
-	BYTE* pDIBits = dib.GetDIBitsAddr();
-
-	int i, j;
-	for (j = 0; j < h; j++)
-		for (i = 0; i < w; i++)
-		{
-			pDIBits[(h - 1 - j) * ws + i] = static_cast<BYTE>(limit(pixels[j][i] + 0.5f));
+	for (int i = 0; i < h; i++)
+	{
+		for (int j = 0; j < w; j++) {
+			pDIBits[(h - 1 - i) * ws + j * 3 + 0] = static_cast<BYTE>(limit(pixels[i][j] + 0.5f));
+			pDIBits[(h - 1 - i) * ws + j * 3 + 1] = static_cast<BYTE>(limit(pixels[i][j] + 0.5f));
+			pDIBits[(h - 1 - i) * ws + j * 3 + 2] = static_cast<BYTE>(limit(pixels[i][j] + 0.5f));
 		}
+	}
 }
 
 void RgbImageToFourMatDIB(RgbImage& img, CFourMatDIB& dib)

@@ -200,4 +200,28 @@ public:
 	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
+
+	CFourMatDIB& SelectFourMatDIB(BOOL bClickedView);
+	void EnableDrawView(CCmdUI* pCmdUI);
+
+	afx_msg void OnUpdateAffinetranformRotation(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateAffinetranformMirror(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateAffinetranformScaling(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateAffinetranformTranslation(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateAffinetransformFlip(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionAddnoise(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionBlur(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionHistogramequalization(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionHistogramstretching(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionReducenoise(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFeatureextractionSharpening(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFilteringBrightness(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFilteringGamma(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFilteringHistogram(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFilteringInverse(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFilteringWindowlevel(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMolphologyErosion(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMolphologyDilation(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMolphologyOpening(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateMolphologyClosing(CCmdUI* pCmdUI);
 };
