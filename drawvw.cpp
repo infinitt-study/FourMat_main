@@ -274,12 +274,11 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	CDrawDoc* pDoc = GetDocument();
 	float zoom = 1;
 
-	if (nullptr != pInfo) {
+	if (nullptr == pInfo) {
 		zoom = pDoc->m_zoom;
-		zoom = 1.0f;
 	}
 	//멤버 변수 ctrl flag : 
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom, pDC->GetDeviceCaps(LOGPIXELSY)* zoom);
+	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX)* zoom), (int)(pDC->GetDeviceCaps(LOGPIXELSY)* zoom));
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
@@ -287,6 +286,30 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	// ptOrg is in logical coordinates
 	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+}
+
+void CDrawView::OnPrepareDC_100(CDC* pDC)
+{
+	CScrollView::OnPrepareDC(pDC, NULL);
+
+	// mapping mode is MM_ANISOTROPIC
+	// these extents setup a mode similar to MM_LOENGLISH
+	// MM_LOENGLISH is in .01 physical inches
+	// these extents provide .01 logical inches
+
+	pDC->SetMapMode(MM_ANISOTROPIC);
+	CDrawDoc* pDoc = GetDocument();
+	float zoom = 1;
+
+	//멤버 변수 ctrl flag : 
+	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX) , pDC->GetDeviceCaps(LOGPIXELSY));
+	pDC->SetWindowExt(100, -100);
+
+	// set the origin of the coordinate system to the center of the page
+	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
+
+	// ptOrg is in logical coordinates
+	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -351,21 +374,17 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
-
-
-	pDoc->DIBDraw(m_bLeftView, pDrawDC);
-
-	//BITMAPINFO& bmi = pDoc->GetBmi(m_bLeftView);
-
-	//const int width = bmi.bmiHeader.biWidth;
-	//const int height = abs(bmi.bmiHeader.biHeight);
-	////이미지를 그려주는 함수
-	//SetDIBitsToDevice(pDrawDC->m_hDC,  
-	//	-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
-	//	0, 0, 0, height, 
-
-	//	pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
-
+	CSize pageSize = pDoc->GetSize();
+	CPoint leftTop{ 0, 0 };
+//	CRect imgRect(leftTop, pDoc->GetDibSize(m_bLeftView));
+	CRect imgRect(leftTop, CSize(pageSize.cx/2, pageSize.cy/2));
+	ClientToDoc(leftTop);
+	ClientToDoc_100(imgRect);
+	//ClientToDoc(imgRect);
+	TRACE("leftTop = %d, %d\n", leftTop.x, leftTop.y);
+	TRACE("imgRect = %d, %d,%d, %d\n", imgRect.left, imgRect.top, imgRect.right, imgRect.bottom);
+	TRACE("imgRect2 = %d, %d\n", leftTop.x, leftTop.y + imgRect.Height());
+	pDoc->DIBDraw(m_bLeftView, pDrawDC, leftTop.x, leftTop.y + imgRect.Height());
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
@@ -690,10 +709,26 @@ void CDrawView::ClientToDoc(CPoint& point)
 	dc.DPtoLP(&point);
 }
 
+void CDrawView::ClientToDoc_100(CPoint& point)
+{
+	CClientDC dc(this);
+	OnPrepareDC_100(&dc);
+	dc.DPtoLP(&point);
+}
+
 void CDrawView::ClientToDoc(CRect& rect)
 {
 	CClientDC dc(this);
 	OnPrepareDC(&dc, NULL);
+	dc.DPtoLP(rect);
+	ASSERT(rect.left <= rect.right);
+	ASSERT(rect.bottom <= rect.top);
+}
+
+void CDrawView::ClientToDoc_100(CRect& rect)
+{
+	CClientDC dc(this);
+	OnPrepareDC_100(&dc);
 	dc.DPtoLP(rect);
 	ASSERT(rect.left <= rect.right);
 	ASSERT(rect.bottom <= rect.top);
@@ -807,7 +842,11 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
+	TRACE("111 %d,%d\n", point.x, point.y);
+	ClientToDoc(point);
+	TRACE("222 %d,%d\n", point.x, point.y);
 
+	TRACE("%d,%d\n", point.x, point.y);
 	///
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->m_bClickedView = m_bLeftView;
@@ -1820,14 +1859,22 @@ void CDrawView::ResetPreviewState()
 
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-
-   if ((nFlags & MK_SHIFT) == MK_SHIFT)
+	CDrawDoc* pDoc = GetDocument();
+	if ((nFlags & MK_SHIFT) == MK_SHIFT)
 	{
-		CDrawDoc* pDoc = GetDocument();
 		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}
-	
+	else if ((nFlags & MK_CONTROL) == MK_CONTROL)
+	{
+		if (zDelta > 0) {
+			pDoc->m_zoom += 0.1f;
+		} else {
+			pDoc->m_zoom -= 0.1f;
+		}
+		Invalidate();
+	}
+
    return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }
 

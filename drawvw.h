@@ -42,7 +42,9 @@ public:
 	void DocToClient(CRect& rect);
 	void DocToClient(CPoint& point);
 	void ClientToDoc(CPoint& point);
+	void ClientToDoc_100(CPoint& point);
 	void ClientToDoc(CRect& rect);
+	void ClientToDoc_100(CRect& rect);
 	void Select(CDrawObj* pObj, BOOL bAdd = FALSE);
 	void SelectWithinRect(CRect rect, BOOL bAdd = FALSE);
 	void Deselect(CDrawObj* pObj);
@@ -108,6 +110,7 @@ public:
 	virtual void OnActivateView(BOOL bActivate, CView* pActiveView, CView* pDeactiveView);
 	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
 	virtual void OnPrepareDC(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnPrepareDC_100(CDC* pDC);
 	virtual BOOL OnScrollBy(CSize sizeScroll, BOOL bDoScroll);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	void DrawGrid(CDC* pDC);

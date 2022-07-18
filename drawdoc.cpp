@@ -273,30 +273,20 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
-{
-	CSize szPage = m_rectDocumentBounds.Size();
-	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
-
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX),
-		pDC->GetDeviceCaps(LOGPIXELSY));
-
-	pDC->SetWindowExt(100, -100);
-	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
-
-	Draw (bLeftView, pDC, NULL);
-
-	pDC->SetViewportOrg(0, 0);
-	pDC->SetWindowOrg(0, 0);
-	pDC->SetMapMode(MM_TEXT);
-}
-
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
 {
 	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2); // dlg -> paint dc  
+//	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
+	dib.Draw(pDC->m_hDC, 0, 0); // dlg -> paint dc  
 }
+
+void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y)
+{
+	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	dib.Draw(pDC->m_hDC, x, y, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
+
+}
+
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
 {
 	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
@@ -371,8 +361,8 @@ void CDrawDoc::ComputePageSize()
 		dc.Attach(hDC);
 
 		// Get the size of the page in loenglish
-		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 900, 100);
-		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 300, 100);
+		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 1000, 254);
+		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 1000, 254);
 	}
 
 #ifndef SHARED_HANDLERS
