@@ -74,24 +74,27 @@ void CHistogramDlg::OnPaint()
 	CGdiObject* pOldPen = dc.SelectStockObject(DC_PEN);
 	// 히스토그램 박스
 	dc.SetDCPenColor(RGB(128, 128, 128));
-	dc.MoveTo(20, 20);
-	dc.LineTo(20, 350);
-	dc.LineTo(900, 350);
-	dc.LineTo(900, 20);
+	//dc.MoveTo(20, 20);
+	//dc.LineTo(20, 120);
+	//dc.LineTo(275, 120);
+	//dc.LineTo(275, 20);
+
 	// 각 그레이스케일에 해당하는 히스토그램 출력
 	dc.SetDCPenColor(RGB(0, 0, 0));
 	for (int i = 0; i < 256; i++)
 	{
 		dc.MoveTo(20 + i, 120);
-		dc.LineTo(20 + i, 120 - m_Histogram[i]);
+		dc.LineTo(20 + i, 120 - m_Histogram[i] - 1);
 	}
+
 	// 그레이스케일 레벨 출력
 	for (int i = 0; i < 256; i++)
 	{
 		dc.SetDCPenColor(RGB(i, i, i));
-		dc.MoveTo(20 + i, 430);
-		dc.LineTo(20 + i, 350);
+		dc.MoveTo(20 + i, 130);
+		dc.LineTo(20 + i, 145);
 	}
+
 	dc.SelectObject(pOldPen);
 }
 

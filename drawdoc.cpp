@@ -102,6 +102,26 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
 	ON_COMMAND(ID_FILTERING_GAMMA, &CDrawDoc::OnFilteringGamma)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_ROTATION, &CDrawDoc::OnUpdateAffinetranformRotation)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_MIRROR, &CDrawDoc::OnUpdateAffinetranformMirror)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_SCALING, &CDrawDoc::OnUpdateAffinetranformScaling)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_TRANSLATION, &CDrawDoc::OnUpdateAffinetranformTranslation)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANSFORM_FLIP, &CDrawDoc::OnUpdateAffinetransformFlip)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawDoc::OnUpdateFeatureextractionAddnoise)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_BLUR, &CDrawDoc::OnUpdateFeatureextractionBlur)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnUpdateFeatureextractionHistogramequalization)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, &CDrawDoc::OnUpdateFeatureextractionHistogramstretching)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnUpdateFeatureextractionReducenoise)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnUpdateFeatureextractionSharpening)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnUpdateFilteringBrightness)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_GAMMA, &CDrawDoc::OnUpdateFilteringGamma)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnUpdateFilteringHistogram)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_INVERSE, &CDrawDoc::OnUpdateFilteringInverse)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnUpdateFilteringWindowlevel)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnUpdateMolphologyErosion)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_DILATION, &CDrawDoc::OnUpdateMolphologyDilation)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnUpdateMolphologyOpening)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateMolphologyClosing)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1420,4 +1440,154 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 void CDrawDoc::OnFilteringGamma()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+
+//뷰에 따른 리본 버튼 활성화 비활성화 구분 - UPDATE_COMMAND_UI, Enable()
+void CDrawDoc::EnableDrawView(CCmdUI* pCmdUI)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	CSplitFrame* pSplitFrame = (CSplitFrame*)pMainFrame->GetActiveFrame();
+	CView* pView = pSplitFrame->GetActiveView();
+	pCmdUI->Enable(pView->IsKindOf(RUNTIME_CLASS(CDrawView)));
+}
+
+void CDrawDoc::OnUpdateAffinetranformRotation(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateAffinetranformMirror(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateAffinetranformScaling(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateAffinetranformTranslation(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateAffinetransformFlip(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionAddnoise(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionBlur(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionHistogramequalization(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionHistogramstretching(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionReducenoise(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFeatureextractionSharpening(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFilteringBrightness(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFilteringGamma(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFilteringHistogram(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFilteringInverse(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateFilteringWindowlevel(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateMolphologyErosion(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateMolphologyDilation(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateMolphologyOpening(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnUpdateMolphologyClosing(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
 }
