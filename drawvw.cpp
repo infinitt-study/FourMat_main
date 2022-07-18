@@ -279,7 +279,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	}
 	//¸â¹ö º¯¼ö ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom , pDC->GetDeviceCaps(LOGPIXELSY)* zoom );
+	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom), (int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
@@ -422,7 +422,7 @@ void CDrawView::PasteNative(COleDataObject& dataObject)
 	delete pFile;
 }
 
-void CDrawView::PasteEmbedded(COleDataObject& dataObject, CPoint point )
+void CDrawView::PasteEmbedded(COleDataObject& /*dataObject*/, CPoint /*point*/)
 {
 	BeginWaitCursor();
 
@@ -1428,7 +1428,7 @@ void CDrawView::OnEditCopy()
 		CDrawObj* pDrawObj = m_selection.GetHead();
 		if (m_selection.GetCount() == 1 && pDrawObj->IsKindOf(RUNTIME_CLASS(CDrawOleObj)))
 		{
-			CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
+			//CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
 //			pDrawOle->m_pClientItem->GetClipboardData(pDataSource, FALSE);
 		}
 
