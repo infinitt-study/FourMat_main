@@ -1,15 +1,15 @@
 ﻿#pragma once
 
 
-// CReduceNoise 대화 상자
+// CReduceNoiseDlg 대화 상자
 
-class CReduceNoise : public CDialogEx
+class CReduceNoiseDlg : public CDialogEx
 {
-	DECLARE_DYNAMIC(CReduceNoise)
+	DECLARE_DYNAMIC(CReduceNoiseDlg)
 
 public:
-	CReduceNoise(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CReduceNoise();
+	CReduceNoiseDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CReduceNoiseDlg();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

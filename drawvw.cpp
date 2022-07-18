@@ -272,14 +272,14 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 
 	pDC->SetMapMode(MM_ANISOTROPIC);
 	CDrawDoc* pDoc = GetDocument();
-	float zoom = 1;
+	float zoom = 1.0f;
 
-	if (nullptr != pInfo) {
+	if (nullptr == pInfo) {
 		zoom = pDoc->m_zoom;
-		zoom = 1.0f;
 	}
 	//¸â¹ö º¯¼ö ctrl flag : 
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom, pDC->GetDeviceCaps(LOGPIXELSY)* zoom);
+	TRACE("m_zoom : %f\n", zoom);
+	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom , pDC->GetDeviceCaps(LOGPIXELSY)* zoom );
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
@@ -1820,10 +1820,27 @@ void CDrawView::ResetPreviewState()
 
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
+	CDrawDoc* pDoc = GetDocument();
+	if ((nFlags & MK_CONTROL) == MK_CONTROL)
+	{ 
+		if (zDelta < 0)
+		{
 
-   if ((nFlags & MK_SHIFT) == MK_SHIFT)
+			pDoc->m_zoom += 0.1f;
+			if (pDoc->m_zoom > 3.0f) pDoc->m_zoom = 3.0f;
+			
+		}
+		else
+		{
+			pDoc->m_zoom -= 0.1f;
+			if (pDoc->m_zoom < 0.2f) pDoc->m_zoom = 0.2f;
+		}
+		//TRACE("m_zoom : %f\n", pDoc->m_zoom);
+		Invalidate(true);
+	}
+   else if ((nFlags & MK_SHIFT) == MK_SHIFT)
 	{
-		CDrawDoc* pDoc = GetDocument();
+		
 		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}

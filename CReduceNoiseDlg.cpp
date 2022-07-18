@@ -1,17 +1,17 @@
-﻿// CReduceNoise.cpp: 구현 파일
+﻿// CReduceNoiseDlg.cpp: 구현 파일
 //
 
 #include "stdafx.h"
 #include "FourMat.h"
-#include "CReduceNoise.h"
+#include "CReduceNoiseDlg.h"
 #include "afxdialogex.h"
 
 
-// CReduceNoise 대화 상자
+// CReduceNoiseDlg 대화 상자
 
-IMPLEMENT_DYNAMIC(CReduceNoise, CDialogEx)
+IMPLEMENT_DYNAMIC(CReduceNoiseDlg, CDialogEx)
 
-CReduceNoise::CReduceNoise(CWnd* pParent /*=nullptr*/)
+CReduceNoiseDlg::CReduceNoiseDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FEATUREEXTRACTION_REDUCENOISE, pParent)
 	, m_fLambda(0)
 	, m_fK(0)
@@ -20,12 +20,12 @@ CReduceNoise::CReduceNoise(CWnd* pParent /*=nullptr*/)
 
 }
 
-CReduceNoise::~CReduceNoise()
+CReduceNoiseDlg::~CReduceNoiseDlg()
 {
 
 }
 
-void CReduceNoise::DoDataExchange(CDataExchange* pDX)
+void CReduceNoiseDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_DIFFUSION_LAMBDA, m_fLambda);
@@ -36,8 +36,8 @@ void CReduceNoise::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CReduceNoise, CDialogEx)
+BEGIN_MESSAGE_MAP(CReduceNoiseDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CReduceNoise 메시지 처리기
+// CReduceNoiseDlg 메시지 처리기

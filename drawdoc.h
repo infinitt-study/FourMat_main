@@ -56,6 +56,9 @@ public:
 	LOGPEN m_logpen;
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
+	/*LOWORD m_xPosition;
+	HIWORD m_yPosition;*/
+
 
 	float m_zoom;
 	//BOOL CanDeactivateInplace() const
