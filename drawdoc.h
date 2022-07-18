@@ -197,4 +197,6 @@ public:
 	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
+
+	CFourMatDIB& SelectFourMatDIB(BOOL bClickedView);
 };
