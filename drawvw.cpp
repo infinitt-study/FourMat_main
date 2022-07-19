@@ -251,6 +251,10 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		Invalidate();
 		break;
 
+	case HINT_DICOM_IMAGE_RESET:
+		Invalidate();
+		break;
+
 	default:
 		//ASSERT(FALSE);
 		break;

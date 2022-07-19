@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnMolphologyErosion)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
+	ON_COMMAND(ID_OBJECT_RESETDRAW, &CDrawDoc::OnObjectResetdraw)
 	ON_COMMAND(ID_FILTERING_GAMMA, &CDrawDoc::OnFilteringGamma)
 	ON_COMMAND(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnFeatureextractionCannyedge)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnFeatureextractionHarriscorner)
@@ -135,6 +136,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_OBJECT_RESETDRAW, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_COMPARE_COMPARE, &CDrawDoc::OnUpdateCompareCompare)
@@ -541,18 +543,6 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		return ((BYTE*)m_bmi + lpbmi->biSize + (sizeof(RGBQUAD) * GetPaletteNums()));
 	}*/
 }
-
-
-//BOOL CDrawDoc::CanCloseFrame(CFrameWnd* pFrame)
-//{
-////	m_bCanDeactivateInplace = FALSE;
-//
-//	BOOL bRes = COleDocument::CanCloseFrame(pFrame);
-//
-////	m_bCanDeactivateInplace = TRUE;
-//
-//	return bRes;
-//}
 
 #ifdef SHARED_HANDLERS
 void CDrawDoc::InitializeSearchContent()
@@ -1232,39 +1222,15 @@ void CDrawDoc::SaveDraw(CAccessObject& drawObj) {
 		CArchive ar(&file, CArchive::store);
 
 		ar << drawObj.m_pageObjects.size();
+
+		drawObj.Serialize(ar); // 영상부분을 먼저 저장
+
 		for each (auto pDrawObjList in drawObj.m_pageObjects) {
 			pDrawObjList->Serialize(ar);
 		}
 
-		drawObj.Serialize(ar);
-
 		ar.Close();
 		file.Close();
-	}
-}
-void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
-	CFile file;
-
-	CString strFilePath = m_strFolderPath + _T("\\") + drawObj.m_strFileName;
-	if (!drawObj.m_strFileName.IsEmpty()) {
-		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
-			CArchive ar(&file, CArchive::load);
-			ar.m_pDocument = this;
-			size_t size;
-			ar >> size;
-			if (size == drawObj.m_pageObjects.size()) { // .drw 받아드림
-				for each (auto pDrawObjList in drawObj.m_pageObjects) {
-					pDrawObjList->Serialize(ar);
-				}
-
-				drawObj.Serialize(ar);
-
-			}
-			// 사이즈가 다르면 .drw 안받아드림
-
-			ar.Close();
-			file.Close();
-		}
 	}
 }
 
@@ -1359,8 +1325,6 @@ void CDrawDoc::OnFeatureextractionHarriscorner()
 void CDrawDoc::OnCompareCompare() // 비교 dlg
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	//CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-
 	CCompareDlg dlg(this);
 	dlg.DoModal();
 }
@@ -1370,4 +1334,17 @@ void CDrawDoc::OnUpdateCompareCompare(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	pCmdUI->Enable(!m_rightDrawObj.m_strFilePath.IsEmpty());
+}
+
+
+void CDrawDoc::OnObjectResetdraw()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_bClickedView ? m_leftDrawObj.ResetDraw() : m_rightDrawObj.ResetDraw();
+
+	if (IDYES == AfxMessageBox(_T("현재 페이지의 이미지 처리를 초기화하시겠습니까?"), MB_YESNO)) {
+		m_bChanged = true;
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_RESET);
+		AfxMessageBox(_T("이미지가 초기화되었습니다."));
+	}
 }

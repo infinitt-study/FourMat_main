@@ -97,7 +97,6 @@ protected:
 	virtual BOOL OnNewDocument();
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
-//	virtual BOOL CanCloseFrame(CFrameWnd* pFrame);
 	virtual void OnUnloadHandler();
 
 //	BOOL m_bCanDeactivateInplace;
@@ -149,7 +148,6 @@ public:
 	void LoadDicom(BOOL bLeftView);
 	void ChagedSaveDraw();
 	void SaveDraw(CAccessObject& drawObj);
-	void LoadDraw(CAccessObject& drawObj);
 
 	BOOL m_bChanged; // 변경사항 있있으면 true
 	BOOL IsFrameChanged();
@@ -194,4 +192,5 @@ public:
 
 	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateCompareCompare(CCmdUI* pCmdUI);
+	afx_msg void OnObjectResetdraw();
 };

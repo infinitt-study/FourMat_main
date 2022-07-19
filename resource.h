@@ -227,13 +227,14 @@
 #define ID_FEATUREEXTRACTION_HARRISCORNER 32889
 #define ID_IMAGEPROCESSING_COMPARE      32890
 #define ID_COMPARE_COMPARE              32891
+#define ID_OBJECT_RESETDRAW             32892
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        177
-#define _APS_NEXT_COMMAND_VALUE         32892
+#define _APS_NEXT_COMMAND_VALUE         32893
 #define _APS_NEXT_CONTROL_VALUE         179
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

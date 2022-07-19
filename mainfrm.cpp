@@ -479,6 +479,7 @@ void CMainFrame::InitHomeCategory()
 
 	pPanelArrange = pCategory->AddPanel(_T("File\nzj"), m_PanelImages.ExtractIcon(3));
 	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_SAVEDRAW, _T("Save Draw\nmf"), 15, 3));
+	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_RESETDRAW, _T("Reset Draw\nmf"), 16, 3));
 }
 
 void CMainFrame::InitViewCategory()

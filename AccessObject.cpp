@@ -9,6 +9,7 @@ CAccessObject::CAccessObject()
 {
 	m_pageObjects.reserve(16); // 복제일어나지 않도록 초기설정
 	m_listDIB.reserve(16);
+	m_listDIBOrigin.reserve(16);
 }
 
 CAccessObject::~CAccessObject() {
@@ -24,12 +25,15 @@ CAccessObject::~CAccessObject() {
 	m_pObjects = NULL;
 
 	m_listDIB.clear();
-
+	m_listDIBOrigin.clear();
 }
 
 void CAccessObject::Serialize(CArchive& ar) {
 
+	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
+	
 	CObject::Serialize(ar);
+
 	if (ar.IsStoring())
 	{
 		if (m_nCurrentFrameNo != m_nRepFrameNo) {
@@ -41,7 +45,6 @@ void CAccessObject::Serialize(CArchive& ar) {
 	{
 		ar >> m_nRepFrameNo;
 	}
-	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
 }
 
 
@@ -60,6 +63,7 @@ BOOL CAccessObject::LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc)
 		CFourMatDIB fourMatDIB;
 		fourMatDIB.CreateRgbBitmap(width, height, (BYTE*)data);
 
+		m_listDIBOrigin.push_back(fourMatDIB);
 		m_listDIB.emplace_back(std::move(fourMatDIB));
 
 		m_pageObjects.push_back(new CDrawObjList());
@@ -87,18 +91,14 @@ void CAccessObject::LoadDraw(CDrawDoc* pDoc) {
 			size_t size;
 			ar >> size;
 			if (size == m_pageObjects.size()) { // .drw 받아드림
+				Serialize(ar);
 				for each (auto pDrawObjList in m_pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
-
-				Serialize(ar);
-
 			}
 			// 사이즈가 다르면 .drw 안받아드림
-
 			ar.Close();
 			file.Close();
-
 		}
 	}
 }
@@ -125,4 +125,9 @@ void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	SetBkMode(pDC->m_hDC, TRANSPARENT); // 배경 투명
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 60, strFileName, strFileName.GetLength());
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
+}
+
+void CAccessObject::ResetDraw() {
+	BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
+	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);
 }
