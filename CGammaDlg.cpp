@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CGammaDlg, CDialogEx)
 
 CGammaDlg::CGammaDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FILTERING_GAMMA, pParent)
-	, m_fGamma(0)
+	, m_fGamma(2.20f)
 {
 
 }
@@ -32,7 +32,56 @@ void CGammaDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CGammaDlg, CDialogEx)
+	ON_WM_HSCROLL()
+	ON_EN_CHANGE(IDC_GAMMA_EDIT, &CGammaDlg::OnEnChangeGammaEdit)
 END_MESSAGE_MAP()
 
 
 // CGammaDlg 메시지 처리기
+
+
+BOOL CGammaDlg::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// 슬라이더 컨트롤 초기화
+	m_sliderGamma.SetRange(10, 250);
+	m_sliderGamma.SetTicFreq(20);
+	m_sliderGamma.SetPageSize(20);
+	m_sliderGamma.SetPos(static_cast<int>(m_fGamma * 50));
+
+	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+}
+
+
+void CGammaDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	if (m_sliderGamma.GetSafeHwnd() == pScrollBar->GetSafeHwnd())
+	{
+		int pos = m_sliderGamma.GetPos();
+		m_fGamma = (pos / 50.f);
+		UpdateData(FALSE);
+	}
+
+	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CGammaDlg::OnEnChangeGammaEdit()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+	m_sliderGamma.SetPos(static_cast<int>(m_fGamma * 50));
+
+}
