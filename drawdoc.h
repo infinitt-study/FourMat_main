@@ -205,4 +205,5 @@ public:
 	afx_msg void OnCompareCompare(); // 비교 dlg
 
 	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateCompareCompare(CCmdUI* pCmdUI);
 };
