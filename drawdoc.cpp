@@ -330,7 +330,7 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
 	CFourMatDIB& dib = GetFourMatDIB(bClickedView);
-	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 }
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {

@@ -286,7 +286,8 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
 
 	// ptOrg is in logical coordinates
-	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+	//pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -299,7 +300,8 @@ BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 	if (bDoScroll)
 	{
 		UpdateActiveItem();
-		UpdateWindow();
+		//UpdateWindow();
+		Invalidate(FALSE);
 	}
 	return TRUE;
 }
@@ -366,8 +368,8 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	//	pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
 
-
-	pDoc->Draw(m_bLeftView, pDrawDC, this);
+	//, this
+	pDoc->Draw(m_bLeftView, pDrawDC);
 
 	if (pDrawDC != pDC)
 	{

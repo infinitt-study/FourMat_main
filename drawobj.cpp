@@ -625,6 +625,7 @@ void CDrawRect::Draw(CDC* pDC)
 		{
 			rect.left += (m_logpen.lopnWidth.x + 1) / 2;
 			rect.right -= m_logpen.lopnWidth.x / 2;
+			//wsprintf(buf, "x : %03d", x )
 		}
 
 		pDC->MoveTo(rect.TopLeft());
@@ -634,6 +635,8 @@ void CDrawRect::Draw(CDC* pDC)
 
 	pDC->SelectObject(pOldBrush);
 	pDC->SelectObject(pOldPen);
+
+	
 }
 
 int CDrawRect::GetHandleCount()
