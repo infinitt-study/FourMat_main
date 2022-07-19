@@ -33,7 +33,7 @@ public:
 	CString m_strPath;
 
 	virtual void OnInitialUpdate();
-	afx_msg void OnBnClickedOk();
+	afx_msg void OnClickedButtonSingle();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 	void FolderSearch();
 	afx_msg void OnClickedButtonMulti();

@@ -31,6 +31,8 @@ public:
 		return bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	}
 
+	CFourMatDIB& GetFourMatDIB(BOOL bClickedView);
+
 
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
@@ -121,10 +123,28 @@ public:
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
-	BOOL m_bClickedView;
   
-	// 추가된 변수 및 메소드
-	CString m_strFolderPath;
+protected:
+	BOOL m_bClickedView;		//다중 화면에서 클릭된 뷰 확인
+	CString m_strFolderPath;	//환자 이름 폴더의 경로
+
+public:
+	void setClickedView(BOOL bClickedView)
+	{
+		m_bClickedView = bClickedView;
+	}
+	BOOL getClickedView()
+	{
+		return m_bClickedView;
+	}
+	void setFolderPath(CString strFolderPath)
+	{
+		m_strFolderPath = strFolderPath;
+	}
+	CString getFolderPath()
+	{
+		return m_strFolderPath;
+	}
 
 	void LoadDicom(BOOL bLeftView);
 	void SaveDraw(CAccessObject& drawObj);
@@ -132,6 +152,9 @@ public:
 
 	bool m_bChanged; // 변경사항 있있으면 true
 	bool IsFrameChanged();
+  
+	void HelperLoadDicom(BOOL bLeftView);
+	void EnableDrawView(CCmdUI* pCmdUI);
 
 
 protected:
@@ -154,9 +177,6 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
-
-	void HelperLoadDicom(BOOL bLeftView);
-
 	afx_msg void OnFeatureextractionHistogramequalization();
 	afx_msg void OnFeatureextractionHistogramstretching();
 	afx_msg void OnMolphologyClosing();
@@ -165,31 +185,10 @@ public:
 	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
-
-	CFourMatDIB& SelectFourMatDIB(BOOL bClickedView);
-	void EnableDrawView(CCmdUI* pCmdUI);
-
-	afx_msg void OnUpdateAffinetranformRotation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformMirror(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformScaling(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetranformTranslation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateAffinetransformFlip(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionAddnoise(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionBlur(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionHistogramequalization(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionHistogramstretching(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionReducenoise(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFeatureextractionSharpening(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringBrightness(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringGamma(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringHistogram(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringInverse(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateFilteringWindowlevel(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyErosion(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyDilation(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyOpening(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateMolphologyClosing(CCmdUI* pCmdUI);
 	afx_msg void OnFeatureextractionCannyedge();
 	afx_msg void OnFeatureextractionHarriscorner();
 	afx_msg void OnCompareCompare(); // 비교 dlg
+
+	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateCompareCompare(CCmdUI* pCmdUI);
 };
