@@ -139,7 +139,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDrawDoc construction/destruction
 
-CDrawDoc::CDrawDoc()
+CDrawDoc::CDrawDoc() : m_leftDrawObj(), m_rightDrawObj()
 {
 	EnableCompoundFile();
 
@@ -150,12 +150,6 @@ CDrawDoc::CDrawDoc()
 	ComputePageSize();
 
 	m_strFolderPath.Empty();
-
-	m_strFilePath.Empty();
-	m_strRightFilePath.Empty();
-
-	m_strFileName.Empty();
-	m_strRightFileName.Empty();
 }
 
 CDrawDoc::~CDrawDoc()
@@ -165,27 +159,8 @@ CDrawDoc::~CDrawDoc()
 
 void CDrawDoc::OnUnloadHandler()
 {
-	for (auto& pObjects : m_pageLeftObjects) {
-		POSITION pos = pObjects->GetHeadPosition();
-		while (pos != NULL)
-			delete pObjects->GetNext(pos);
-		pObjects->RemoveAll();
-		delete pObjects;
-	}
-	m_pageLeftObjects.clear();
-
-	for (auto& pObjects : m_pageRightObjects) {
-		POSITION pos = pObjects->GetHeadPosition();
-		while (pos != NULL)
-			delete pObjects->GetNext(pos);
-		pObjects->RemoveAll();
-		delete pObjects;
-	}
-	m_pageRightObjects.clear();
-
 	delete m_pSummInfo;
 	m_pSummInfo = NULL;
-
 }
 
 BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화  
@@ -219,13 +194,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_logbrush.lbColor = RGB(192, 192, 192);
 	m_logbrush.lbHatch = HS_HORIZONTAL;
 
-	m_nCurrentFrameNo = 0;
-	m_nCurrentRightFrameNo = 0;
-
-	m_pObjects = nullptr;
-
 	m_strFolderPath.Empty();
-	m_strFilePath.Empty();
   
 	m_zoom = 1.0f;
 
@@ -242,10 +211,6 @@ BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
 	m_zoom = 1;
-	m_nCurrentFrameNo = 0;
-	m_nCurrentRightFrameNo = 0;
-
-	m_pObjects = nullptr;
 
 	return COleDocument::OnOpenDocument(lpszPathName);
 }
@@ -290,7 +255,7 @@ void CDrawDoc::Serialize(CArchive& ar)
 //수정
 void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	if (pObjects == nullptr) return;
 
 	POSITION pos = pObjects->GetHeadPosition();
@@ -326,18 +291,20 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	CFourMatDIB& dib = bLeftView ? m_leftDrawObj.m_listDIB[m_leftDrawObj.m_nCurrentFrameNo]
+		: m_rightDrawObj.m_listDIB[m_rightDrawObj.m_nCurrentFrameNo];
 	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
 }
 void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	CFourMatDIB& dib = bLeftView ? m_leftDrawObj.m_listDIB[m_leftDrawObj.m_nCurrentFrameNo]
+		: m_rightDrawObj.m_listDIB[m_rightDrawObj.m_nCurrentFrameNo];
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	if (pObjects == nullptr) return;
 
 	pObjects->AddTail(pObj);
@@ -348,7 +315,7 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 
 void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	if (pObjects == nullptr) return;
 
 	// Find and remove from document
@@ -374,7 +341,7 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 // point is in logical coordinates
 CDrawObj* CDrawDoc::ObjectAt(BOOL bLeftView, const CPoint& point)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	if (pObjects == nullptr) return nullptr;
 
 	CRect rect(point, CSize(1, 1));
@@ -519,14 +486,14 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 	OFFilename filePath;
 
 	if (bLeftView) {
-		filePath = (OFFilename)m_strFilePath;
-		m_nCurrentFrameNo = 0;
-		m_nTotalFrameNo = 0;
+		filePath = (OFFilename)m_leftDrawObj.m_strFilePath;
+		m_leftDrawObj.m_nCurrentFrameNo = 0;
+		m_leftDrawObj.m_nTotalFrameNo = 0;
 	}
 	else {
-		filePath = (OFFilename)m_strRightFilePath;
-		m_nCurrentRightFrameNo = 0;
-		m_nTotalRightFrameNo = 0;
+		filePath = (OFFilename)m_rightDrawObj.m_strFilePath;
+		m_rightDrawObj.m_nCurrentFrameNo = 0;
+		m_rightDrawObj.m_nTotalFrameNo = 0;
 	}
 
 	if (fileformat.loadFile(filePath).good()) {
@@ -539,19 +506,21 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
 			//jpeg 일 경우  1.2.840.10008.1.2.4.50    JPEG Baseline (Process 1): Default Transfer Syntax for Lossy JPEG 8 - bit Image Compression
 			//여러장의 이미지가 존재함 프레임 수를 읽는다 
-			bLeftView ? dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalFrameNo) : dataset->findAndGetLongInt(DCM_NumberOfFrames, m_nTotalRightFrameNo);
+			bLeftView ? dataset->findAndGetLongInt(DCM_NumberOfFrames, m_leftDrawObj.m_nTotalFrameNo)
+				: dataset->findAndGetLongInt(DCM_NumberOfFrames, m_rightDrawObj.m_nTotalFrameNo);
 		}
 
 		// 압축안된 파일
 		else if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2")) {
 			//dicom 기본 영상으로 1개의 프레임 만 존재함 ("1.2.840.10008.1.2")
-			bLeftView ? m_nTotalFrameNo = 1 : m_nTotalRightFrameNo = 1;
+			bLeftView ? m_leftDrawObj.m_nTotalFrameNo = 1 : m_rightDrawObj.m_nTotalFrameNo = 1;
 		}
 
 
 		E_TransferSyntax xfer = dataset->getOriginalXfer();
 		//데이터 셋으로 이미지를 압축 해제 해서 생성한다 
-		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalFrameNo) : new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_nTotalRightFrameNo);
+		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_leftDrawObj.m_nTotalFrameNo)
+			: new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
 
 		if (ptrDicomImage) {
 			//이미지의 폭과 높이를 얻는다 
@@ -559,12 +528,10 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			int height = (int)ptrDicomImage->getHeight();
 			void* data = nullptr;
 
-			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
-			//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
-			//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
-			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
-			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
-			CString strFileName = bLeftView ? m_strFileName : m_strRightFileName;
+			long& nTotalFrameNo = bLeftView ? m_leftDrawObj.m_nTotalFrameNo : m_rightDrawObj.m_nTotalFrameNo;
+			std::vector<CFourMatDIB>& listData = bLeftView ? m_leftDrawObj.m_listDIB : m_rightDrawObj.m_listDIB;
+			std::vector<CDrawObjList*>& objectList = bLeftView ? m_leftDrawObj.m_pageObjects : m_rightDrawObj.m_pageObjects;
+			CString strFileName = bLeftView ? m_leftDrawObj.m_strFileName : m_rightDrawObj.m_strFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -612,36 +579,6 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 //
 //	return bRes;
 //}
-
-void CDrawDoc::FixUpObjectPositions()
-{
-	CPoint ptLeftTop(0, 0);
-	CPoint ptRightBottom(0, 0);
-
-	// find bounding rectangle of all objects 
-	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
-	{
-		CDrawObj* pObj = m_pObjects->GetNext(pos);
-		CRect rectPos = pObj->m_position;
-		rectPos.NormalizeRect();
-		ptLeftTop.x = min(rectPos.left, ptLeftTop.x);
-		ptLeftTop.y = min(rectPos.top, ptLeftTop.y);
-		ptRightBottom.x = max(rectPos.right, ptRightBottom.x);
-		ptRightBottom.y = max(rectPos.bottom, ptRightBottom.y);
-	}
-
-	m_rectDocumentBounds.SetRect(ptLeftTop, ptRightBottom);
-
-	// make some borders
-	m_rectDocumentBounds.InflateRect(4, 4);
-
-	// center all objects within bounding rectangle
-	for (POSITION pos = m_pObjects->GetHeadPosition(); pos != NULL;)
-	{
-		CDrawObj* pObj = m_pObjects->GetNext(pos);
-		pObj->MoveTo(CPoint(-ptLeftTop.x - m_rectDocumentBounds.Width() / 2, -ptLeftTop.y - m_rectDocumentBounds.Height() / 2));
-	}
-}
 
 #ifdef SHARED_HANDLERS
 void CDrawDoc::InitializeSearchContent()
@@ -947,8 +884,8 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 CFourMatDIB& CDrawDoc::SelectFourMatDIB(BOOL bClickedView)
 {
-	std::vector <CFourMatDIB>& listDib = bClickedView ? m_listLeftDIB : m_listRightDIB;
-	long currentFrameNo = bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
+	std::vector <CFourMatDIB>& listDib = bClickedView ? m_leftDrawObj.m_listDIB : m_rightDrawObj.m_listDIB;
+	long currentFrameNo = bClickedView ? m_leftDrawObj.m_nCurrentFrameNo : m_rightDrawObj.m_nCurrentFrameNo;
 
 	return listDib[currentFrameNo];
 }
@@ -1313,9 +1250,9 @@ void CDrawDoc::OnObjectSavedraw()
 		AfxMessageBox(_T("변경된 사항이 없습니다."));
 		return;
 	}
-	SaveDraw(m_strFileName, m_pageLeftObjects);
-	if (!m_strRightFileName.IsEmpty()) {
-		SaveDraw(m_strRightFileName, m_pageRightObjects);
+	SaveDraw(m_leftDrawObj.m_strFileName, m_leftDrawObj.m_pageObjects);
+	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
+		SaveDraw(m_rightDrawObj.m_strFileName, m_rightDrawObj.m_pageObjects);
 	}
 	AfxMessageBox(_T("파일을 저장했습니다."));
 	m_bIsChange = false;
@@ -1351,10 +1288,8 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 				for each (auto pDrawObjList in pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
-				//ar >> m_nRepFrameNo;
 			}
-			else { // .drw 안받아드림
-			}
+			// 사이즈가 다르면 .drw 안받아드림
 			ar.Close();
 			file.Close();
 

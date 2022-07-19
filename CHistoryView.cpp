@@ -114,13 +114,13 @@ void CHistoryView::OnBnClickedOk()
 
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
 
 	auto isFileExtDCM = IsFileExtDCMName(strFileName);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strFileName = strFileName + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName + _T(".drw");
 
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
 
@@ -187,20 +187,20 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
-	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
+	pDrawDoc->m_rightDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
 	
 	auto isFileExtDCM = IsFileExtDCMName(strFileName[0]);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strFileName = strFileName[0].Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName[0].Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strFileName = strFileName[0] + _T(".drw");
+		pDrawDoc->m_leftDrawObj.m_strFileName = strFileName[0] + _T(".drw");
 
 	isFileExtDCM = IsFileExtDCMName(strFileName[1]);
 	if (isFileExtDCM.first)
-		pDrawDoc->m_strRightFileName = strFileName[1].Left(isFileExtDCM.second) + _T(".drw");
+		pDrawDoc->m_rightDrawObj.m_strFileName = strFileName[1].Left(isFileExtDCM.second) + _T(".drw");
 	else
-		pDrawDoc->m_strRightFileName = strFileName[1] + _T(".drw");
+		pDrawDoc->m_rightDrawObj.m_strFileName = strFileName[1] + _T(".drw");
 
 
 	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_MULTIFILEPATH);

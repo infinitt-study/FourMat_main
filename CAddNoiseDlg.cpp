@@ -114,7 +114,7 @@ void CAddNoiseDlg::OnPaint()
 
 void CAddNoiseDlg::OnEnChangeNoiseAmount()
 {
-	CFourMatDIB& dib = m_pDrawDoc->m_listLeftDIB[m_pDrawDoc->m_nCurrentFrameNo];
+	CFourMatDIB& dib = m_pDrawDoc->m_leftDrawObj.m_listDIB[m_pDrawDoc->m_leftDrawObj.m_nCurrentFrameNo];
 	CFourMatDIB m_dib = dib;
 
 	ByteImage imgSrc;

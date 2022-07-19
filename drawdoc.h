@@ -1,20 +1,11 @@
-// This MFC Samples source code demonstrates using MFC Microsoft Office Fluent User Interface 
-// (the "Fluent UI") and is provided only as referential material to supplement the 
-// Microsoft Foundation Classes Reference and related electronic documentation 
-// included with the MFC C++ library software.  
-// License terms to copy, use or distribute the Fluent UI are available separately.  
-// To learn more about our Fluent UI licensing program, please visit 
-// http://msdn.microsoft.com/officeui.
-//
-// Copyright (C) Microsoft Corporation
-// All rights reserved.
-
 #include "drawobj.h"
 #include "summinfo.h"
 
 #include "AccessPixel.h"
 #include "RGBBYTE.h"
 #include "CFourMatDIB.h"
+
+#include "AccessObject.h"
 
 class CDrawView;
 
@@ -28,20 +19,22 @@ protected: // create from serialization only
 public:
 	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
 		if (bLeftView) {
-			m_nCurrentFrameNo -= nDelta;
-			m_nCurrentFrameNo = (m_listLeftDIB.size() + m_nCurrentFrameNo) % m_listLeftDIB.size();
-			m_pObjects = m_pageLeftObjects[m_nCurrentFrameNo];
+			m_leftDrawObj.m_nCurrentFrameNo -= nDelta;
+			m_leftDrawObj.m_nCurrentFrameNo = long((m_leftDrawObj.m_listDIB.size() + m_leftDrawObj.m_nCurrentFrameNo) % m_leftDrawObj.m_listDIB.size());
+			m_leftDrawObj.m_pObjects = m_leftDrawObj.m_pageObjects[m_leftDrawObj.m_nCurrentFrameNo];
 		}
+		// m_leftDrawObj.m_pObjects
 		else {
-			m_nCurrentRightFrameNo -= nDelta;
-			m_nCurrentRightFrameNo = (m_listRightDIB.size() + m_nCurrentRightFrameNo) % m_listRightDIB.size();
-			m_pRightObjects = m_pageRightObjects[m_nCurrentRightFrameNo];
+			m_rightDrawObj.m_nCurrentFrameNo -= nDelta;
+			m_rightDrawObj.m_nCurrentFrameNo = long((m_rightDrawObj.m_listDIB.size() + m_rightDrawObj.m_nCurrentFrameNo) % m_rightDrawObj.m_listDIB.size());
+			m_rightDrawObj.m_pObjects = m_rightDrawObj.m_pageObjects[m_rightDrawObj.m_nCurrentFrameNo];
 		}
+		//m_rightDrawObj.m_pObjects
 	}
 
 	CDrawObjList* GetObjects(BOOL bLeftView)
 	{ 
-		return bLeftView ? m_pObjects : m_pRightObjects;
+		return bLeftView ? m_leftDrawObj.m_pObjects : m_rightDrawObj.m_pObjects;
 	}
 
 
@@ -49,7 +42,7 @@ public:
 	void ComputePageSize();
 	int GetMapMode() const { return m_nMapMode; }
 	COLORREF GetPaperColor() const { return m_paperColor; }
-	CSummInfo *m_pSummInfo;
+	CSummInfo* m_pSummInfo;
 
 	
 	BOOL m_bPen;
@@ -71,10 +64,9 @@ public:
 	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
 	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
-	void Draw (BOOL bLeftView, CDC* pDC);
+	void Draw(BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
-	void FixUpObjectPositions();
 	CRect m_rectDocumentBounds;
 	// ------
 
@@ -117,12 +109,9 @@ protected:
 //	BOOL m_bCanDeactivateInplace;
 
 public:
-	std::vector<CDrawObjList*> m_pageLeftObjects;
-	std::vector<CDrawObjList*> m_pageRightObjects;
-
-	CDrawObjList* m_pObjects;
-	CDrawObjList* m_pRightObjects;
-
+	// 클래스 분활
+	CAccessObject m_leftDrawObj;
+	CAccessObject m_rightDrawObj;
 
 	CSize m_size;
 	int m_nMapMode;
@@ -140,33 +129,14 @@ public:
 	BOOL m_bFirstLoad;
 	BOOL m_bClickedView;
   
-public:
+	// 추가된 변수 및 메소드
 	CString m_strFolderPath;
-
-	CString m_strFilePath;
-	CString m_strRightFilePath;
-
-	CString m_strFileName;
-	CString m_strRightFileName;
 
 	void LoadDicom(BOOL bLeftView);
 	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
 
-	std::vector <CFourMatDIB> m_listLeftDIB;
-	std::vector <CFourMatDIB> m_listRightDIB;
-
-	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
-	long m_nCurrentRightFrameNo;
-
-	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
-	long m_nTotalRightFrameNo;
-
-	long m_nRepFrameNo; // 다이콤 내부 대표 이미지
-	long m_nRepRightFrameNo;
-
 	bool m_bIsChange; // 변경사항 있있으면 true
-
 
 
 protected:
