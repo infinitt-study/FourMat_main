@@ -294,12 +294,12 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
-	CFourMatDIB& dib = GetFourMatDIB(bClickedView);
+	CFourMatDIB& dib = GetFourMatDIB(bClickedView); // 현재이미지로 불러옴
 	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
 }
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {
-	CFourMatDIB& dib = GetFourMatDIB(bClickedView);
+	CFourMatDIB& dib = GetRefFourMatDIB(bClickedView); // 대표이미지로 불러옴
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
@@ -861,6 +861,14 @@ CFourMatDIB& CDrawDoc::GetFourMatDIB(BOOL bClickedView)
 	return listDib[currentFrameNo];
 }
 
+CFourMatDIB& CDrawDoc::GetRefFourMatDIB(BOOL bClickedView)
+{
+	std::vector <CFourMatDIB>& listDib = bClickedView ? m_leftDrawObj.m_listDIB : m_rightDrawObj.m_listDIB;
+	long refFrameNo = bClickedView ? m_leftDrawObj.m_nRepFrameNo : m_rightDrawObj.m_nRepFrameNo;
+
+	return listDib[refFrameNo];
+}
+
 void CDrawDoc::OnAffinetranformMirror()
 {
 	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1356,5 +1364,5 @@ void CDrawDoc::OnCompareCompare() // 비교 dlg
 void CDrawDoc::OnUpdateCompareCompare(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-	pCmdUI->Enable(!m_strRightFilePath.IsEmpty());
+	pCmdUI->Enable(!m_rightDrawObj.m_strFilePath.IsEmpty());
 }

@@ -79,7 +79,7 @@ bool CAccessObject::LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc)
 void CAccessObject::LoadDraw(CDrawDoc* pDoc) {
 	CFile file;
 
-	CString strFilePath = pDoc->m_strFolderPath + _T("\\") + m_strFileName;
+	CString strFilePath = pDoc->getFolderPath() + _T("\\") + m_strFileName;
 	if (!m_strFileName.IsEmpty()) {
 		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
 			CArchive ar(&file, CArchive::load);

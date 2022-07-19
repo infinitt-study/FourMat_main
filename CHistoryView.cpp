@@ -150,7 +150,7 @@ void CHistoryView::OnClickedButtonSingle()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->getFolderPath() + _T("\\") + strFileName;
 
 	auto isFileExtDCM = IsFileExtDCMName(strFileName);
 	if (isFileExtDCM.first)
@@ -184,8 +184,8 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
-	pDrawDoc->m_rightDrawObj.m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
+	pDrawDoc->m_leftDrawObj.m_strFilePath = pDrawDoc->getFolderPath() + _T("\\") + strFileName[0];
+	pDrawDoc->m_rightDrawObj.m_strFilePath = pDrawDoc->getFolderPath() + _T("\\") + strFileName[1];
 	
 	auto isFileExtDCM = IsFileExtDCMName(strFileName[0]);
 	if (isFileExtDCM.first)

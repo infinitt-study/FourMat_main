@@ -32,7 +32,7 @@ public:
 	}
 
 	CFourMatDIB& GetFourMatDIB(BOOL bClickedView);
-
+	CFourMatDIB& GetRefFourMatDIB(BOOL bClickedView);
 
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
