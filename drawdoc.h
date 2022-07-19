@@ -44,6 +44,8 @@ public:
 		return bLeftView ? m_pObjects : m_pRightObjects;
 	}
 
+	CFourMatDIB& GetFourMatDIB(BOOL bClickedView);
+
 
 	const CSize& GetSize() const { return m_size; }
 	void ComputePageSize();
@@ -56,6 +58,9 @@ public:
 	LOGPEN m_logpen;
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
+	/*LOWORD m_xPosition;
+	HIWORD m_yPosition;*/
+
 
 	float m_zoom;
 	//BOOL CanDeactivateInplace() const
@@ -120,7 +125,6 @@ public:
 	CDrawObjList* m_pObjects;
 	CDrawObjList* m_pRightObjects;
 
-
 	CSize m_size;
 	int m_nMapMode;
 	COLORREF m_paperColor;
@@ -164,6 +168,8 @@ public:
 
 	bool m_bIsChange; // 변경사항 있있으면 true
 
+	void HelperLoadDicom(BOOL bLeftView);
+	void EnableDrawView(CCmdUI* pCmdUI);
 
 
 protected:
@@ -186,9 +192,6 @@ public:
 	afx_msg void OnFilteringHistogram();
 	afx_msg void OnFilteringWindowlevel();
 	afx_msg void OnFilteringInverse();
-
-	void HelperLoadDicom(BOOL bLeftView);
-
 	afx_msg void OnFeatureextractionHistogramequalization();
 	afx_msg void OnFeatureextractionHistogramstretching();
 	afx_msg void OnMolphologyClosing();
@@ -197,4 +200,9 @@ public:
 	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
+	afx_msg void OnFeatureextractionCannyedge();
+	afx_msg void OnFeatureextractionHarriscorner();
+	afx_msg void OnCompareCompare(); // 비교 dlg
+
+	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 };

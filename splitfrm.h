@@ -56,7 +56,6 @@ public:
 public:
 	CSplitterWnd m_wndSplitter;
 
-
 public:
 	CString m_strTmpPath;
 

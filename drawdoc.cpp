@@ -38,6 +38,15 @@
 #include "CImprovement.h"
 #include "CMorphology.h"
 //#include "CConvert.h"
+#include "CRotationDlg.h"
+#include "CScalingDlg.h"
+#include "CTranslationDlg.h"
+#include "CAddNoiseDlg.h"
+#include "CBlurDlg.h"
+#include "CReduceNoiseDlg.h"
+#include "CBrightnessDlg.h"
+#include "CHistogramDlg.h"
+#include "CWindowLevelDlg.h"
 #include"CGammaDlg.h"
 
 #include <math.h>
@@ -89,7 +98,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
+	//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
@@ -102,6 +111,32 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
 	ON_COMMAND(ID_FILTERING_GAMMA, &CDrawDoc::OnFilteringGamma)
+	ON_COMMAND(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnFeatureextractionCannyedge)
+	ON_COMMAND(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnFeatureextractionHarriscorner)
+	ON_COMMAND(ID_COMPARE_COMPARE, &CDrawDoc::OnCompareCompare)
+
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_ROTATION, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_MIRROR, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_SCALING, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANFORM_TRANSLATION, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_AFFINETRANSFORM_FLIP, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_ADDNOISE, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_BLUR, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_REDUCENOISE, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_GAMMA, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_INVERSE, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_DILATION, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnUpdateActiveRibbon)
+
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -141,7 +176,7 @@ void CDrawDoc::OnUnloadHandler()
 		delete pObjects;
 	}
 	m_pageLeftObjects.clear();
-	
+
 	for (auto& pObjects : m_pageRightObjects) {
 		POSITION pos = pObjects->GetHeadPosition();
 		while (pos != NULL)
@@ -195,7 +230,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_strFolderPath.Empty();
 	m_strFilePath.Empty();
   
-	m_zoom = 1;
+	m_zoom = 1.0f;
 
 	m_bFirstLoad = true;
 	m_bIsChange = false;
@@ -255,10 +290,9 @@ void CDrawDoc::Serialize(CArchive& ar)
 /////////////////////////////////////////////////////////////////////////////
 // CDrawDoc implementation
 
-//수정
 void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = GetObjects(bLeftView);
 	if (pObjects == nullptr) return;
 
 	POSITION pos = pObjects->GetHeadPosition();
@@ -273,7 +307,7 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
+void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 {
 	CSize szPage = m_rectDocumentBounds.Size();
 	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
@@ -285,27 +319,27 @@ void CDrawDoc::Draw (BOOL bLeftView, CDC* pDC)
 	pDC->SetWindowExt(100, -100);
 	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
 
-	Draw (bLeftView, pDC, NULL);
+	Draw(bLeftView, pDC, NULL);
 
 	pDC->SetViewportOrg(0, 0);
 	pDC->SetWindowOrg(0, 0);
 	pDC->SetMapMode(MM_TEXT);
 }
 
-void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
+void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC,-m_size.cx/2, m_size.cy/2); // dlg -> paint dc  
+	CFourMatDIB& dib = GetFourMatDIB(bClickedView);
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
 }
-void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h)
+void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
-	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(),SRCCOPY); // dlg -> paint dc  
+	CFourMatDIB& dib = GetFourMatDIB(bClickedView);
+	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = GetObjects(bLeftView);
 	if (pObjects == nullptr) return;
 
 	pObjects->AddTail(pObj);
@@ -316,7 +350,7 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 
 void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = GetObjects(bLeftView);
 	if (pObjects == nullptr) return;
 
 	// Find and remove from document
@@ -342,7 +376,7 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 // point is in logical coordinates
 CDrawObj* CDrawDoc::ObjectAt(BOOL bLeftView, const CPoint& point)
 {
-	CDrawObjList* pObjects = bLeftView ? m_pObjects : m_pRightObjects;
+	CDrawObjList* pObjects = GetObjects(bLeftView);
 	if (pObjects == nullptr) return nullptr;
 
 	CRect rect(point, CSize(1, 1));
@@ -528,11 +562,11 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			void* data = nullptr;
 
 			long& nTotalFrameNo = bLeftView ? m_nTotalFrameNo : m_nTotalRightFrameNo;
-//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
-//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
+			//			BITMAPINFO& bmi = bLeftView ? m_bmiLeft : m_bmiRight;
+			//			std::vector<void*>& listData = bLeftView ? m_listData : m_listRightData;
 			std::vector<CFourMatDIB>& listData = bLeftView ? m_listLeftDIB : m_listRightDIB;
 			std::vector<CDrawObjList*>& objectList = bLeftView ? m_pageLeftObjects : m_pageRightObjects;
-			CString strFileName = bLeftView ? m_strFileName: m_strRightFileName;
+			CString strFileName = bLeftView ? m_strFileName : m_strRightFileName;
 
 			for (int i = 0; i < nTotalFrameNo; i++) {
 				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
@@ -540,7 +574,7 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 				//이미지의 주소를 출력한다
 
 				CFourMatDIB fourMatDIB;
-				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*) data);
+				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*)data);
 
 				listData.emplace_back(std::move(fourMatDIB));
 
@@ -913,10 +947,18 @@ void CDrawDoc::SetSearchContents(const CString& value)
 
 #endif
 
+//리본 버튼 클릭 메세지
+CFourMatDIB& CDrawDoc::GetFourMatDIB(BOOL bClickedView)
+{
+	std::vector <CFourMatDIB>& listDib = bClickedView ? m_listLeftDIB : m_listRightDIB;
+	long currentFrameNo = bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
+
+	return listDib[currentFrameNo];
+}
 
 void CDrawDoc::OnAffinetranformMirror()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
@@ -924,21 +966,17 @@ void CDrawDoc::OnAffinetranformMirror()
 	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		ByteImage imgDst;
-	Mirror(imgSrc, imgDst);
-	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
+	/*AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
-#include "CRotationDlg.h"
+
 void CDrawDoc::OnAffinetranformRotation()
 {
 	CRotationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
@@ -958,33 +996,14 @@ void CDrawDoc::OnAffinetranformRotation()
 			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			ByteImage imgDst;
-		switch (dlg.m_nRotate)
-		{
-		case 0: Rotate90(imgSrc, imgDst); break;
-		case 1: Rotate180(imgSrc, imgDst); break;
-		case 2: Rotate270(imgSrc, imgDst); break;
-		case 3: Rotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
-		}
-
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
-			TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
-		if (dlg.m_nRotate != 3)
-			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
-		else
-			AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
-		AfxNewBitmap(dib);*/
-
 	}
 }
 
-#include "CScalingDlg.h"
+
 void CDrawDoc::OnAffinetranformScaling()
 {
 	CScalingDlg dlg;
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	dlg.m_nOldWidth = dib.GetWidth();
 	dlg.m_nOldHeight = dib.GetHeight();
 	if (dlg.DoModal() == IDOK)
@@ -1000,25 +1019,11 @@ void CDrawDoc::OnAffinetranformScaling()
 		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
 		}
 		FourMatGrayToDIBImage(imgDst, dib);
-	//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
+		//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
-	/*if (dlg.DoModal() == IDOK)
-	{
-		CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			ByteImage imgDst;
-		switch (dlg.m_nInterpolation)
-		{
-		case 0: ResizeNearest(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeig
-			ht); break;
-		case 1: ResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHei
-			ght); break;
-		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeigh
-			t); break;
-		}
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-			TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"
+	/*	TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"
 			), _T("3차 회선 보간법") };
 		AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로
 			크기: % d, 보간법 : % s"),
@@ -1030,17 +1035,12 @@ void CDrawDoc::OnAffinetranformScaling()
 }
 
 
-
-#include "CTranslationDlg.h"
 void CDrawDoc::OnAffinetranformTranslation()
 {
 	CTranslationDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		std::vector <CFourMatDIB>& listDib = m_bClickedView ? m_listLeftDIB : m_listRightDIB;
-		long currentFrameNo = m_bClickedView ? m_nCurrentFrameNo : m_nCurrentRightFrameNo;
-
-		CFourMatDIB& dib = listDib[currentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 
@@ -1051,24 +1051,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 
-		/*
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-		ByteImage imgSrc;
-		ByteImage imgDst;
-
-		FourMatDIBToByteImage(dib, imgSrc);
-		Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		FourMatGrayToDIBImage(imgDst, dib);
-
-		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-		*/
-
-		//dib.CreateRgbBitmap();
-		//CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		//ByteImage imgDst;
-		//Translate(imgSrc, imgDst, dlg.m_nNewSX, dlg.m_nNewSY);
-		//CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
+		
 		//AfxNewBitmap(dib);
 	}
 }
@@ -1076,7 +1059,7 @@ void CDrawDoc::OnAffinetranformTranslation()
 
 void CDrawDoc::OnAffinetransformFlip()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
@@ -1084,26 +1067,22 @@ void CDrawDoc::OnAffinetransformFlip()
 	FourMatGrayToDIBImage(imgDst, dib);
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-		ByteImage imgDst;
-	Flip(imgSrc, imgDst);
-	CONVERT_IMAGE_TO_DIB(imgDst, dib)
-		AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
+	/*AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
 
 
-#include "CAddNoiseDlg.h"
+
 void CDrawDoc::OnFeatureextractionAddnoise()
 {
 	CAddNoiseDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
 		ByteImage imgDst;
 		FourMatDIBToByteImage(dib, imgSrc);
-		
+
 		if (dlg.m_nNoiseType == 0)
 			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
 		else
@@ -1113,30 +1092,20 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			ByteImage imgDst; // 변경 전 이미지 , 변경 후 이미지 
-
-		if (dlg.m_nNoiseType == 0)
-			NoiseGaussian(imgSrc, imgDst, dlg.m_nAmount);
-		else
-			NoiseSaltNPepper(imgSrc, imgDst, dlg.m_nAmount);
-
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
-			TCHAR* noise[] = { _T("가우시안"), _T("소금&후추") };
+		/*TCHAR* noise[] = { _T("가우시안"), _T("소금&후추") };
 		AfxPrintInfo(_T("[잡음 추가] 입력 영상: %s, 잡음 종류: %s, 잡음 양: %d"),
 			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
 		AfxNewBitmap(dib);*/
 	}
 }
 
-#include "CBlurDlg.h"
+
 void CDrawDoc::OnFeatureextractionBlur()
 {
 	CBlurDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage imgsrc;
 		FloatImage imgDst;
 		FourMatDIBToByteImage(dib, imgsrc);
@@ -1145,32 +1114,25 @@ void CDrawDoc::OnFeatureextractionBlur()
 		FloatImageToFourMatDIB(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-		/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc)
-			FloatImage imgDst;
-		FilterGaussian(imgSrc, imgDst, dlg.m_fSigma);
-		CONVERT_IMAGE_TO_DIB(imgDst, dib)
-
-			AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
+		/*AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
 		AfxNewBitmap(dib);*/
 	}
 }
 
-#include "CReduceNoise.h"
+
 void CDrawDoc::OnFeatureextractionReducenoise()
 {
-	CReduceNoise dlg;
+	CReduceNoiseDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage imgSrc;
-		ByteImage imgDst;
+		FloatImage imgDst;
 		FourMatDIBToByteImage(dib, imgSrc);
-		FilterMedian(imgSrc, imgDst);
-		FourMatGrayToDIBImage(imgDst, dib);
+		FilterDiffusion(imgSrc, imgDst, dlg.m_fLambda, dlg.m_fK, dlg.m_nIteration);
+		FloatImageToFourMatDIB(imgDst, dib);
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 		/*
-		FilterMedian(imgSrc, imgDst);
-
 			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
 		AfxNewBitmap(dib);*/
 	}
@@ -1179,32 +1141,27 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 
 void CDrawDoc::OnFeatureextractionSharpening()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage imgSrc;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, imgSrc);
 	FilterLaplacian(imgSrc, imgDst);
-	//RgbImageToFourMatDIB(imgDst, dib);
 	FourMatGrayToDIBImage(imgDst, dib);
-	
+
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*CONVERT_DIB_TO_BYTEIMAGE(m_Dib, imgSrc) // dib -> bmp 
-		ByteImage imgDst; 
-	FilterLaplacian(imgSrc, imgDst);//영상 처리 
-	CONVERT_IMAGE_TO_DIB(imgDst, dib) // bmp -> dib 
-		AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
+	/*AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);//bitmap new  
 	*/ 
 }
 
-#include "CBrightnessDlg.h"
+
 void CDrawDoc::OnFilteringBrightness()
 {
 	CBrightnessDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage img;
 
 		FourMatDIBToByteImage(dib, img);
@@ -1214,33 +1171,25 @@ void CDrawDoc::OnFilteringBrightness()
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
 }
 
 
 
 
-#include "CHistogramDlg.h"
+
 void CDrawDoc::OnFilteringHistogram()
 {
-		CHistogramDlg dlg;
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CHistogramDlg dlg;
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
+
+	dlg.SetImage(dib);
+	dlg.DoModal();
+
 		
-
-		dlg.SetImage(dib);
-		dlg.DoModal();
-
-		/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-			if (m_vectorImageWnd[i]->m_bClicked) {
-				dlg.SetImage(&m_vectorImageWnd[i]->m_Dib);
-			}
-		}
-		dlg.DoModal();*/
-	
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-#include"CWindowLevel.h"
+
 void CDrawDoc::OnFilteringWindowlevel()
 {
 	/*CWindowLevel dlg;
@@ -1254,14 +1203,14 @@ void CDrawDoc::OnFilteringWindowlevel()
 
 void CDrawDoc::OnFilteringInverse()
 {
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
-		ByteImage img;
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
+	ByteImage img;
 
-		FourMatDIBToByteImage(dib, img);
-		Inverse(img);
-		FourMatGrayToDIBImage(img, dib);
-	
-		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	FourMatDIBToByteImage(dib, img);
+	Inverse(img);
+	FourMatGrayToDIBImage(img, dib);
+
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
 		if (m_vectorImageWnd[i]->m_bClicked) {
 			m_vectorImageWnd[i]->m_nMode = 2;
@@ -1273,9 +1222,9 @@ void CDrawDoc::OnFilteringInverse()
 
 void CDrawDoc::OnFeatureextractionHistogramequalization()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
-	
+
 	FourMatDIBToByteImage(dib, img);
 	HistogramEqualization(img);
 	FourMatGrayToDIBImage(img, dib);
@@ -1287,7 +1236,7 @@ void CDrawDoc::OnFeatureextractionHistogramequalization()
 
 void CDrawDoc::OnFeatureextractionHistogramstretching()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	FourMatDIBToByteImage(dib, img);
 	HistogramStretching(img);
@@ -1299,7 +1248,7 @@ void CDrawDoc::OnFeatureextractionHistogramstretching()
 
 void CDrawDoc::OnMolphologyClosing()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1311,7 +1260,7 @@ void CDrawDoc::OnMolphologyClosing()
 
 void CDrawDoc::OnMolphologyDilation()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1322,7 +1271,7 @@ void CDrawDoc::OnMolphologyDilation()
 
 void CDrawDoc::OnMolphologyErosion()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1334,7 +1283,7 @@ void CDrawDoc::OnMolphologyErosion()
 
 void CDrawDoc::OnMolphologyOpening()
 {
-	CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgDst;
 	FourMatDIBToByteImage(dib, img);
@@ -1357,7 +1306,7 @@ void CDrawDoc::OnObjectSavedraw()
 	m_bIsChange = false;
 }
 
-void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObjects) {
+void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
 	CFile file;
 
 	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
@@ -1371,8 +1320,6 @@ void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*> &pageObj
 		}
 		ar.Close();
 		file.Close();
-
-		
 	}
 }
 void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
@@ -1416,4 +1363,43 @@ void CDrawDoc::OnFilteringGamma()
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+
+//뷰에 따른 리본 버튼 활성화 비활성화 구분 - UPDATE_COMMAND_UI, Enable()
+void CDrawDoc::EnableDrawView(CCmdUI* pCmdUI)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	CSplitFrame* pSplitFrame = (CSplitFrame*)pMainFrame->GetActiveFrame();
+	CView* pView = pSplitFrame->GetActiveView();
+	pCmdUI->Enable(pView->IsKindOf(RUNTIME_CLASS(CDrawView)));
+}
+
+void CDrawDoc::OnUpdateActiveRibbon(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	EnableDrawView(pCmdUI);
+}
+
+
+void CDrawDoc::OnFeatureextractionCannyedge()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CDrawDoc::OnFeatureextractionHarriscorner()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+#include "CCompareDlg.h"
+void CDrawDoc::OnCompareCompare() // 비교 dlg
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	//CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
+	CCompareDlg dlg(this);
+	dlg.DoModal();
 }

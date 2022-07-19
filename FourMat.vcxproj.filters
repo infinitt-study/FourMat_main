@@ -91,22 +91,32 @@
     <ClCompile Include="CInverse.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CReduceNoise.cpp">
+    <ClCompile Include="CReduceNoiseDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CWindowLevel.cpp">
+    <ClCompile Include="CWindowLevelDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CConvertDataType.cpp" />
-    <ClCompile Include="CFourMatDIB.cpp" />
-    <ClCompile Include="CMorphology.cpp" />
     <ClCompile Include="CHistogramDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CCompareDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CGammaDlg.cpp" />
+    <ClCompile Include="CConvertDataType.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CFourMatDIB.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CGammaDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CMorphology.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CCannyEdgeDlg.cpp" />
+    <ClCompile Include="CHarrisCornerDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -211,22 +221,32 @@
     <ClInclude Include="CInverse.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CReduceNoise.h">
+    <ClInclude Include="CReduceNoiseDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CWindowLevel.h">
+    <ClInclude Include="CWindowLevelDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CConvertDataType.h" />
-    <ClInclude Include="CFourMatDIB.h" />
-    <ClInclude Include="CMorphology.h" />
     <ClInclude Include="CHistogramDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CCompareDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CGammaDlg.h" />
+    <ClInclude Include="CConvertDataType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CFourMatDIB.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CGammaDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMorphology.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CCannyEdgeDlg.h" />
+    <ClInclude Include="CHarrisCornerDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

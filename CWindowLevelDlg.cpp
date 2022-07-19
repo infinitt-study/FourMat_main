@@ -3,15 +3,15 @@
 
 #include "stdafx.h"
 #include "FourMat.h"
-#include "CWindowLevel.h"
+#include "CWindowLevelDlg.h"
 #include "afxdialogex.h"
 
 
 // CWindowLevel 대화 상자
 
-IMPLEMENT_DYNAMIC(CWindowLevel, CDialogEx)
+IMPLEMENT_DYNAMIC(CWindowLevelDlg, CDialogEx)
 
-CWindowLevel::CWindowLevel(CWnd* pParent /*=nullptr*/)
+CWindowLevelDlg::CWindowLevelDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FILTERING_WINDOW_LEVEL, pParent)
 	, m_nWindow(0)
 	, m_nContrast(0)
@@ -19,11 +19,11 @@ CWindowLevel::CWindowLevel(CWnd* pParent /*=nullptr*/)
 
 }
 
-CWindowLevel::~CWindowLevel()
+CWindowLevelDlg::~CWindowLevelDlg()
 {
 }
 
-void CWindowLevel::DoDataExchange(CDataExchange* pDX)
+void CWindowLevelDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SLIDER1, m_sliderWindow);
@@ -35,7 +35,7 @@ void CWindowLevel::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CWindowLevel, CDialogEx)
+BEGIN_MESSAGE_MAP(CWindowLevelDlg, CDialogEx)
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 // CWindowLevel 메시지 처리기
 
 
-BOOL CWindowLevel::OnInitDialog()
+BOOL CWindowLevelDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	m_sliderWindow.SetRange(0, 255);
@@ -60,7 +60,7 @@ BOOL CWindowLevel::OnInitDialog()
 }
 
 
-void CWindowLevel::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CWindowLevelDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
