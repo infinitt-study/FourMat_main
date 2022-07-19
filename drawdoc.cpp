@@ -544,6 +544,18 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 	}*/
 }
 
+
+//BOOL CDrawDoc::CanCloseFrame(CFrameWnd* pFrame)
+//{
+////	m_bCanDeactivateInplace = FALSE;
+//
+//	BOOL bRes = COleDocument::CanCloseFrame(pFrame);
+//
+////	m_bCanDeactivateInplace = TRUE;
+//
+//	return bRes;
+//}
+
 #ifdef SHARED_HANDLERS
 void CDrawDoc::InitializeSearchContent()
 {
@@ -1349,6 +1361,8 @@ void CDrawDoc::OnFeatureextractionHarriscorner()
 void CDrawDoc::OnCompareCompare() // 비교 dlg
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	//CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
 	CCompareDlg dlg(this);
 	dlg.DoModal();
 }

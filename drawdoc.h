@@ -97,6 +97,7 @@ protected:
 	virtual BOOL OnNewDocument();
 	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+//	virtual BOOL CanCloseFrame(CFrameWnd* pFrame);
 	virtual void OnUnloadHandler();
 
 //	BOOL m_bCanDeactivateInplace;

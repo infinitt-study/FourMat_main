@@ -233,20 +233,16 @@ void CSearchFileView::OnClickedButtonFilter()
     const int nCount = m_lstResult.GetItemCount();
     CString strFolderName;
 
-    int nRow = 0;
+    int nRow;
     for (int i = nCount - 1; i >= 0; --i) {
         if (m_lstResult.GetCheck(i)) {
             strFolderName = m_lstResult.GetItemText(i, 0);
-            nRow++;
+            nRow = i;
+            break;
         }
     }
     if (strFolderName.IsEmpty()) {
         AfxMessageBox(_T("폴더를 선택해 주세요"));
-        return;
-    }
-
-    if (nRow >= 2) {
-        AfxMessageBox(_T("폴더를 한 개만 선택해 주세요"));
         return;
     }
 
