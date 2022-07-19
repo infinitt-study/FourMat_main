@@ -805,7 +805,7 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	///
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_bClickedView = m_bLeftView;
+	pDrawDoc->setClickedView(m_bLeftView);
 }
 
 void CDrawView::OnLButtonUp(UINT nFlags, CPoint point)

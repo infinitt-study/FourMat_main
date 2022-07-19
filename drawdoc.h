@@ -139,16 +139,51 @@ public:
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
-	BOOL m_bClickedView;
   
-public:
-	CString m_strFolderPath;
+private:
+	BOOL m_bClickedView;		//다중 화면에서 클릭된 뷰 확인
 
-	CString m_strFilePath;
+	CString m_strFolderPath;	//환자 이름 폴더의 경로
+
+	CString m_strFilePath;		//환자 영상 파일의 경로
 	CString m_strRightFilePath;
-
+public:
 	CString m_strFileName;
 	CString m_strRightFileName;
+
+public:
+	void setClickedView(BOOL bClickedView)
+	{
+		m_bClickedView = bClickedView;
+	}
+	BOOL getClickedView()
+	{
+		return m_bClickedView;
+	}
+	void setFolderPath(CString strFolderPath)
+	{
+		m_strFolderPath = strFolderPath;
+	}
+	CString getFolderPath()
+	{
+		return m_strFolderPath;
+	}
+	void setFilePath(CString strFilePath)
+	{
+		m_strFilePath = strFilePath;
+	}
+	CString getFilePath()
+	{
+		return m_strFilePath;
+	}
+	void setRightFilePath(CString strRightFilePath)
+	{
+		m_strRightFilePath = strRightFilePath;
+	}
+	CString getRightFilePath()
+	{
+		return m_strRightFilePath;
+	}
 
 	void LoadDicom(BOOL bLeftView);
 	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);

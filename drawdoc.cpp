@@ -1355,7 +1355,7 @@ void CDrawDoc::OnFilteringGamma()
 	if (dlg.DoModal() == IDOK)
 	{
 
-		CFourMatDIB& dib = m_listLeftDIB[m_nCurrentFrameNo];
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage img;
 
 		FourMatDIBToByteImage(dib, img);

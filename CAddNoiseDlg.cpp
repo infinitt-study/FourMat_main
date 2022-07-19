@@ -21,8 +21,8 @@ CAddNoiseDlg::CAddNoiseDlg(CDrawDoc* pDrawDoc, CWnd* pParent /*=nullptr*/)
 	, m_nNoiseType(0)
 	, m_nAmount(0)
 	,m_pDrawDoc(pDrawDoc)
-	, m_dibRef(pDrawDoc->GetFourMatDIB(pDrawDoc->m_bClickedView))
-	, m_dib(pDrawDoc->GetFourMatDIB(pDrawDoc->m_bClickedView))
+	, m_dibRef(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
+	, m_dib(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
 {
 	
 }
