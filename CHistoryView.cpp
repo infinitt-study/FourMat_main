@@ -35,7 +35,7 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
-	ON_BN_CLICKED(IDOK, &CHistoryView::OnBnClickedOk)
+	ON_BN_CLICKED(IDOK, &CHistoryView::OnClickedButtonSingle)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
 	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
 END_MESSAGE_MAP()
@@ -87,47 +87,6 @@ void CHistoryView::OnInitialUpdate()
 	m_lstHistory.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 }
 
-#include "splitfrm.h"
-void CHistoryView::OnBnClickedOk()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	const int nCount = m_lstHistory.GetItemCount();
-	CString strFileName;
-
-	int nRow = 0;
-	for (int i = nCount - 1; i >= 0; --i) {
-		if (m_lstHistory.GetCheck(i)) {
-			strFileName = m_lstHistory.GetItemText(i, 0);
-			nRow++;
-		}
-	}
-
-	if (strFileName.IsEmpty()) {
-		AfxMessageBox(_T("파일을 선택해 주세요"));
-		return;
-	}
-
-	if (nRow >= 2) {
-		AfxMessageBox(_T("파일을 한 개만 선택해 주세요"));
-		return;
-	}
-
-
-	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName;
-
-	auto isFileExtDCM = IsFileExtDCMName(strFileName);
-	if (isFileExtDCM.first)
-		pDrawDoc->m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
-	else
-		pDrawDoc->m_strFileName = strFileName + _T(".drw");
-
-	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
-
-	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-	pSplitFrame->SwitchView(VIEWID_DRAW);
-}
-
 void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
@@ -136,8 +95,7 @@ void CHistoryView::OnUpdate(CView* pSender, LPARAM lHint, CObject* /*pHint*/)
 	switch (lHint)
 	{
 	case HINT_UPDATE_FOLDERPATH:
-		m_strPath = pDrawDoc->m_strFolderPath + +"\\*.*";
-		//AfxMessageBox(m_strPath);
+		m_strPath = pDrawDoc->getFolderPath() + +"\\*.*";
 		FolderSearch();
 		break;
 	}
@@ -166,6 +124,45 @@ void CHistoryView::FolderSearch()
 	_findclose(handle);
 }
 
+#include "splitfrm.h"
+void CHistoryView::OnClickedButtonSingle()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	const int nCount = m_lstHistory.GetItemCount();
+	CString strFileName;
+
+	int nRow = 0;
+	for (int i = nCount - 1; i >= 0; --i) {
+		if (m_lstHistory.GetCheck(i)) {
+			strFileName = m_lstHistory.GetItemText(i, 0);
+			nRow++;
+		}
+	}
+
+	if (strFileName.IsEmpty()) {
+		AfxMessageBox(_T("파일을 선택해 주세요"));
+		return;
+	}
+
+	if (nRow >= 2) {
+		AfxMessageBox(_T("파일을 한 개만 선택해 주세요"));
+		return;
+	}
+
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	pDrawDoc->setFilePath(pDrawDoc->getFolderPath() + _T("\\") + strFileName);
+
+	auto isFileExtDCM = IsFileExtDCMName(strFileName);
+	if (isFileExtDCM.first)
+		pDrawDoc->m_strFileName = strFileName.Left(isFileExtDCM.second) + _T(".drw");
+	else
+		pDrawDoc->m_strFileName = strFileName + _T(".drw");
+
+	pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FILEPATH);
+
+	CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+	pSplitFrame->SwitchView(VIEWID_DRAW);
+}
 
 void CHistoryView::OnClickedButtonMulti()
 {
@@ -187,8 +184,8 @@ void CHistoryView::OnClickedButtonMulti()
 	}
 
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_strFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[0];
-	pDrawDoc->m_strRightFilePath = pDrawDoc->m_strFolderPath + _T("\\") + strFileName[1];
+	pDrawDoc->setFilePath(pDrawDoc->getFolderPath() + _T("\\") + strFileName[0]);
+	pDrawDoc->setRightFilePath(pDrawDoc->getFolderPath() + _T("\\") + strFileName[1]);
 	
 	auto isFileExtDCM = IsFileExtDCMName(strFileName[0]);
 	if (isFileExtDCM.first)
@@ -216,10 +213,3 @@ std::pair<bool, int> CHistoryView::IsFileExtDCMName(CString strFindDCM) {
 	int nIndex = strFindDCM.ReverseFind(TCHAR('.'));
 	return make_pair((nIndex != -1 && strFindDCM.Mid(nIndex) == _T(".DCM")), nIndex);
 }
-
-//void CHistoryView::OnBnClickedButtonCompare()
-//{
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	CCompareDlg dlg;
-//	dlg.DoModal();
-//}

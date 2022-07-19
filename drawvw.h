@@ -149,8 +149,6 @@ protected:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnDrawSelect();
 	afx_msg void OnDrawRoundRect();
-	//afx_msg void OnDrawTest();
-
 	afx_msg void OnDrawRect();
 	afx_msg void OnDrawLine();
 	afx_msg void OnDrawEllipse();
@@ -209,16 +207,10 @@ protected:
 private:
 	//COLORREF GetColorFromColorButton(int nButtonID);
 
-public:
-	//CString m_strPath;
+private:
 	BOOL m_bLeftView;
 
 public:
-	//void setStrPath(CString strPath)
-	//{
-	//	m_strPath = strPath;
-	//}
-
 	void setLeftView(BOOL bLeftView)
 	{
 		m_bLeftView = bLeftView;

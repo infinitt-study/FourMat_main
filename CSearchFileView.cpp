@@ -130,7 +130,7 @@ void CSearchFileView::SearFileNotSub() {
 
         b = cfile.FindNextFile();
 
-        // . ..일 경우
+        // . ..일 경우 제외
         if (cfile.IsDots())
             continue;
 
@@ -139,16 +139,12 @@ void CSearchFileView::SearFileNotSub() {
         // 검색 결과가 위치하는 폴더 열기
         strFolder = cfile.GetFilePath().Left(cfile.GetFilePath().ReverseFind('\\') + 1);
 
-        // 파일(폴더)이름 얻기
+        // 폴더 이름 얻기
         strName = cfile.GetFileName();
-
-        //얻어진 결과를 대문자로 변경
         strName.MakeUpper();
 
-        if (strName.Find(m_strToken) != -1) {    // 조건에 맞는 경우
-            if (cfile.IsDirectory()) {            // 폴더이면
-                // 리스트 컨트롤에 데이터 입력
-                // 0번 그림과 함께 출력
+        if (strName.Find(m_strToken) != -1) {       // 검색조건
+            if (cfile.IsDirectory()) {              // 폴더
                 m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
@@ -195,20 +191,18 @@ void CSearchFileView::SearFile(CString strStartFolder)
         // 검색 결과가 위치하는 폴더 열기
         strFolder = cfile.GetFilePath().Left(cfile.GetFilePath().ReverseFind('\\') + 1);
 
-        // 파일(폴더)이름 얻기
+        // 폴더 이름 얻기
         strName = cfile.GetFileName();
-
-        //얻어진 결과를 대문자로 변경
         strName.MakeUpper();
 
-        if (cfile.IsDirectory()) {            // 폴더이면
+        if (cfile.IsDirectory()) {
             if (strName.Find(m_strToken) != -1) {
                 m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
             }
-            SearFile(cfile.GetFilePath());    // 재귀함수 호출
+            SearFile(cfile.GetFilePath());    // 재귀함수 통해 하위폴더 검색
         }
     }
 }
@@ -256,7 +250,8 @@ void CSearchFileView::OnClickedButtonFilter()
     CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
 
     CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-    pDrawDoc->m_strFolderPath = m_strFileLocation + "\\" + strFolderName;
+
+    pDrawDoc->setFolderPath(m_strFileLocation + "\\" + strFolderName);
     pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);
 
     pSplitFrame->SwitchView(VIEWID_HISTORY);
