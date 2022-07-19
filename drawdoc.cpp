@@ -1366,8 +1366,9 @@ void CDrawDoc::OnObjectResetdraw()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	m_bClickedView ? m_leftDrawObj.ResetDraw() : m_rightDrawObj.ResetDraw();
 
-	AfxMessageBox(_T("이미지 처리를 초기화했습니다."));
-
-	m_bChanged = true;
-	UpdateAllViews(NULL, HINT_UPDATE_WINDOW);
+	if (IDYES == AfxMessageBox(_T("현재 페이지의 이미지 처리를 초기화하시겠습니까?"), MB_YESNO)) {
+		m_bChanged = true;
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_RESET);
+		AfxMessageBox(_T("이미지가 초기화되었습니다."));
+	}
 }
