@@ -143,9 +143,9 @@ void CSearchFileView::SearFileNotSub() {
         strName = cfile.GetFileName();
         strName.MakeUpper();
 
-        if (strName.Find(m_strToken) != -1) {       // 검색조건
-            if (cfile.IsDirectory()) {              // 폴더
-                m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
+        if (strName.Find(m_strToken) != -1) {     // 검색조건
+            if (cfile.IsDirectory()) {            // 폴더
+                m_lstResult.AddItem(cfile.GetFileName(), i, 0, (UINT)-1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);
@@ -197,7 +197,7 @@ void CSearchFileView::SearFile(CString strStartFolder)
 
         if (cfile.IsDirectory()) {
             if (strName.Find(m_strToken) != -1) {
-                m_lstResult.AddItem(cfile.GetFileName(), i, 0, -1, 0);
+                m_lstResult.AddItem(cfile.GetFileName(), i, 0, (UINT)-1, 0);
                 m_lstResult.AddItem(strFolder, i, 1);
                 m_lstResult.AddItem("파일폴더", i, 2);
                 m_lstResult.AddItem(cfile.GetCreationTimeString(), i, 3);

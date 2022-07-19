@@ -247,6 +247,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_DICOM_IMAGE_REDRAW:
+		pDrawDoc->m_bChanged = true;
 		Invalidate();
 		break;
 
@@ -274,7 +275,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	}
 	//¸â¹ö º¯¼ö ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX)* zoom , pDC->GetDeviceCaps(LOGPIXELSY)* zoom );
+	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom), (int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
@@ -417,7 +418,7 @@ void CDrawView::PasteNative(COleDataObject& dataObject)
 	delete pFile;
 }
 
-void CDrawView::PasteEmbedded(COleDataObject& dataObject, CPoint point )
+void CDrawView::PasteEmbedded(COleDataObject& /*dataObject*/, CPoint /*point*/)
 {
 	BeginWaitCursor();
 
@@ -1423,7 +1424,7 @@ void CDrawView::OnEditCopy()
 		CDrawObj* pDrawObj = m_selection.GetHead();
 		if (m_selection.GetCount() == 1 && pDrawObj->IsKindOf(RUNTIME_CLASS(CDrawOleObj)))
 		{
-			CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
+			//CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
 //			pDrawOle->m_pClientItem->GetClipboardData(pDataSource, FALSE);
 		}
 
@@ -1475,8 +1476,7 @@ void CDrawView::OnEditPaste()
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
 
-	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 
 	// invalidate new pasted stuff
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_SELECTION, &m_selection);
@@ -1654,8 +1654,7 @@ BOOL CDrawView::OnDrop(COleDataObject* pDataObject, DROPEFFECT /*dropEffect*/, C
 		PasteEmbedded(*pDataObject, point);
 
 	// update the document and views
-	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 	GetDocument()->UpdateAllViews(NULL, 0, NULL);      // including this view
 
 	return TRUE;

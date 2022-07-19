@@ -1436,6 +1436,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AccessObject.cpp" />
     <ClCompile Include="CAddNoiseDlg.cpp" />
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
@@ -1851,6 +1852,7 @@
     <ClCompile Include="CTranslationDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccessObject.h" />
     <ClInclude Include="CAddNoiseDlg.h" />
     <ClInclude Include="CAffineTransform.h" />
     <ClInclude Include="CBlurDlg.h" />
