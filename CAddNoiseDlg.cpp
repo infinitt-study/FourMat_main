@@ -94,12 +94,10 @@ void CAddNoiseDlg::OnPaint()
 	//Cdrawdoc doc;
 	//CDrawDoc* pDrawDoc = (CDrawDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame()->GetActiveDocument();//
 	//이미지 정보 접근 
-	
-	m_pDrawDoc->DIBDraw(true,&dc,100,300,200,-200);
-	//AfxMessageBox("확인");
 
-	m_pDrawDoc->DIBDraw(true, &dc, 450, 300, 200, -200);
-
+	CDrawDoc* pDrawDoc = (CDrawDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame()->GetActiveDocument();
+	m_pDrawDoc->DIBDraw(pDrawDoc->m_bClickedView, &dc, 100, 260, 200, -200);
+	m_pDrawDoc->DIBDraw(pDrawDoc->m_bClickedView, &dc, 450, 300, 200, -200);
 }
 
 
