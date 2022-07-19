@@ -33,6 +33,17 @@ public:
 	CFourMatDIB& m_dibRightRef;
 	CFourMatDIB  m_dib;
 
+	CSliderCtrl m_sliderCompare;
+	//int m_nCompare;
+
+	void CompareImage();
+
+	ByteImage m_imgLeftSrc;
+	ByteImage m_imgRightSrc;
+	ByteImage m_imgDst;
+
 	afx_msg void OnPaint();
 	virtual BOOL OnInitDialog();
+	afx_msg void OnNMReleasedcaptureCompareSlider(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
