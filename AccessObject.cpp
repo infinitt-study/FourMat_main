@@ -28,6 +28,7 @@ CAccessObject::~CAccessObject() {
 }
 
 void CAccessObject::Serialize(CArchive& ar) {
+
 	CObject::Serialize(ar);
 	if (ar.IsStoring())
 	{
@@ -35,15 +36,12 @@ void CAccessObject::Serialize(CArchive& ar) {
 			m_nRepFrameNo = m_nCurrentFrameNo;
 		}
 		ar << m_nRepFrameNo;
-
-		// 영상처리 맴버변수 저장 추가
 	}
 	else
 	{
 		ar >> m_nRepFrameNo;
-
-		// 영상처리 맴버변수 읽기 추가
 	}
+	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
 }
 
 

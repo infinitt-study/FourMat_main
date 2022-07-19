@@ -127,10 +127,11 @@ public:
 	CString m_strFolderPath;
 
 	void LoadDicom(BOOL bLeftView);
-	void SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
-	void LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects);
+	void SaveDraw(CAccessObject& drawObj);
+	void LoadDraw(CAccessObject& drawObj);
 
-	bool m_bIsChange; // 변경사항 있있으면 true
+	bool m_bChanged; // 변경사항 있있으면 true
+	bool IsFrameChanged();
 
 
 protected:

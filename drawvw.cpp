@@ -1481,7 +1481,7 @@ void CDrawView::OnEditPaste()
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
 
 	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 
 	// invalidate new pasted stuff
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_SELECTION, &m_selection);
@@ -1660,7 +1660,7 @@ BOOL CDrawView::OnDrop(COleDataObject* pDataObject, DROPEFFECT /*dropEffect*/, C
 
 	// update the document and views
 	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 	GetDocument()->UpdateAllViews(NULL, 0, NULL);      // including this view
 
 	return TRUE;

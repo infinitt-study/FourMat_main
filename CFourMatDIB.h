@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-class CFourMatDIB
+class CFourMatDIB : public CObject 
 {
 public:
 	// 생성자와 소멸자
@@ -16,6 +16,8 @@ public:
 	BOOL CreateRgbBitmap(LONG nWidth, LONG nHeight);
 	BOOL CreateRgbBitmap(LONG nWidth, LONG nHeight, BYTE* pImageData);
 	void DestroyBitmap();
+
+	virtual void Serialize(CArchive& ar);   // overridden for document i/o
 
 	
 	// 비트맵 화면 출력

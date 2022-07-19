@@ -199,7 +199,7 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_zoom = 1.0f;
 
 	m_bFirstLoad = true;
-	m_bIsChange = false;
+	m_bChanged = false;
 
 	return TRUE;
 }
@@ -310,7 +310,7 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 	pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
 	SetModifiedFlag(false);
-	m_bIsChange = true;
+	m_bChanged = true;
 }
 
 void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
@@ -324,7 +324,7 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 		pObjects->RemoveAt(pos);
 	// set document modified flag
 	SetModifiedFlag(false);
-	m_bIsChange = true;
+	m_bChanged = true;
 
 #ifndef SHARED_HANDLERS
 	// call remove for each view so that the view can remove from m_selection
@@ -400,7 +400,7 @@ void CDrawDoc::OnViewPaperColor()
 	m_paperColorLast = m_paperColor;
 
 	SetModifiedFlag(false);
-	m_bIsChange = true;
+	m_bChanged = true;
 
 	UpdateAllViews(NULL);
 #endif
@@ -465,7 +465,7 @@ void CDrawDoc::OnFileSummaryInfo()
 	m_pSummInfo->SetTitle(summ.m_strTitle);
 
 	SetModifiedFlag(false);
-	m_bIsChange = true;
+	m_bChanged = true;
 #endif
 }
 
@@ -1219,67 +1219,68 @@ void CDrawDoc::OnMolphologyOpening()
 
 void CDrawDoc::OnObjectSavedraw()
 {
-	if (!m_bIsChange) {
+	if (!m_bChanged && !IsFrameChanged()) {
 		AfxMessageBox(_T("변경된 사항이 없습니다."));
 		return;
 	}
 
-	SaveDraw(m_leftDrawObj.m_strFileName, m_leftDrawObj.m_pageObjects);
+	SaveDraw(m_leftDrawObj);
 	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
-		SaveDraw(m_rightDrawObj.m_strFileName, m_rightDrawObj.m_pageObjects);
+		SaveDraw(m_rightDrawObj);
 	}
-	AfxMessageBox(_T("파일을 저장했습니다."));
-	m_bIsChange = false;
+	AfxMessageBox(_T("변경 내용을 저장했습니다."));
+	m_bChanged = false;
 }
 
-void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
+void CDrawDoc::SaveDraw(CAccessObject& drawObj) {
 	CFile file;
 
-	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
+	CString strFilePath = m_strFolderPath + _T("\\") + drawObj.m_strFileName;
 	if (file.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary)) {
 		// modeCreate : 파일을 새로 만들거나 기존의 파일을 초기화
 		CArchive ar(&file, CArchive::store);
 
-		ar << pageObjects.size();
-		for each (auto pDrawObjList in pageObjects) {
+		ar << drawObj.m_pageObjects.size();
+		for each (auto pDrawObjList in drawObj.m_pageObjects) {
 			pDrawObjList->Serialize(ar);
 		}
 
-		m_leftDrawObj.Serialize(ar);
-		m_rightDrawObj.Serialize(ar);
+		drawObj.Serialize(ar);
 
 		ar.Close();
 		file.Close();
 	}
 }
-void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObjects) {
+void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
 	CFile file;
 
-	CString strFilePath = m_strFolderPath + _T("\\") + strFileName;
-	if (!strFileName.IsEmpty()) {
+	CString strFilePath = m_strFolderPath + _T("\\") + drawObj.m_strFileName;
+	if (!drawObj.m_strFileName.IsEmpty()) {
 		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
 			CArchive ar(&file, CArchive::load);
 			ar.m_pDocument = this;
 			size_t size;
 			ar >> size;
-			if (size == pageObjects.size()) { // .drw 받아드림
-				for each (auto pDrawObjList in pageObjects) {
+			if (size == drawObj.m_pageObjects.size()) { // .drw 받아드림
+				for each (auto pDrawObjList in drawObj.m_pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
 
-				m_leftDrawObj.Serialize(ar);
-				m_rightDrawObj.Serialize(ar);
+				drawObj.Serialize(ar);
 
 			}
 			// 사이즈가 다르면 .drw 안받아드림
 
 			ar.Close();
 			file.Close();
-
 		}
 	}
 }
-
+bool CDrawDoc::IsFrameChanged() {
+	if (m_leftDrawObj.m_nCurrentFrameNo != m_leftDrawObj.m_nRepFrameNo) return true;
+	if (m_rightDrawObj.m_nCurrentFrameNo != m_rightDrawObj.m_nRepFrameNo) return true;
+	return false;
+}
 
 void CDrawDoc::OnFilteringGamma()
 {
