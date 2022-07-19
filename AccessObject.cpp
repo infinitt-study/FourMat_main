@@ -9,6 +9,7 @@ CAccessObject::CAccessObject()
 {
 	m_pageObjects.reserve(16); // 복제일어나지 않도록 초기설정
 	m_listDIB.reserve(16);
+	m_listDIBOrigin.reserve(16);
 }
 
 CAccessObject::~CAccessObject() {
@@ -24,7 +25,7 @@ CAccessObject::~CAccessObject() {
 	m_pObjects = NULL;
 
 	m_listDIB.clear();
-
+	m_listDIBOrigin.clear();
 }
 
 void CAccessObject::Serialize(CArchive& ar) {
@@ -60,6 +61,7 @@ BOOL CAccessObject::LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc)
 		CFourMatDIB fourMatDIB;
 		fourMatDIB.CreateRgbBitmap(width, height, (BYTE*)data);
 
+		m_listDIBOrigin.push_back(fourMatDIB);
 		m_listDIB.emplace_back(std::move(fourMatDIB));
 
 		m_pageObjects.push_back(new CDrawObjList());
@@ -125,4 +127,9 @@ void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	SetBkMode(pDC->m_hDC, TRANSPARENT); // 배경 투명
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 60, strFileName, strFileName.GetLength());
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
+}
+
+void CAccessObject::ResetDraw() {
+	BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
+	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);
 }

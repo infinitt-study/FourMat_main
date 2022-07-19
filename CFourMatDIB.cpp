@@ -348,6 +348,17 @@ int CFourMatDIB::GetPaletteNums() const
 	default:    return 0;
 	}
 }
+void CFourMatDIB::SetDIBits(BYTE* pDib) {
+	//CreateRgbBitmap(m_nWidth, m_nHeight, pDib);
+	/*delete[] m_pDib;
+	m_pDib = new BYTE[m_nDibSize];*/
+
+	DWORD dwWidthStep = (m_nWidth * m_nBitCount / 8 + 3) & ~3;
+	DWORD dwSizeImage = (m_nHeight * dwWidthStep);
+	BYTE* pData = GetDIBitsAddr();
+
+	memcpy(pData, pDib, dwSizeImage);
+}
 
 void CFourMatDIB::Serialize(CArchive& ar)    // overridden for document i/o
 {

@@ -751,6 +751,7 @@ BEGIN
         MENUITEM "Move Back\tMinus",            ID_OBJECT_MOVEBACK
         MENUITEM SEPARATOR
         MENUITEM "Save Draw",                   ID_OBJECT_SAVEDRAW
+        MENUITEM "Reset Draw",                  ID_OBJECT_RESETDRAW
     END
     POPUP "&Window"
     BEGIN

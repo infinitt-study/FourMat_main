@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_MOLPHOLOGY_EROSION, &CDrawDoc::OnMolphologyErosion)
 	ON_COMMAND(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnMolphologyOpening)
 	ON_COMMAND(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnObjectSavedraw)
+	ON_COMMAND(ID_OBJECT_RESETDRAW, &CDrawDoc::OnObjectResetdraw)
 	ON_COMMAND(ID_FILTERING_GAMMA, &CDrawDoc::OnFilteringGamma)
 	ON_COMMAND(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnFeatureextractionCannyedge)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnFeatureextractionHarriscorner)
@@ -135,6 +136,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_OPENING, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnUpdateActiveRibbon)
+	ON_UPDATE_COMMAND_UI(ID_OBJECT_RESETDRAW, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_CANNYEDGE, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_FEATUREEXTRACTION_HARRISCORNER, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_COMPARE_COMPARE, &CDrawDoc::OnUpdateCompareCompare)
@@ -1370,4 +1372,16 @@ void CDrawDoc::OnUpdateCompareCompare(CCmdUI* pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 	pCmdUI->Enable(!m_rightDrawObj.m_strFilePath.IsEmpty());
+}
+
+
+void CDrawDoc::OnObjectResetdraw()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	m_bClickedView ? m_leftDrawObj.ResetDraw() : m_rightDrawObj.ResetDraw();
+
+	AfxMessageBox(_T("이미지 처리를 초기화했습니다."));
+
+	m_bChanged = true;
+	UpdateAllViews(NULL, HINT_UPDATE_WINDOW);
 }

@@ -39,10 +39,12 @@ public:
 	WORD        GetBitCount() const { return m_nBitCount; }
 	DWORD       GetDibSize()  const { return m_nDibSize; }
 	LPBITMAPINFO GetBitmapInfoAddr() const { return (LPBITMAPINFO)m_pDib; }
-	BYTE* GetDIBitsAddr() const;
+	BYTE*		GetDIBitsAddr() const;
 	int         GetPaletteNums() const;
 	BOOL        IsValid() const { return (m_pDib != NULL); }
 
+	// 이미지 재설정
+	void SetDIBits(BYTE* m_pDib);
 	
 private:
 	LONG    m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)

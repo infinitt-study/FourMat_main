@@ -194,4 +194,5 @@ public:
 
 	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateCompareCompare(CCmdUI* pCmdUI);
+	afx_msg void OnObjectResetdraw();
 };

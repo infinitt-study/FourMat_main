@@ -25,6 +25,7 @@ public:
 	// m_strFilePath, m_strRightFilePath
 
 	std::vector <CFourMatDIB> m_listDIB;
+	std::vector <CFourMatDIB> m_listDIBOrigin;
 	//m_listLeftDIB, m_listRightDIB
 
 	// m_nCurrentFrameNo, m_nCurrentRightFrameNo
@@ -40,6 +41,7 @@ public:
 	CString GetFileDCMName();
 
 	void DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib);
+	void ResetDraw();
 
 	BOOL IsFrameChanged() const {
 		return (m_nCurrentFrameNo != m_nRepFrameNo);
