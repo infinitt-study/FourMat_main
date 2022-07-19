@@ -42,8 +42,8 @@ public:
 
 	void SearFileNotSub();
 	void SearFile(CString strStartFolder);
-	afx_msg void OnClickedButtonStart();
-	afx_msg void OnClickedButtonSingle();
+	afx_msg void OnClickedButtonSelect();
+	afx_msg void OnClickedButtonFilter();
 };
 
 

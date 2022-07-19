@@ -56,7 +56,7 @@ void CHistogramDlg::SetImage(CFourMatDIB& dib)
 		// m_Histogram 배열의 최댓값이 100이 되도록 전체 배열의 값을 조절한다.
 		for (int i = 0; i < 256; i++)
 		{
-			m_Histogram[i] = static_cast<int>(histo[i] * 100 / max_histo);
+			m_Histogram[i] = static_cast<int>(histo[i] * 2000 / max_histo);
 		}
 	}
 	else
@@ -83,16 +83,20 @@ void CHistogramDlg::OnPaint()
 	dc.SetDCPenColor(RGB(0, 0, 0));
 	for (int i = 0; i < 256; i++)
 	{
-		dc.MoveTo(20 + i, 120);
-		dc.LineTo(20 + i, 120 - m_Histogram[i] - 1);
+
+		dc.MoveTo(20 + 2.5 * i, 350);
+		dc.LineTo(20 + 2.5 * i, 350 - m_Histogram[i]);
+
 	}
 
 	// 그레이스케일 레벨 출력
 	for (int i = 0; i < 256; i++)
 	{
 		dc.SetDCPenColor(RGB(i, i, i));
-		dc.MoveTo(20 + i, 130);
-		dc.LineTo(20 + i, 145);
+
+		dc.MoveTo(330 + i, 430);
+		dc.LineTo(330 + i, 450);
+
 	}
 
 	dc.SelectObject(pOldPen);

@@ -102,7 +102,6 @@ void CAddNoiseDlg::OnPaint()
 
 	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
 
-
 }
 
 
