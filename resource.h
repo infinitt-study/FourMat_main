@@ -136,6 +136,8 @@
 #define IDC_LOW_THRESHOLD               175
 #define IDD_FEATUREEXTRACTION_HARRIS_CORNER 175
 #define IDC_HARRIS_THRESHOLD            176
+#define IDC_COMPARE_SLIDER              177
+#define IDC_COMPARE_STATIC              178
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -232,7 +234,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        177
 #define _APS_NEXT_COMMAND_VALUE         32892
-#define _APS_NEXT_CONTROL_VALUE         177
+#define _APS_NEXT_CONTROL_VALUE         179
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

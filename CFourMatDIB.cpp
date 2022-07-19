@@ -348,3 +348,22 @@ int CFourMatDIB::GetPaletteNums() const
 	default:    return 0;
 	}
 }
+
+void CFourMatDIB::Serialize(CArchive& ar)    // overridden for document i/o
+{
+	if (ar.IsStoring()) {
+		ar << m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
+		ar << m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
+		ar << m_nBitCount;   // 픽셀 당 비트 수
+		ar << m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
+		ar.Write(m_pDib, m_nDibSize);        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
+	}
+	else {
+		ar >> m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
+		ar >> m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
+		ar >> m_nBitCount;   // 픽셀 당 비트 수
+		ar >> m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
+		m_pDib = new BYTE[m_nDibSize];
+		ar.Read(m_pDib, m_nDibSize);        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
+	}
+}

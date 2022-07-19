@@ -13,6 +13,8 @@ public:
 	//CCompareDlg(CWnd* pParent /*=nullptr*/);   // 표준 생성자입니다.
 	CCompareDlg(CDrawDoc* pDrawDoc, CWnd* pParent =nullptr);
 
+	void SetImage(CFourMatDIB& dib);
+
 	virtual ~CCompareDlg();
 
 // 대화 상자 데이터입니다.
@@ -27,5 +29,21 @@ protected:
 public:
 	CDrawDoc* m_pDrawDoc;
 
+	CFourMatDIB& m_dibLeftRef;
+	CFourMatDIB& m_dibRightRef;
+	CFourMatDIB  m_dib;
+
+	CSliderCtrl m_sliderCompare;
+	//int m_nCompare;
+
+	void CompareImage();
+
+	ByteImage m_imgLeftSrc;
+	ByteImage m_imgRightSrc;
+	ByteImage m_imgDst;
+
 	afx_msg void OnPaint();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnNMReleasedcaptureCompareSlider(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };

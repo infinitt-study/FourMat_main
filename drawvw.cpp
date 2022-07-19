@@ -11,19 +11,15 @@
 
 #include "stdafx.h"
 #include <afxpriv.h>
-
 #include "FourMat.h"
-
 #include "drawdoc.h"
 #include "drawobj.h"
 //#include "cntritem.h"
 #include "drawvw.h"
-
 #include "drawobj.h"
 #include "drawtool.h"
 #include "mainfrm.h"
 #include "splitfrm.h"
-
 #include "LineWeightDlg.h"
 
 #ifdef _DEBUG
@@ -232,7 +228,6 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_UPDATE_FILEPATH:
-		//AfxMessageBox(m_strPath);
 		if (pDrawDoc->m_bFirstLoad) {
 			pDrawDoc->LoadDicom(m_bLeftView);
 			pDrawDoc->m_bFirstLoad = false;
@@ -252,6 +247,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_DICOM_IMAGE_REDRAW:
+		pDrawDoc->m_bChanged = true;
 		Invalidate();
 		break;
 
@@ -277,10 +273,11 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = pDoc->m_zoom;
 	}
-	//¸â¹ö º¯¼ö ctrl flag : 
+	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
-	pDC->SetViewportExt((int)pDC->GetDeviceCaps(LOGPIXELSX)* zoom ,(int)pDC->GetDeviceCaps(LOGPIXELSY)* zoom ); //Viewpor
-	pDC->SetWindowExt(100, -100); 
+
+	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom),(int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
+	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
 	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
@@ -317,11 +314,11 @@ void CDrawView::OnDraw(CDC* pDC)
 	CBitmap bitmap;
 	CBitmap* pOldBitmap = 0;
 
-	// ´­·ÁÁø »óÅÂ¸é ±Û¾¾°¡ Ãâ·ÂµÇ´Â À§Ä¡¸¦ 1ÇÈ¼¿ Á¶ÀýÇÑ´Ù.
+	// ëˆŒë ¤ì§„ ìƒíƒœë©´ ê¸€ì”¨ê°€ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ë¥¼ 1í”½ì…€ ì¡°ì ˆí•œë‹¤.
 	//Rect += CRect(0, 0, 2, 2);
 	//pDC->DrawText(L"Test button", &Rect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 
-	//pDC->TextOut(100,100,_T("x:ÁÂÇ¥ : %03d, y ÁÂÇ¥ : %03d", );
+	//pDC->TextOut(100,100,_T("x:ì¢Œí‘œ : %03d, y ì¢Œí‘œ : %03d", );
 	// only paint the rect that needs repainting
 	
 	CRect client;
@@ -421,7 +418,7 @@ void CDrawView::PasteNative(COleDataObject& dataObject)
 	delete pFile;
 }
 
-void CDrawView::PasteEmbedded(COleDataObject& dataObject, CPoint point )
+void CDrawView::PasteEmbedded(COleDataObject& /*dataObject*/, CPoint /*point*/)
 {
 	BeginWaitCursor();
 
@@ -547,7 +544,7 @@ void CDrawView::OnInitialUpdate()
 void CDrawView::SetPageSize(CSize size)
 {
 	CClientDC dc(NULL);
-	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100); //¹®¼­ ÁÂÇ¥ -> À©µµ¿ì ÁÂÇ¥ º¯È¯  1:1  ·Î ¸ÅÇÎ ¹× ¿¬°áÀÌ Àß µÇ°Ô  
+	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100); //ë¬¸ì„œ ì¢Œí‘œ -> ìœˆë„ìš° ì¢Œí‘œ ë³€í™˜  1:1  ë¡œ ë§¤í•‘ ë° ì—°ê²°ì´ ìž˜ ë˜ê²Œ  
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_WINDOW, NULL);
@@ -818,7 +815,7 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	///
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-	pDrawDoc->m_bClickedView = m_bLeftView;
+	pDrawDoc->setClickedView(m_bLeftView);
 }
 
 void CDrawView::OnLButtonUp(UINT nFlags, CPoint point)
@@ -1436,7 +1433,7 @@ void CDrawView::OnEditCopy()
 		CDrawObj* pDrawObj = m_selection.GetHead();
 		if (m_selection.GetCount() == 1 && pDrawObj->IsKindOf(RUNTIME_CLASS(CDrawOleObj)))
 		{
-			CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
+			//CDrawOleObj* pDrawOle = (CDrawOleObj*)pDrawObj;
 //			pDrawOle->m_pClientItem->GetClipboardData(pDataSource, FALSE);
 		}
 
@@ -1488,8 +1485,7 @@ void CDrawView::OnEditPaste()
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
 
-	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 
 	// invalidate new pasted stuff
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_SELECTION, &m_selection);
@@ -1667,8 +1663,7 @@ BOOL CDrawView::OnDrop(COleDataObject* pDataObject, DROPEFFECT /*dropEffect*/, C
 		PasteEmbedded(*pDataObject, point);
 
 	// update the document and views
-	GetDocument()->SetModifiedFlag(false);
-	GetDocument()->m_bIsChange = true;
+	GetDocument()->m_bChanged = true;
 	GetDocument()->UpdateAllViews(NULL, 0, NULL);      // including this view
 
 	return TRUE;
