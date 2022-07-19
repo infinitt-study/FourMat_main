@@ -276,17 +276,13 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
 	CFourMatDIB& dib = GetFourMatDIB(bClickedView); // 현재이미지로 불러옴
-	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc
+	//dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
 
 	if (IsRefFrameNo(bClickedView)) {
 		DIBRefDraw(pDC);
 	}
 	DIBInfoDraw(bClickedView, pDC, dib);
-
-	//현민님이 왜 수정했는지 확인하기
-	//CFourMatDIB& dib = GetFourMatDIB(bClickedView);
-	//CFourMatDIB& dib = GetRefFourMatDIB(bClickedView);
-	//dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
 }
 
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
@@ -304,7 +300,7 @@ void CDrawDoc::DIBInfoDraw(BOOL bClickedView, CDC* pDC, CFourMatDIB& dib) {
 	bClickedView ? m_leftDrawObj.DIBInfoDraw(pDC, m_size, dib) 
 		: m_rightDrawObj.DIBInfoDraw(pDC, m_size, dib);
 	CString strPatientName = m_strPatientName.c_str();
-	TextOut(pDC->m_hDC, -m_size.cx / 2 + 5, m_size.cy / 2 - dib.GetHeight() + 20, strPatientName, strPatientName.GetLength());
+	TextOut(pDC->m_hDC, -m_size.cx / 2 + 5, m_size.cy / 2 - dib.GetHeight() + 40, strPatientName, strPatientName.GetLength());
 }
 
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)

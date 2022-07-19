@@ -123,6 +123,6 @@ void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	CString strPageInfo = strCurFrameNo + _T(" / ") + strTotFrameNo;
 	SetTextColor(pDC->m_hDC, RGB(255, 255, 255)); // 글씨 하양
 	SetBkMode(pDC->m_hDC, TRANSPARENT); // 배경 투명
-	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 40, strFileName, strFileName.GetLength());
-	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight(), strPageInfo, strPageInfo.GetLength());
+	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 60, strFileName, strFileName.GetLength());
+	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
 }
