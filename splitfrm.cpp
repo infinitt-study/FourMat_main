@@ -152,7 +152,7 @@ void CSplitFrame::OnClose()
 	CDrawDoc* pDoc = (CDrawDoc*)GetActiveDocument();
 	if (pDoc->m_bChanged || pDoc->IsFrameChanged()) {
 		if (IDYES == AfxMessageBox(_T("변경 내용을 저장하시겠습니까?"), MB_YESNO)) {
-			pDoc->OnObjectSavedraw();
+			pDoc->ChagedSaveDraw();
 		}
 	}
 

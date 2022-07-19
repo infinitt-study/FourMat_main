@@ -295,7 +295,13 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
 	CFourMatDIB& dib = GetFourMatDIB(bClickedView); // 현재이미지로 불러옴
-	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc  
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc
+
+	if (IsRefFrameNo(bClickedView)) {
+		DIBRefDraw(pDC);
+	}
+	DIBInfoDraw(bClickedView, pDC, dib);
+
 }
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {
@@ -303,6 +309,18 @@ void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
+void CDrawDoc::DIBRefDraw(CDC* pDC) {
+	SetTextColor(pDC->m_hDC, RGB(0, 0, 0)); // 글씨 검정
+	SetBkColor(pDC->m_hDC, RGB(255, 255, 0)); // 배경 노랑
+	TextOut(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2, _T("R"), 1);
+}
+void CDrawDoc::DIBInfoDraw(BOOL bClickedView, CDC* pDC, CFourMatDIB& dib) {
+	bClickedView ? m_leftDrawObj.DIBInfoDraw(pDC, m_size, dib) 
+		: m_rightDrawObj.DIBInfoDraw(pDC, m_size, dib);
+	CString strPatientName = m_strPatientName.c_str();
+	TextOut(pDC->m_hDC, -m_size.cx / 2 + 5, m_size.cy / 2 - dib.GetHeight() + 20, strPatientName, strPatientName.GetLength());
+}
+
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
 	CDrawObjList* pObjects = GetObjects(bLeftView);
@@ -484,13 +502,9 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 	if (bLeftView) {
 		filePath = (OFFilename)m_leftDrawObj.m_strFilePath;
-		m_leftDrawObj.m_nCurrentFrameNo = 0;
-		m_leftDrawObj.m_nTotalFrameNo = 0;
 	}
 	else {
 		filePath = (OFFilename)m_rightDrawObj.m_strFilePath;
-		m_rightDrawObj.m_nCurrentFrameNo = 0;
-		m_rightDrawObj.m_nTotalFrameNo = 0;
 	}
 
 	if (fileformat.loadFile(filePath).good()) {
@@ -498,6 +512,9 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		OFString strTransferSyntaxUID = nullptr;
 		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
 
+		// 환자 이름 가져오기
+		dataset->findAndGetOFString(DCM_PatientName, m_strPatientName);
+		
 		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
 		// 압축된 파일(여러장은 무조건 압축 되어 있음)
 		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
@@ -1214,12 +1231,20 @@ void CDrawDoc::OnObjectSavedraw()
 		return;
 	}
 
+	ChagedSaveDraw();
+
+	m_bChanged = false;
+	UpdateAllViews(NULL, HINT_UPDATE_WINDOW);
+	// 대표문구 때문에 화면 다시 그리기
+}
+
+void CDrawDoc::ChagedSaveDraw() {
 	SaveDraw(m_leftDrawObj);
 	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
 		SaveDraw(m_rightDrawObj);
 	}
 	AfxMessageBox(_T("변경 내용을 저장했습니다."));
-	m_bChanged = false;
+
 }
 
 void CDrawDoc::SaveDraw(CAccessObject& drawObj) {
@@ -1267,8 +1292,12 @@ void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
 	}
 }
 
-bool CDrawDoc::IsFrameChanged() {
+BOOL CDrawDoc::IsFrameChanged() {
 	return (m_leftDrawObj.IsFrameChanged() || m_rightDrawObj.IsFrameChanged());
+}
+
+BOOL CDrawDoc::IsRefFrameNo(BOOL bClickedView) {
+	return (bClickedView ? !m_leftDrawObj.IsFrameChanged() : !m_rightDrawObj.IsFrameChanged());
 }
 
 void CDrawDoc::OnFilteringGamma()
