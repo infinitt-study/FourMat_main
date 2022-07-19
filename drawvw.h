@@ -52,13 +52,10 @@ public:
 	void Remove(CDrawObj* pObj);
 	void PasteNative(COleDataObject& dataObject);
 	void PasteEmbedded(COleDataObject& dataObject, CPoint point );
-
 	void PreviewFillColor(COLORREF color);
 	void PreviewLineColor(COLORREF color);
 	void PreviewLineWeight(int nWeight);
-
 	void PreviewStyle(COLORREF clrFill, COLORREF clrLine);
-
 	void StorePreviewState();
 	void RestorePreviewState(BOOL bReset = TRUE);
 	void ResetPreviewState();

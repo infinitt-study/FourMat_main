@@ -27,6 +27,7 @@
 #ifndef SHARED_HANDLERS
 #include "rectdlg.h"
 #endif
+#include "math.h"
 
 IMPLEMENT_SERIAL(CDrawObj, CObject, 0)
 
@@ -535,13 +536,14 @@ CDrawRect::CDrawRect(const CRect& position)
 	m_nShape = rectangle;
 	m_roundness.x = 16;
 	m_roundness.y = 16;
+	m_nDistance = 0.0;
 }
 
 CDrawRect::CDrawRect(const CRect& position,
 	BOOL bPen,
 	const LOGPEN& logpen,
 	BOOL bBrush,
-	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) , m_nShape(rectangle), m_roundness(16,16) {
+	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) , m_nShape(rectangle), m_roundness(16,16), m_nDistance(0.0) {
 
 
 }
@@ -556,12 +558,14 @@ void CDrawRect::Serialize(CArchive& ar)
 	{
 		ar <<(WORD) m_nShape;
 		ar << m_roundness;
+		ar << m_nDistance;
 	}
 	else
 	{
 		WORD wTemp;
 		ar >> wTemp; m_nShape = (Shape)wTemp;
 		ar >> m_roundness;
+		ar >> m_nDistance;
 	}
 }
 
@@ -625,11 +629,18 @@ void CDrawRect::Draw(CDC* pDC)
 		{
 			rect.left += (m_logpen.lopnWidth.x + 1) / 2;
 			rect.right -= m_logpen.lopnWidth.x / 2;
-			//wsprintf(buf, "x : %03d", x )
+			
 		}
 
 		pDC->MoveTo(rect.TopLeft());
 		pDC->LineTo(rect.BottomRight());
+			
+		m_nDistance = sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2));
+		CString str;
+		str.Format(_T("%.2f"), m_nDistance);
+		pDC->TextOut(rect.left, rect.top, str);
+
+
 		break;
 	}
 
@@ -766,7 +777,7 @@ BOOL CDrawRect::Intersects(const CRect& rect)
 				points[2].x -= x;
 				points[3].x += x;
 			}
-
+			//  
 			if (fixed.top < fixed.bottom)
 			{
 				points[0].y -= y;
@@ -782,7 +793,9 @@ BOOL CDrawRect::Intersects(const CRect& rect)
 				points[3].y += y;
 			}
 			rgn.CreatePolygonRgn(points, 4, ALTERNATE);
-		}
+		//dc.textout
+	
+	}
 		break;
 	}
 	return rgn.RectInRegion(fixed);
@@ -1196,7 +1209,7 @@ void CDrawOleObj::Draw(CDC* pDC)
 			CRectTracker tracker;
 			tracker.m_rect = m_position;
 			pDC->LPtoDP(tracker.m_rect);
-
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 			if (c_bShowItems)
 			{
 				// put correct border depending on item type
