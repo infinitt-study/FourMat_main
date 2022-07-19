@@ -273,10 +273,10 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::DIBDraw(BOOL bLeftView, CDC* pDC)
+void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
 	//CFourMatDIB& dib = GetFourMatDIB(bClickedView);
-	CFourMatDIB& dib = bLeftView ? m_listLeftDIB[m_nCurrentFrameNo] : m_listRightDIB[m_nCurrentRightFrameNo];
+	CFourMatDIB& dib = GetRefFourMatDIB(bClickedView);
 	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
 }
 
