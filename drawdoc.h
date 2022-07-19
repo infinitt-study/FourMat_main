@@ -50,17 +50,13 @@ public:
 
 
 	float m_zoom;
-	//BOOL CanDeactivateInplace() const
-	//{
-	//	return m_bCanDeactivateInplace;
-	//}
+	
 
 // Operations
 public:
 	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
 	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
-	void Draw(BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
 	CRect m_rectDocumentBounds;
