@@ -273,7 +273,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = pDoc->m_zoom;
 	}
-	//ë©¤ë²„ ë³€ìˆ˜ ctrl flag : 
+	//¸â¹ö º¯¼ö ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
 
 	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom),(int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
@@ -314,11 +314,11 @@ void CDrawView::OnDraw(CDC* pDC)
 	CBitmap bitmap;
 	CBitmap* pOldBitmap = 0;
 
-	// ëˆŒë ¤ì§„ ìƒíƒœë©´ ê¸€ì”¨ê°€ ì¶œë ¥ë˜ëŠ” ìœ„ì¹˜ë¥¼ 1í”½ì…€ ì¡°ì ˆí•œë‹¤.
+	// ´­·ÁÁø »óÅÂ¸é ±Û¾¾°¡ Ãâ·ÂµÇ´Â À§Ä¡¸¦ 1ÇÈ¼¿ Á¶ÀýÇÑ´Ù.
 	//Rect += CRect(0, 0, 2, 2);
 	//pDC->DrawText(L"Test button", &Rect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 
-	//pDC->TextOut(100,100,_T("x:ì¢Œí‘œ : %03d, y ì¢Œí‘œ : %03d", );
+	//pDC->TextOut(100,100,_T("x:ÁÂÇ¥ : %03d, y ÁÂÇ¥ : %03d", );
 	// only paint the rect that needs repainting
 	
 	CRect client;
@@ -544,7 +544,7 @@ void CDrawView::OnInitialUpdate()
 void CDrawView::SetPageSize(CSize size)
 {
 	CClientDC dc(NULL);
-	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100); //ë¬¸ì„œ ì¢Œí‘œ -> ìœˆë„ìš° ì¢Œí‘œ ë³€í™˜  1:1  ë¡œ ë§¤í•‘ ë° ì—°ê²°ì´ ìž˜ ë˜ê²Œ  
+	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100); //¹®¼­ ÁÂÇ¥ -> À©µµ¿ì ÁÂÇ¥ º¯È¯  1:1  ·Î ¸ÅÇÎ ¹× ¿¬°áÀÌ Àß µÇ°Ô  
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_WINDOW, NULL);
