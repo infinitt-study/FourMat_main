@@ -26,4 +26,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnEnSetfocusAngle();
 	afx_msg void OnBnClickedRotateUser();
+	afx_msg void OnPaint();
 };

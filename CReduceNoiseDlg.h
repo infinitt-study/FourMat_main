@@ -24,4 +24,5 @@ public:
 	float m_fLambda;
 	float m_fK;
 	int m_nIteration;
+//	afx_msg void OnPaint();
 };

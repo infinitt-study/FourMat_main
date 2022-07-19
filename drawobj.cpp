@@ -638,6 +638,8 @@ void CDrawRect::Draw(CDC* pDC)
 		m_nDistance = sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2));
 		CString str;
 		str.Format(_T("%.2f"), m_nDistance);
+		pDC->SetBkColor(RGB(256, 256, 256));
+		//pDC->SetTextColor(RGB(0, 0, 0));
 		pDC->TextOut(rect.left, rect.top, str);
 
 

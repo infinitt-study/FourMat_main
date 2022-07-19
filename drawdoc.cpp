@@ -1039,10 +1039,6 @@ void CDrawDoc::OnAffinetranformTranslation()
 		FourMatGrayToDIBImage(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-
-
-		
-		//AfxNewBitmap(dib);
 	}
 }
 
@@ -1201,14 +1197,7 @@ void CDrawDoc::OnFilteringInverse()
 	FourMatGrayToDIBImage(img, dib);
 
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-		if (m_vectorImageWnd[i]->m_bClicked) {
-			m_vectorImageWnd[i]->m_nMode = 2;
-		}
 	}
-	Invalidate(TRUE);*/
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
 
 void CDrawDoc::OnFeatureextractionHistogramequalization()
 {
