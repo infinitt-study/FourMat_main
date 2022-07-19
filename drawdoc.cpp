@@ -207,6 +207,8 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 	m_bFirstLoad = true;
 	m_bChanged = false;
 
+	m_strPatientName = nullptr;
+
 	return TRUE;
 }
 

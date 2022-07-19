@@ -96,9 +96,14 @@ void CAccessObject::LoadDraw(CDrawDoc* pDoc) {
 					pDrawObjList->Serialize(ar);
 				}
 			}
-			// 사이즈가 다르면 .drw 안받아드림
+			else {// 사이즈가 다르면 .drw 새로 생성
+				pDoc->SaveDraw(*this);
+			}
 			ar.Close();
 			file.Close();
+		}
+		else { // .drw 파일이 없다면 새로 생성
+			pDoc->SaveDraw(*this);
 		}
 	}
 }

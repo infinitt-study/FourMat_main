@@ -121,7 +121,7 @@ public:
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
 
-	OFString m_strPatientName; // 초기화 해주기
+	OFString m_strPatientName;
   
 protected:
 	BOOL m_bClickedView;		//다중 화면에서 클릭된 뷰 확인
