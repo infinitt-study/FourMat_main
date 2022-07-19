@@ -179,7 +179,7 @@ void CFourMatDIB::Draw(HDC hdc, int dx, int dy) //출력 위치
 	LPBITMAPINFO lpbi = (LPBITMAPINFO)m_pDib;
 	LPVOID lpBits = (LPVOID)GetDIBitsAddr();
 
-	::SetStretchBltMode(hdc, COLORONCOLOR);
+	SetStretchBltMode(hdc, HALFTONE);
 
 	::SetDIBitsToDevice(hdc,	// hdc
 		dx,					// DestX
@@ -209,7 +209,7 @@ void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh,
 	LPBITMAPINFO lpbi = (LPBITMAPINFO)m_pDib;
 	LPSTR lpDIBBits = (LPSTR)GetDIBitsAddr();
 
-	SetStretchBltMode(hdc, COLORONCOLOR);
+	SetStretchBltMode(hdc, HALFTONE);
 	::StretchDIBits(hdc,	// hdc
 		dx,					// XDest
 		dy,					// YDest

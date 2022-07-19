@@ -177,8 +177,8 @@ void CDrawView::InvalObj(CDrawObj* pObj)
 	{
 		rect.left -= 4;
 		rect.top -= 5;
-		rect.right += 5;
-		rect.bottom += 4;
+		rect.right += 60;
+		rect.bottom += 60;
 	}
 	rect.InflateRect(10, 10); // handles CDrawOleObj objects
 
@@ -273,17 +273,20 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	if (nullptr == pInfo) {
 		zoom = pDoc->m_zoom;
 	}
-	//��� ���� ctrl flag : 
+	//멤버 변수 ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
-	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom), (int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
+
+	pDC->SetViewportExt((int)(pDC->GetDeviceCaps(LOGPIXELSX) * zoom),(int)(pDC->GetDeviceCaps(LOGPIXELSY) * zoom));
 	pDC->SetWindowExt(100, -100);
 
 	// set the origin of the coordinate system to the center of the page
 	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
 
 	// ptOrg is in logical coordinates
-	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+	//pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
 }
+
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 {
@@ -295,7 +298,8 @@ BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 	if (bDoScroll)
 	{
 		UpdateActiveItem();
-		UpdateWindow();
+		//UpdateWindow();
+		Invalidate(FALSE);
 	}
 	return TRUE;
 }
@@ -310,11 +314,21 @@ void CDrawView::OnDraw(CDC* pDC)
 	CBitmap bitmap;
 	CBitmap* pOldBitmap = 0;
 
+	// 눌려진 상태면 글씨가 출력되는 위치를 1픽셀 조절한다.
+	//Rect += CRect(0, 0, 2, 2);
+	//pDC->DrawText(L"Test button", &Rect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+
+	//pDC->TextOut(100,100,_T("x:좌표 : %03d, y 좌표 : %03d", );
 	// only paint the rect that needs repainting
+	
 	CRect client;
 	pDC->GetClipBox(client);
 	CRect rect = client;
 	DocToClient(rect);
+
+	//static int x, y; 
+	/*x = LOWORD(lParam);
+	y = HIWORD(lParam);*/
 
 	if (!pDC->IsPrinting())
 	{
@@ -347,21 +361,7 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
-
-
 	pDoc->DIBDraw(m_bLeftView, pDrawDC);
-
-	//BITMAPINFO& bmi = pDoc->GetBmi(m_bLeftView);
-
-	//const int width = bmi.bmiHeader.biWidth;
-	//const int height = abs(bmi.bmiHeader.biHeight);
-	////�̹����� �׷��ִ� �Լ�
-	//SetDIBitsToDevice(pDrawDC->m_hDC,  
-	//	-pDoc->GetSize().cx / 2, pDoc->GetSize().cy / 2, width, height,
-	//	0, 0, 0, height, 
-
-	//	pDoc->GetDib(m_bLeftView), &bmi, DIB_RGB_COLORS);
-
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
@@ -531,17 +531,20 @@ void CDrawView::OnInitialUpdate()
 	//CSplitFrame* pSplitFrame = (CSplitFrame *) GetParentFrame();
 	//pSplitFrame->SetDrawView(this);
 
-	CSize size = GetDocument()->GetSize();
+	CDrawDoc* pDoc = GetDocument();
+	CSize size = pDoc->GetSize();
+	CRect imgRect(CPoint(0, 0), size);
 	CClientDC dc(NULL);
 	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100);
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
+	
 }
 
 void CDrawView::SetPageSize(CSize size)
 {
 	CClientDC dc(NULL);
-	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100);
+	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100); //문서 좌표 -> 윈도우 좌표 변환  1:1  로 매핑 및 연결이 잘 되게  
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
 	GetDocument()->UpdateAllViews(NULL, HINT_UPDATE_WINDOW, NULL);
@@ -803,6 +806,12 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	{
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
+
+	TRACE("111 %d,%d\n", point.x, point.y);
+	ClientToDoc(point);
+	TRACE("222 %d,%d\n", point.x, point.y);
+
+	TRACE("%d,%d\n", point.x, point.y);
 
 	///
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
@@ -1811,34 +1820,24 @@ void CDrawView::ResetPreviewState()
 }
 
 
-
 BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	CDrawDoc* pDoc = GetDocument();
-	if ((nFlags & MK_CONTROL) == MK_CONTROL)
-	{ 
-		if (zDelta < 0)
-		{
-
-			pDoc->m_zoom += 0.1f;
-			if (pDoc->m_zoom > 3.0f) pDoc->m_zoom = 3.0f;
-			
-		}
-		else
-		{
-			pDoc->m_zoom -= 0.1f;
-			if (pDoc->m_zoom < 0.2f) pDoc->m_zoom = 0.2f;
-		}
-		//TRACE("m_zoom : %f\n", pDoc->m_zoom);
-		Invalidate(true);
-	}
-   else if ((nFlags & MK_SHIFT) == MK_SHIFT)
+	if ((nFlags & MK_SHIFT) == MK_SHIFT)
 	{
-		
 		pDoc->SetCurrentFrameNo(m_bLeftView, zDelta / 120);
 		Invalidate();
 	}
-	
-   return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
-}
+	else if ((nFlags & MK_CONTROL) == MK_CONTROL)
+	{
+		if (zDelta > 0) {
+			pDoc->m_zoom += 0.1f;
+		}
+		else {
+			pDoc->m_zoom -= 0.1f;
+		}
+		Invalidate();
+	}
 
+	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+}

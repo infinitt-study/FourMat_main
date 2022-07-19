@@ -273,25 +273,6 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 	}
 }
 
-void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC)
-{
-	CSize szPage = m_rectDocumentBounds.Size();
-	pDC->FillSolidRect(CRect(CPoint(0, 0), szPage), m_paperColor);
-
-	pDC->SetMapMode(MM_ANISOTROPIC);
-	pDC->SetViewportExt(pDC->GetDeviceCaps(LOGPIXELSX),
-		pDC->GetDeviceCaps(LOGPIXELSY));
-
-	pDC->SetWindowExt(100, -100);
-	pDC->OffsetWindowOrg(-szPage.cx / 2, szPage.cy / 2);
-
-	Draw(bLeftView, pDC, NULL);
-
-	pDC->SetViewportOrg(0, 0);
-	pDC->SetWindowOrg(0, 0);
-	pDC->SetMapMode(MM_TEXT);
-}
-
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
 	CFourMatDIB& dib = GetFourMatDIB(bClickedView); // 현재이미지로 불러옴
@@ -302,7 +283,12 @@ void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 	}
 	DIBInfoDraw(bClickedView, pDC, dib);
 
+	//현민님이 왜 수정했는지 확인하기
+	//CFourMatDIB& dib = GetFourMatDIB(bClickedView);
+	//CFourMatDIB& dib = GetRefFourMatDIB(bClickedView);
+	//dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
 }
+
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {
 	CFourMatDIB& dib = GetRefFourMatDIB(bClickedView); // 대표이미지로 불러옴
@@ -387,8 +373,9 @@ void CDrawDoc::ComputePageSize()
 		dc.Attach(hDC);
 
 		// Get the size of the page in loenglish
-		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 900, 100);
-		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 300, 100);
+		new_size.cx = MulDiv(dc.GetDeviceCaps(HORZSIZE), 1000, 254); //pixel to inch 
+//지정된 디스플레이 디바이스의 기능에 대한 지정된 종류의 디바이스 관련 정보를 검색합니다.
+		new_size.cy = MulDiv(dc.GetDeviceCaps(VERTSIZE), 1000, 254);
 	}
 
 #ifndef SHARED_HANDLERS
@@ -983,10 +970,6 @@ void CDrawDoc::OnAffinetranformTranslation()
 		FourMatGrayToDIBImage(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-
-
-		
-		//AfxNewBitmap(dib);
 	}
 }
 
@@ -1147,14 +1130,7 @@ void CDrawDoc::OnFilteringInverse()
 	FourMatGrayToDIBImage(img, dib);
 
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-	/*for (int i = 0; i < m_vectorImageWnd.size(); i++) {
-		if (m_vectorImageWnd[i]->m_bClicked) {
-			m_vectorImageWnd[i]->m_nMode = 2;
-		}
 	}
-	Invalidate(TRUE);*/
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
 
 void CDrawDoc::OnFeatureextractionHistogramequalization()
 {

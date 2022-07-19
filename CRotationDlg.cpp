@@ -35,6 +35,7 @@ void CRotationDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CRotationDlg, CDialogEx)
 	ON_EN_SETFOCUS(IDC_ANGLE, &CRotationDlg::OnEnSetfocusAngle)
 	ON_BN_CLICKED(IDC_ROTATE_USER, &CRotationDlg::OnBnClickedRotateUser)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
@@ -113,4 +114,12 @@ void CRotationDlg::OnBnClickedRotateUser()
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ANGLE);
 	pEdit->SetSel(0, -1);
 	pEdit->SetFocus();
+}
+
+
+void CRotationDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 }

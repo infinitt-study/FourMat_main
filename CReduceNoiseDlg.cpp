@@ -37,7 +37,9 @@ void CReduceNoiseDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CReduceNoiseDlg, CDialogEx)
+//	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 
 // CReduceNoiseDlg 메시지 처리기
+
