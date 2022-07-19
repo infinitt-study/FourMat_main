@@ -8,7 +8,7 @@ CFourMatDIB::CFourMatDIB()
 {
 }
 
-CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
+CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib) // 깊은 복사 생성자 
 	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(NULL)
 {
 	if (dib.m_pDib != NULL)
@@ -18,7 +18,7 @@ CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
 	}
 }
 
-CFourMatDIB::CFourMatDIB(CFourMatDIB&& dib)
+CFourMatDIB::CFourMatDIB(CFourMatDIB&& dib)  //sementic move 
 	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(dib.m_pDib)
 {
 	dib.m_pDib = nullptr;

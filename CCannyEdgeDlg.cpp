@@ -13,9 +13,9 @@ IMPLEMENT_DYNAMIC(CCannyEdgeDlg, CDialogEx)
 
 CCannyEdgeDlg::CCannyEdgeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FEATUREEXTRACTION_CANNY_EDGE, pParent)
-	, m_fSigma(0)
-	, m_fLowTh(0)
-	, m_fHighTh(0)
+	, m_fSigma(1.4f)
+	, m_fLowTh(30.f)
+	, m_fHighTh(60.f)
 {
 
 }

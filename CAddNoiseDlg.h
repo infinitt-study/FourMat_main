@@ -29,6 +29,8 @@ protected:
 public:
 	int m_nNoiseType;
 	int m_nAmount;
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
 	CDrawDoc* m_pDrawDoc;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();

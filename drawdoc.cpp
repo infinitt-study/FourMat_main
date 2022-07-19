@@ -1382,16 +1382,48 @@ void CDrawDoc::OnUpdateActiveRibbon(CCmdUI* pCmdUI)
 	EnableDrawView(pCmdUI);
 }
 
-
+#include "CCannyEdgeDlg.h"
 void CDrawDoc::OnFeatureextractionCannyedge()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CCannyEdgeDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
+	ByteImage img;
+	ByteImage imgEdge;
+	FourMatDIBToByteImage(dib, img);
+	EdgeCanny(img, imgEdge, dlg.m_fSigma, dlg.m_fLowTh, dlg.m_fHighTh);
+	FourMatGrayToDIBImage(imgEdge, dib);
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	}
 }
 
-
+#include "CHarrisCornerDlg.h"
 void CDrawDoc::OnFeatureextractionHarriscorner()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CHarrisCornerDlg dlg;
+	if (dlg.DoModal() == IDOK)
+	{
+		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
+		ByteImage img;
+		FourMatDIBToByteImage(dib, img);
+		std::vector<Point> corners;
+		HarrisCorner(img, corners, dlg.m_nHarrisTh);
+
+		BYTE** ptr = img.GetPixels2D();
+		int x, y;
+		for (Point cp : corners)
+		{
+			x = cp.x;
+			y = cp.y;
+			ptr[y - 1][x - 1] = ptr[y - 1][x] = ptr[y - 1][x + 1] = 0;
+			ptr[y][x - 1] = ptr[y][x] = ptr[y][x + 1] = 0;
+			ptr[y + 1][x - 1] = ptr[y + 1][x] = ptr[y + 1][x + 1] = 0;
+		}
+		FourMatGrayToDIBImage(img, dib);
+		AfxMessageBox("확인");
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
+	}
 }
 
 #include "CCompareDlg.h"
