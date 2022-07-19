@@ -511,9 +511,13 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 		DcmDataset* dataset = fileformat.getDataset();
 		OFString strTransferSyntaxUID = nullptr;
 		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
+		double slope, intercept;
 
 		// 환자 이름 가져오기
 		dataset->findAndGetOFString(DCM_PatientName, m_strPatientName);
+
+		dataset->findAndGetFloat64(DCM_RescaleSlope, slope);
+		dataset->findAndGetFloat64(DCM_RescaleIntercept, intercept);
 		
 		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
 		// 압축된 파일(여러장은 무조건 압축 되어 있음)
@@ -533,8 +537,8 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 		E_TransferSyntax xfer = dataset->getOriginalXfer();
 		//데이터 셋으로 이미지를 압축 해제 해서 생성한다 
-		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_leftDrawObj.m_nTotalFrameNo)
-			: new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
+		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, slope, intercept, CIF_DecompressCompletePixelData, 0, m_leftDrawObj.m_nTotalFrameNo)
+			: new DicomImage(dataset, xfer, slope, intercept, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
 
 		if (ptrDicomImage) {
 
