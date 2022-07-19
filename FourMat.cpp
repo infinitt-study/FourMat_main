@@ -10,9 +10,7 @@
 // All rights reserved.
 
 #include "stdafx.h"
-
 #include "FourMat.h"
-
 #include "mainfrm.h"
 #include "drawobj.h"
 #include "drawdoc.h"
@@ -109,7 +107,6 @@ BOOL CDrawApp::InitInstance()
 	pDocTemplate = new CMultiDocTemplate(IDR_DRAWCLTYPE, 
 		RUNTIME_CLASS(CDrawDoc), 
 		RUNTIME_CLASS(CSplitFrame), 
-		//
 		RUNTIME_CLASS(CSearchFileView));
 	pDocTemplate->SetContainerInfo(IDR_DRAWCLTYPE_CNTR_IP);
 	AddDocTemplate(pDocTemplate);

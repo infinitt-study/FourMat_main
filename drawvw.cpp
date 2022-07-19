@@ -11,19 +11,15 @@
 
 #include "stdafx.h"
 #include <afxpriv.h>
-
 #include "FourMat.h"
-
 #include "drawdoc.h"
 #include "drawobj.h"
 //#include "cntritem.h"
 #include "drawvw.h"
-
 #include "drawobj.h"
 #include "drawtool.h"
 #include "mainfrm.h"
 #include "splitfrm.h"
-
 #include "LineWeightDlg.h"
 
 #ifdef _DEBUG
@@ -232,7 +228,6 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_UPDATE_FILEPATH:
-		//AfxMessageBox(m_strPath);
 		if (pDrawDoc->m_bFirstLoad) {
 			pDrawDoc->LoadDicom(m_bLeftView);
 			pDrawDoc->m_bFirstLoad = false;
