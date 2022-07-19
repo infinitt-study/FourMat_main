@@ -36,6 +36,9 @@ public:
 	bool LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc);
 	void LoadDraw(CDrawDoc* pDoc);
 	void SetCurrentFrameNo(int nDelta);
+	bool IsFrameChanged() const {
+		return (m_nCurrentFrameNo != m_nRepFrameNo);
+	}
 
 	// 영상처리 맴버변수 추가 설정 필요
 };

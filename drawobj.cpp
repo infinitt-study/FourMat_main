@@ -157,7 +157,6 @@ void CDrawObj::MoveTo(const CRect& position, CDrawView* pView)
 		pView->InvalObj(this);
 #endif
 	}
-	m_pDocument->SetModifiedFlag(false);
 	m_pDocument->m_bChanged = true;
 }
 
@@ -426,7 +425,6 @@ void CDrawObj::OnEditProperties()
 	}
 
 	Invalidate();
-	m_pDocument->SetModifiedFlag(false);
 	m_pDocument->m_bChanged = true;
 #endif
 }
@@ -446,7 +444,6 @@ void CDrawObj::SetLineColor(COLORREF color, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 }
@@ -461,7 +458,6 @@ void CDrawObj::SetFillColor(COLORREF color, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 }
@@ -485,7 +481,6 @@ void CDrawObj::SetLineWeight(int nWidth, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 }
@@ -495,7 +490,6 @@ void CDrawObj::EnableFill(BOOL bEnable, BOOL bPreview/* = FALSE*/)
 	m_bBrush = bEnable;
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 }
@@ -505,7 +499,6 @@ void CDrawObj::EnableLine(BOOL bEnable, BOOL bPreview/* = FALSE*/)
 	m_bPen = bEnable;
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 }
@@ -696,7 +689,6 @@ void CDrawRect::MoveHandleTo(int nHandle, CPoint point, CDrawView* pView)
 			point.y = rect.top + rect.Height() / 2;
 		m_roundness.x = 2 *(rect.right - point.x);
 		m_roundness.y = 2 *(rect.bottom - point.y);
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 		if (pView == NULL)
 			Invalidate();
@@ -912,7 +904,6 @@ void CDrawPoly::MoveTo(const CRect& position, CDrawView* pView)
 	else
 		pView->InvalObj(this);
 #endif
-	m_pDocument->SetModifiedFlag(false);
 	m_pDocument->m_bChanged = true;
 }
 void CDrawPoly::MoveTo (const CPoint& position)
@@ -958,7 +949,6 @@ void CDrawPoly::MoveHandleTo(int nHandle, CPoint point, CDrawView* pView)
 		Invalidate();
 	else
 		pView->InvalObj(this);
-	m_pDocument->SetModifiedFlag(false);
 	m_pDocument->m_bChanged = true;
 #endif
 }
@@ -1025,7 +1015,6 @@ void CDrawPoly::AddPoint(const CPoint& point, CDrawView* pView)
 			else
 				pView->InvalObj(this);
 		}
-		m_pDocument->SetModifiedFlag(false);
 		m_pDocument->m_bChanged = true;
 	}
 #endif

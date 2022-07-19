@@ -252,6 +252,7 @@ void CDrawView::OnUpdate(CView* , LPARAM lHint, CObject* pHint)
 		break;
 
 	case HINT_DICOM_IMAGE_REDRAW:
+		pDrawDoc->m_bChanged = true;
 		Invalidate();
 		break;
 
@@ -1480,7 +1481,6 @@ void CDrawView::OnEditPaste()
 	else
 		PasteEmbedded(dataObject, GetInitialPosition().TopLeft() );
 
-	GetDocument()->SetModifiedFlag(false);
 	GetDocument()->m_bChanged = true;
 
 	// invalidate new pasted stuff
@@ -1659,7 +1659,6 @@ BOOL CDrawView::OnDrop(COleDataObject* pDataObject, DROPEFFECT /*dropEffect*/, C
 		PasteEmbedded(*pDataObject, point);
 
 	// update the document and views
-	GetDocument()->SetModifiedFlag(false);
 	GetDocument()->m_bChanged = true;
 	GetDocument()->UpdateAllViews(NULL, 0, NULL);      // including this view
 

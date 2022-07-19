@@ -102,7 +102,6 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
-	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, &CDrawDoc::OnFeatureextractionHistogramequalization)
 	ON_COMMAND(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, &CDrawDoc::OnFeatureextractionHistogramstretching)
 	ON_COMMAND(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnMolphologyClosing)
@@ -309,7 +308,6 @@ void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 
 	pObjects->AddTail(pObj);
 	pObj->m_pDocument = this;
-	SetModifiedFlag(false);
 	m_bChanged = true;
 }
 
@@ -323,7 +321,6 @@ void CDrawDoc::Remove(BOOL bLeftView, CDrawObj* pObj)
 	if (pos != NULL)
 		pObjects->RemoveAt(pos);
 	// set document modified flag
-	SetModifiedFlag(false);
 	m_bChanged = true;
 
 #ifndef SHARED_HANDLERS
@@ -399,7 +396,6 @@ void CDrawDoc::OnViewPaperColor()
 	m_paperColor = color == (COLORREF)-1 ? RGB(255, 255, 255) : color;
 	m_paperColorLast = m_paperColor;
 
-	SetModifiedFlag(false);
 	m_bChanged = true;
 
 	UpdateAllViews(NULL);
@@ -464,7 +460,6 @@ void CDrawDoc::OnFileSummaryInfo()
 	m_pSummInfo->SetTemplate(summ.m_strTempl);
 	m_pSummInfo->SetTitle(summ.m_strTitle);
 
-	SetModifiedFlag(false);
 	m_bChanged = true;
 #endif
 }
@@ -871,8 +866,8 @@ void CDrawDoc::OnAffinetranformMirror()
 	FourMatDIBToByteImage(dib, imgSrc);
 	Mirror(imgSrc, imgDst);
 	FourMatGrayToDIBImage(imgDst, dib);
-	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
+	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	/*AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
 	AfxNewBitmap(dib);*/
 }
@@ -901,8 +896,8 @@ void CDrawDoc::OnAffinetranformRotation()
 			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
 		//else
 			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
-		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
+		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 }
 
@@ -972,6 +967,7 @@ void CDrawDoc::OnAffinetransformFlip()
 	FourMatDIBToByteImage(dib, imgSrc);
 	Flip(imgSrc, imgDst);
 	FourMatGrayToDIBImage(imgDst, dib);
+
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
 	/*AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
@@ -1038,6 +1034,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 		FourMatDIBToByteImage(dib, imgSrc);
 		FilterDiffusion(imgSrc, imgDst, dlg.m_fLambda, dlg.m_fK, dlg.m_nIteration);
 		FloatImageToFourMatDIB(imgDst, dib);
+
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 		/*
 			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
@@ -1277,9 +1274,7 @@ void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
 	}
 }
 bool CDrawDoc::IsFrameChanged() {
-	if (m_leftDrawObj.m_nCurrentFrameNo != m_leftDrawObj.m_nRepFrameNo) return true;
-	if (m_rightDrawObj.m_nCurrentFrameNo != m_rightDrawObj.m_nRepFrameNo) return true;
-	return false;
+	return (m_leftDrawObj.IsFrameChanged() || m_rightDrawObj.IsFrameChanged());
 }
 
 void CDrawDoc::OnFilteringGamma()

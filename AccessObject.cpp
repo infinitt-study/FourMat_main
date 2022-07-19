@@ -109,3 +109,5 @@ void CAccessObject::SetCurrentFrameNo(int nDelta)
 	m_nCurrentFrameNo = long((m_listDIB.size() + m_nCurrentFrameNo) % m_listDIB.size());
 	m_pObjects = m_pageObjects[m_nCurrentFrameNo];
 }
+
+
