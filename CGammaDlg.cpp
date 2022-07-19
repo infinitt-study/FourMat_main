@@ -34,6 +34,7 @@ void CGammaDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CGammaDlg, CDialogEx)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_GAMMA_EDIT, &CGammaDlg::OnEnChangeGammaEdit)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_GAMMA_SLIDER, &CGammaDlg::OnNMCustomdrawGammaSlider)
 END_MESSAGE_MAP()
 
 
@@ -84,4 +85,12 @@ void CGammaDlg::OnEnChangeGammaEdit()
 	UpdateData(TRUE);
 	m_sliderGamma.SetPos(static_cast<int>(m_fGamma * 50));
 
+}
+
+
+void CGammaDlg::OnNMCustomdrawGammaSlider(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	*pResult = 0;
 }

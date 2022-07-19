@@ -67,38 +67,29 @@ void CHistogramDlg::SetImage(CFourMatDIB& dib)
 
 void CHistogramDlg::OnPaint()
 {
-	CPaintDC dc(this); // device context for painting
-					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
-					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
 
+	CPaintDC dc(this); // device context for painting
 	CGdiObject* pOldPen = dc.SelectStockObject(DC_PEN);
 	// 히스토그램 박스
 	dc.SetDCPenColor(RGB(128, 128, 128));
-	//dc.MoveTo(20, 20);
-	//dc.LineTo(20, 120);
-	//dc.LineTo(275, 120);
-	//dc.LineTo(275, 20);
-
+	dc.MoveTo(20, 20);
+	dc.LineTo(20, 350);
+	dc.LineTo(900, 350);
+	dc.LineTo(900, 20);
 	// 각 그레이스케일에 해당하는 히스토그램 출력
 	dc.SetDCPenColor(RGB(0, 0, 0));
 	for (int i = 0; i < 256; i++)
 	{
-
-		dc.MoveTo(20 + 2.5 * i, 350);
-		dc.LineTo(20 + 2.5 * i, 350 - m_Histogram[i]);
-
+		dc.MoveTo(20 + 2.5*i, 350);
+		dc.LineTo(20 + 2.5*i, 350 - m_Histogram[i]);
 	}
-
 	// 그레이스케일 레벨 출력
 	for (int i = 0; i < 256; i++)
 	{
 		dc.SetDCPenColor(RGB(i, i, i));
-
 		dc.MoveTo(330 + i, 430);
 		dc.LineTo(330 + i, 450);
-
 	}
-
 	dc.SelectObject(pOldPen);
 }
 
