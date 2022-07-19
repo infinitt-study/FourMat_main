@@ -1440,6 +1440,7 @@
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBrightnessDlg.cpp" />
+    <ClCompile Include="CCannyEdgeDlg.cpp" />
     <ClCompile Include="CCompareDlg.cpp" />
     <ClCompile Include="CConvertDataType.cpp" />
     <ClCompile Include="CFileFindEx.cpp" />
@@ -1477,11 +1478,11 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="CReduceNoise.cpp" />
+    <ClCompile Include="CReduceNoiseDlg.cpp" />
     <ClCompile Include="CRotationDlg.cpp" />
     <ClCompile Include="CScalingDlg.cpp" />
     <ClCompile Include="CSearchFileView.cpp" />
-    <ClCompile Include="CWindowLevel.cpp" />
+    <ClCompile Include="CWindowLevelDlg.cpp" />
     <ClCompile Include="drawdoc.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1587,6 +1588,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Unicode Release CLR|X64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="FourMat.cpp" />
+    <ClCompile Include="CHarrisCornerDlg.cpp" />
     <ClCompile Include="LineWeightDlg.cpp" />
     <ClCompile Include="mainfrm.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -1853,6 +1855,7 @@
     <ClInclude Include="CAffineTransform.h" />
     <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CBrightnessDlg.h" />
+    <ClInclude Include="CCannyEdgeDlg.h" />
     <ClInclude Include="CCompareDlg.h" />
     <ClInclude Include="CConvertDataType.h" />
     <ClInclude Include="CFileFindEx.h" />
@@ -1865,17 +1868,18 @@
     <ClInclude Include="CInverse.h" />
     <ClInclude Include="CListCtrlEx.h" />
     <ClInclude Include="cntritem.h" />
-    <ClInclude Include="CReduceNoise.h" />
+    <ClInclude Include="CReduceNoiseDlg.h" />
     <ClInclude Include="CRotationDlg.h" />
     <ClInclude Include="CScalingDlg.h" />
     <ClInclude Include="CSearchFileView.h" />
-    <ClInclude Include="CWindowLevel.h" />
+    <ClInclude Include="CWindowLevelDlg.h" />
     <ClInclude Include="drawdoc.h" />
     <ClInclude Include="drawobj.h" />
     <ClInclude Include="drawtool.h" />
     <ClInclude Include="drawvw.h" />
     <ClInclude Include="FourMat.h" />
     <ClInclude Include="AccessPixel.h" />
+    <ClInclude Include="CHarrisCornerDlg.h" />
     <ClInclude Include="LineWeightDlg.h" />
     <ClInclude Include="mainfrm.h" />
     <ClInclude Include="propset.h" />

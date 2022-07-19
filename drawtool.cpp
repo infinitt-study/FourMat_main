@@ -314,7 +314,7 @@ void CRectTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& point
 	switch (m_drawShape)
 	{
 	default:
-		ASSERT(FALSE); // unsuported shape!
+		ASSERT(FALSE); // unsupported shape!
 
 	case rect:
 		pObj->m_nShape = CDrawRect::rectangle;
@@ -330,6 +330,7 @@ void CRectTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& point
 
 	case line:
 		pObj->m_nShape = CDrawRect::line;
+
 		break;
 	}
 	pView->GetDocument()->Add(pView->m_bLeftView, pObj);

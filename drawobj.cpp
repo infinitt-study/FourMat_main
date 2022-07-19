@@ -145,7 +145,8 @@ void CDrawObj::MoveTo(const CRect& position, CDrawView* pView)
 	if (pView == NULL)
 	{
 		Invalidate();
-		m_position = position;
+		m_position = position; 
+		// double distance = sqrt(pow(x2-x1, 2)  + pow (y2 - y1, 2));
 		Invalidate();
 	}
 	else

@@ -58,6 +58,9 @@ public:
 	LOGPEN m_logpen;
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
+	/*LOWORD m_xPosition;
+	HIWORD m_yPosition;*/
+
 
 	float m_zoom;
 	//BOOL CanDeactivateInplace() const
@@ -197,6 +200,9 @@ public:
 	afx_msg void OnMolphologyOpening();
 	afx_msg void OnObjectSavedraw();
 	afx_msg void OnFilteringGamma();
+	afx_msg void OnFeatureextractionCannyedge();
+	afx_msg void OnFeatureextractionHarriscorner();
+	afx_msg void OnCompareCompare(); // 비교 dlg
 
 	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 };
