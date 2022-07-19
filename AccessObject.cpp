@@ -45,7 +45,7 @@ void CAccessObject::Serialize(CArchive& ar) {
 }
 
 
-bool CAccessObject::LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc)
+BOOL CAccessObject::LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc)
 {
 	//이미지의 폭과 높이를 얻는다 
 	int width = (int)ptrDicomImage->getWidth();
@@ -110,4 +110,19 @@ void CAccessObject::SetCurrentFrameNo(int nDelta)
 	m_pObjects = m_pageObjects[m_nCurrentFrameNo];
 }
 
+CString CAccessObject::GetFileDCMName() {
+	int nIndex = m_strFileName.ReverseFind(TCHAR('.'));
+	return m_strFileName.Left(nIndex);
+}
 
+void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
+	CString strFileName = GetFileDCMName();
+	CString strCurFrameNo, strTotFrameNo;
+	strCurFrameNo.Format(_T("%d"), m_nCurrentFrameNo + 1);
+	strTotFrameNo.Format(_T("%d"), m_nTotalFrameNo);
+	CString strPageInfo = strCurFrameNo + _T(" / ") + strTotFrameNo;
+	SetTextColor(pDC->m_hDC, RGB(255, 255, 255)); // 글씨 하양
+	SetBkMode(pDC->m_hDC, TRANSPARENT); // 배경 투명
+	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 40, strFileName, strFileName.GetLength());
+	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight(), strPageInfo, strPageInfo.GetLength());
+}

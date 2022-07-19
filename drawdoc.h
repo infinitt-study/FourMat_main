@@ -59,6 +59,8 @@ public:
 	// ------ Draw called for live icon and Win7 taskbar thumbnails
 	void DIBDraw(BOOL bLeftView, CDC* pDC);
 	void DIBDraw(BOOL bLeftView, CDC* pDC, int x, int y, int w, int h);
+	void DIBRefDraw(CDC* pDC);
+	void DIBInfoDraw(BOOL bClickedView, CDC* pDC, CFourMatDIB& dib);
 	CRect m_rectDocumentBounds;
 	// ------
 
@@ -119,6 +121,8 @@ public:
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
+
+	OFString m_strPatientName; // 초기화 해주기
   
 protected:
 	BOOL m_bClickedView;		//다중 화면에서 클릭된 뷰 확인
@@ -143,14 +147,17 @@ public:
 	}
 
 	void LoadDicom(BOOL bLeftView);
+	void ChagedSaveDraw();
 	void SaveDraw(CAccessObject& drawObj);
 	void LoadDraw(CAccessObject& drawObj);
 
-	bool m_bChanged; // 변경사항 있있으면 true
-	bool IsFrameChanged();
+	BOOL m_bChanged; // 변경사항 있있으면 true
+	BOOL IsFrameChanged();
+	BOOL IsRefFrameNo(BOOL bClickedView);
   
 	void HelperLoadDicom(BOOL bLeftView);
 	void EnableDrawView(CCmdUI* pCmdUI);
+
 
 
 protected:

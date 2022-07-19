@@ -33,10 +33,15 @@ public:
 	long m_nRepFrameNo; // 다이콤 내부 대표 이미지
 
 
-	bool LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc);
+	BOOL LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc);
 	void LoadDraw(CDrawDoc* pDoc);
 	void SetCurrentFrameNo(int nDelta);
-	bool IsFrameChanged() const {
+
+	CString GetFileDCMName();
+
+	void DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib);
+
+	BOOL IsFrameChanged() const {
 		return (m_nCurrentFrameNo != m_nRepFrameNo);
 	}
 

@@ -108,7 +108,6 @@ void CHistoryView::FolderSearch()
 
 	struct _finddata_t fd;	intptr_t handle;
 	if ((handle = _findfirst(path.c_str(), &fd)) == -1L) {
-		cout << "No file in directory!" << endl;
 		MessageBox(_T("파일 없음"));
 		return;
 	}

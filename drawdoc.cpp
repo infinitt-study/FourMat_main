@@ -275,9 +275,18 @@ void CDrawDoc::Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView)
 
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 {
+	CFourMatDIB& dib = GetFourMatDIB(bClickedView); // 현재이미지로 불러옴
+	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2); // dlg -> paint dc
+
+	if (IsRefFrameNo(bClickedView)) {
+		DIBRefDraw(pDC);
+	}
+	DIBInfoDraw(bClickedView, pDC, dib);
+
+	//현민님이 왜 수정했는지 확인하기
 	//CFourMatDIB& dib = GetFourMatDIB(bClickedView);
-	CFourMatDIB& dib = GetRefFourMatDIB(bClickedView);
-	dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
+	//CFourMatDIB& dib = GetRefFourMatDIB(bClickedView);
+	//dib.Draw(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2 - dib.GetHeight(), dib.GetWidth(), dib.GetHeight(), SRCCOPY);
 }
 
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
@@ -286,6 +295,18 @@ void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
 
 }
+void CDrawDoc::DIBRefDraw(CDC* pDC) {
+	SetTextColor(pDC->m_hDC, RGB(0, 0, 0)); // 글씨 검정
+	SetBkColor(pDC->m_hDC, RGB(255, 255, 0)); // 배경 노랑
+	TextOut(pDC->m_hDC, -m_size.cx / 2, m_size.cy / 2, _T("R"), 1);
+}
+void CDrawDoc::DIBInfoDraw(BOOL bClickedView, CDC* pDC, CFourMatDIB& dib) {
+	bClickedView ? m_leftDrawObj.DIBInfoDraw(pDC, m_size, dib) 
+		: m_rightDrawObj.DIBInfoDraw(pDC, m_size, dib);
+	CString strPatientName = m_strPatientName.c_str();
+	TextOut(pDC->m_hDC, -m_size.cx / 2 + 5, m_size.cy / 2 - dib.GetHeight() + 20, strPatientName, strPatientName.GetLength());
+}
+
 void CDrawDoc::Add(BOOL bLeftView, CDrawObj* pObj)
 {
 	CDrawObjList* pObjects = GetObjects(bLeftView);
@@ -468,20 +489,23 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 	if (bLeftView) {
 		filePath = (OFFilename)m_leftDrawObj.m_strFilePath;
-		m_leftDrawObj.m_nCurrentFrameNo = 0;
-		m_leftDrawObj.m_nTotalFrameNo = 0;
 	}
 	else {
 		filePath = (OFFilename)m_rightDrawObj.m_strFilePath;
-		m_rightDrawObj.m_nCurrentFrameNo = 0;
-		m_rightDrawObj.m_nTotalFrameNo = 0;
 	}
 
 	if (fileformat.loadFile(filePath).good()) {
 		DcmDataset* dataset = fileformat.getDataset();
 		OFString strTransferSyntaxUID = nullptr;
 		DcmMetaInfo* pDcmMetaInfo = fileformat.getMetaInfo();
+		double slope, intercept;
 
+		// 환자 이름 가져오기
+		dataset->findAndGetOFString(DCM_PatientName, m_strPatientName);
+
+		dataset->findAndGetFloat64(DCM_RescaleSlope, slope);
+		dataset->findAndGetFloat64(DCM_RescaleIntercept, intercept);
+		
 		pDcmMetaInfo->findAndGetOFString(DCM_TransferSyntaxUID, strTransferSyntaxUID);
 		// 압축된 파일(여러장은 무조건 압축 되어 있음)
 		if (std::string::npos != strTransferSyntaxUID.find("1.2.840.10008.1.2.4.50")) {
@@ -500,8 +524,8 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 
 		E_TransferSyntax xfer = dataset->getOriginalXfer();
 		//데이터 셋으로 이미지를 압축 해제 해서 생성한다 
-		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_leftDrawObj.m_nTotalFrameNo)
-			: new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
+		DicomImage* ptrDicomImage = bLeftView ? new DicomImage(dataset, xfer, slope, intercept, CIF_DecompressCompletePixelData, 0, m_leftDrawObj.m_nTotalFrameNo)
+			: new DicomImage(dataset, xfer, slope, intercept, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
 
 		if (ptrDicomImage) {
 
@@ -1187,12 +1211,20 @@ void CDrawDoc::OnObjectSavedraw()
 		return;
 	}
 
+	ChagedSaveDraw();
+
+	m_bChanged = false;
+	UpdateAllViews(NULL, HINT_UPDATE_WINDOW);
+	// 대표문구 때문에 화면 다시 그리기
+}
+
+void CDrawDoc::ChagedSaveDraw() {
 	SaveDraw(m_leftDrawObj);
 	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
 		SaveDraw(m_rightDrawObj);
 	}
 	AfxMessageBox(_T("변경 내용을 저장했습니다."));
-	m_bChanged = false;
+
 }
 
 void CDrawDoc::SaveDraw(CAccessObject& drawObj) {
@@ -1240,8 +1272,12 @@ void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
 	}
 }
 
-bool CDrawDoc::IsFrameChanged() {
+BOOL CDrawDoc::IsFrameChanged() {
 	return (m_leftDrawObj.IsFrameChanged() || m_rightDrawObj.IsFrameChanged());
+}
+
+BOOL CDrawDoc::IsRefFrameNo(BOOL bClickedView) {
+	return (bClickedView ? !m_leftDrawObj.IsFrameChanged() : !m_rightDrawObj.IsFrameChanged());
 }
 
 void CDrawDoc::OnFilteringGamma()
