@@ -137,6 +137,7 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_UPDATE_COMMAND_UI(ID_MOLPHOLOGY_CLOSING, &CDrawDoc::OnUpdateActiveRibbon)
 	ON_UPDATE_COMMAND_UI(ID_OBJECT_SAVEDRAW, &CDrawDoc::OnUpdateActiveRibbon)
 
+	ON_UPDATE_COMMAND_UI(ID_COMPARE_COMPARE, &CDrawDoc::OnUpdateCompareCompare)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1434,4 +1435,11 @@ void CDrawDoc::OnCompareCompare() // 비교 dlg
 
 	CCompareDlg dlg(this);
 	dlg.DoModal();
+}
+
+
+void CDrawDoc::OnUpdateCompareCompare(CCmdUI* pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(!m_strRightFilePath.IsEmpty());
 }
