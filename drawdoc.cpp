@@ -523,38 +523,11 @@ void CDrawDoc::HelperLoadDicom(BOOL bLeftView)
 			: new DicomImage(dataset, xfer, CIF_DecompressCompletePixelData, 0, m_rightDrawObj.m_nTotalFrameNo);
 
 		if (ptrDicomImage) {
-			//이미지의 폭과 높이를 얻는다 
-			int width = (int)ptrDicomImage->getWidth();
-			int height = (int)ptrDicomImage->getHeight();
-			void* data = nullptr;
 
-			long& nTotalFrameNo = bLeftView ? m_leftDrawObj.m_nTotalFrameNo : m_rightDrawObj.m_nTotalFrameNo;
-			std::vector<CFourMatDIB>& listData = bLeftView ? m_leftDrawObj.m_listDIB : m_rightDrawObj.m_listDIB;
-			std::vector<CDrawObjList*>& objectList = bLeftView ? m_leftDrawObj.m_pageObjects : m_rightDrawObj.m_pageObjects;
-			CString strFileName = bLeftView ? m_leftDrawObj.m_strFileName : m_rightDrawObj.m_strFileName;
-
-			for (int i = 0; i < nTotalFrameNo; i++) {
-				//프레임의 위치에 있는 영상 정보를 윈도우 이미지 24bit로 생성하여 얻는다 
-				ptrDicomImage->createWindowsDIB(data, width * height, i, 24);
-				//이미지의 주소를 출력한다
-
-				CFourMatDIB fourMatDIB;
-				fourMatDIB.CreateRgbBitmap(width, height, (BYTE*)data);
-
-				listData.emplace_back(std::move(fourMatDIB));
-
-				objectList.push_back(new CDrawObjList());
-
-				//이미지의 주소를 메모리 해제 한다
-				delete[] data;
-				data = nullptr;
-			}
-
-			LoadDraw(strFileName, objectList);
+			bLeftView ? m_leftDrawObj.LoadDicomImage(ptrDicomImage, this) : m_rightDrawObj.LoadDicomImage(ptrDicomImage, this);
 
 			UpdateAllViews(NULL, HINT_LAOD_DICOMIMAGE);
 		}
-		SetCurrentFrameNo(bLeftView, 0);
 		delete ptrDicomImage;
 	}
 
@@ -1250,6 +1223,7 @@ void CDrawDoc::OnObjectSavedraw()
 		AfxMessageBox(_T("변경된 사항이 없습니다."));
 		return;
 	}
+
 	SaveDraw(m_leftDrawObj.m_strFileName, m_leftDrawObj.m_pageObjects);
 	if (!m_rightDrawObj.m_strFileName.IsEmpty()) {
 		SaveDraw(m_rightDrawObj.m_strFileName, m_rightDrawObj.m_pageObjects);
@@ -1270,6 +1244,10 @@ void CDrawDoc::SaveDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 		for each (auto pDrawObjList in pageObjects) {
 			pDrawObjList->Serialize(ar);
 		}
+
+		m_leftDrawObj.Serialize(ar);
+		m_rightDrawObj.Serialize(ar);
+
 		ar.Close();
 		file.Close();
 	}
@@ -1288,8 +1266,13 @@ void CDrawDoc::LoadDraw(CString strFileName, std::vector<CDrawObjList*>& pageObj
 				for each (auto pDrawObjList in pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
+
+				m_leftDrawObj.Serialize(ar);
+				m_rightDrawObj.Serialize(ar);
+
 			}
 			// 사이즈가 다르면 .drw 안받아드림
+
 			ar.Close();
 			file.Close();
 

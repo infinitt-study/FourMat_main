@@ -19,17 +19,11 @@ protected: // create from serialization only
 public:
 	void SetCurrentFrameNo(BOOL bLeftView, int nDelta) {
 		if (bLeftView) {
-			m_leftDrawObj.m_nCurrentFrameNo -= nDelta;
-			m_leftDrawObj.m_nCurrentFrameNo = long((m_leftDrawObj.m_listDIB.size() + m_leftDrawObj.m_nCurrentFrameNo) % m_leftDrawObj.m_listDIB.size());
-			m_leftDrawObj.m_pObjects = m_leftDrawObj.m_pageObjects[m_leftDrawObj.m_nCurrentFrameNo];
+			m_leftDrawObj.SetCurrentFrameNo(nDelta);
 		}
-		// m_leftDrawObj.m_pObjects
 		else {
-			m_rightDrawObj.m_nCurrentFrameNo -= nDelta;
-			m_rightDrawObj.m_nCurrentFrameNo = long((m_rightDrawObj.m_listDIB.size() + m_rightDrawObj.m_nCurrentFrameNo) % m_rightDrawObj.m_listDIB.size());
-			m_rightDrawObj.m_pObjects = m_rightDrawObj.m_pageObjects[m_rightDrawObj.m_nCurrentFrameNo];
+			m_rightDrawObj.SetCurrentFrameNo(nDelta);
 		}
-		//m_rightDrawObj.m_pObjects
 	}
 
 	CDrawObjList* GetObjects(BOOL bLeftView)

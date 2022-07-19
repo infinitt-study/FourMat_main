@@ -32,6 +32,11 @@ public:
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 	long m_nRepFrameNo; // 다이콤 내부 대표 이미지
 
+
+	bool LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc);
+	void LoadDraw(CDrawDoc* pDoc);
+	void SetCurrentFrameNo(int nDelta);
+
 	// 영상처리 맴버변수 추가 설정 필요
 };
 
