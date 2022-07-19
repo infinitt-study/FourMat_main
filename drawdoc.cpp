@@ -1388,7 +1388,7 @@ void CDrawDoc::OnFeatureextractionCannyedge()
 	CCannyEdgeDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-	CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
+	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	ByteImage img;
 	ByteImage imgEdge;
 	FourMatDIBToByteImage(dib, img);
@@ -1404,7 +1404,7 @@ void CDrawDoc::OnFeatureextractionHarriscorner()
 	CHarrisCornerDlg dlg;
 	if (dlg.DoModal() == IDOK)
 	{
-		CFourMatDIB& dib = SelectFourMatDIB(m_bClickedView);
+		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 		ByteImage img;
 		FourMatDIBToByteImage(dib, img);
 		std::vector<Point> corners;
