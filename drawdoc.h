@@ -148,7 +148,6 @@ public:
 	void LoadDicom(BOOL bLeftView);
 	void ChagedSaveDraw();
 	void SaveDraw(CAccessObject& drawObj);
-	void LoadDraw(CAccessObject& drawObj);
 
 	BOOL m_bChanged; // 변경사항 있있으면 true
 	BOOL IsFrameChanged();

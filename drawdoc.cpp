@@ -1222,39 +1222,15 @@ void CDrawDoc::SaveDraw(CAccessObject& drawObj) {
 		CArchive ar(&file, CArchive::store);
 
 		ar << drawObj.m_pageObjects.size();
+
+		drawObj.Serialize(ar); // 영상부분을 먼저 저장
+
 		for each (auto pDrawObjList in drawObj.m_pageObjects) {
 			pDrawObjList->Serialize(ar);
 		}
 
-		drawObj.Serialize(ar);
-
 		ar.Close();
 		file.Close();
-	}
-}
-void CDrawDoc::LoadDraw(CAccessObject& drawObj) {
-	CFile file;
-
-	CString strFilePath = m_strFolderPath + _T("\\") + drawObj.m_strFileName;
-	if (!drawObj.m_strFileName.IsEmpty()) {
-		if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
-			CArchive ar(&file, CArchive::load);
-			ar.m_pDocument = this;
-			size_t size;
-			ar >> size;
-			if (size == drawObj.m_pageObjects.size()) { // .drw 받아드림
-				for each (auto pDrawObjList in drawObj.m_pageObjects) {
-					pDrawObjList->Serialize(ar);
-				}
-
-				drawObj.Serialize(ar);
-
-			}
-			// 사이즈가 다르면 .drw 안받아드림
-
-			ar.Close();
-			file.Close();
-		}
 	}
 }
 

@@ -30,7 +30,10 @@ CAccessObject::~CAccessObject() {
 
 void CAccessObject::Serialize(CArchive& ar) {
 
+	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
+	
 	CObject::Serialize(ar);
+
 	if (ar.IsStoring())
 	{
 		if (m_nCurrentFrameNo != m_nRepFrameNo) {
@@ -42,7 +45,6 @@ void CAccessObject::Serialize(CArchive& ar) {
 	{
 		ar >> m_nRepFrameNo;
 	}
-	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
 }
 
 
@@ -89,18 +91,14 @@ void CAccessObject::LoadDraw(CDrawDoc* pDoc) {
 			size_t size;
 			ar >> size;
 			if (size == m_pageObjects.size()) { // .drw 받아드림
+				Serialize(ar);
 				for each (auto pDrawObjList in m_pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
-
-				Serialize(ar);
-
 			}
 			// 사이즈가 다르면 .drw 안받아드림
-
 			ar.Close();
 			file.Close();
-
 		}
 	}
 }
