@@ -58,13 +58,6 @@ public:
 	LOGBRUSH m_logbrush;
 
 	float m_zoom;
-	CSize m_pageSizeLD;
-	void SetPageSizeLD(CSize pageSizeLD) {
-		m_pageSizeLD = pageSizeLD;
-	}
-	CSize GetPageSizeLD() const {
-		return m_pageSizeLD;
-	}
 
 // Operations
 public:

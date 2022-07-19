@@ -285,7 +285,8 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	CPoint ptOrg{ GetDocument()->GetSize().cx / 2, GetDocument()->GetSize().cy / 2 };
 
 	// ptOrg is in logical coordinates
-	pDC->OffsetWindowOrg(-ptOrg.x,ptOrg.y);
+//	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
+	pDC->OffsetWindowOrg(-ptOrg.x, ptOrg.y);
 }
 
 BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
@@ -298,7 +299,8 @@ BOOL CDrawView::OnScrollBy(CSize sizeScroll, BOOL bDoScroll)
 	if (bDoScroll)
 	{
 		UpdateActiveItem();
-		UpdateWindow();
+//		UpdateWindow();
+		Invalidate(FALSE);
 	}
 	return TRUE;
 }
@@ -350,15 +352,9 @@ void CDrawView::OnDraw(CDC* pDC)
 
 	if (!pDC->IsPrinting() && m_bGrid)
 		DrawGrid(pDrawDC);
-	CSize pageSize = pDoc->GetSize();
-	CPoint leftTop{ 0, 0 };
-	CSize pageSizeLD = pDoc->GetPageSizeLD();
-//	CRect imgRect(leftTop, pDoc->GetDibSize(m_bLeftView));
-	ClientToDoc(leftTop);
-	//ClientToDoc(imgRect);
-	TRACE("leftTop = %d, %d\n", leftTop.x, leftTop.y);
-	TRACE("imgRect2 = %d, %d\n", leftTop.x, leftTop.y + pageSizeLD.cy/2);
-	pDoc->DIBDraw(m_bLeftView, pDrawDC, leftTop.x, leftTop.y + pageSizeLD.cy / 2);
+
+	//이미지 출력 
+	pDoc->DIBDraw(m_bLeftView, pDrawDC);
 
 	pDoc->Draw(m_bLeftView, pDrawDC, this);
 
@@ -535,9 +531,6 @@ void CDrawView::OnInitialUpdate()
 	size.cx = MulDiv(size.cx, dc.GetDeviceCaps(LOGPIXELSX), 100);
 	size.cy = MulDiv(size.cy, dc.GetDeviceCaps(LOGPIXELSY), 100);
 	SetScrollSizes(MM_TEXT, size);
-
-	ClientToDoc(imgRect);
-	pDoc->SetPageSizeLD(CSize(imgRect.Width(), imgRect.Height()));
 
 }
 
