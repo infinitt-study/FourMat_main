@@ -628,9 +628,9 @@ void CDrawRect::Draw(CDC* pDC)
 		pDC->MoveTo(rect.TopLeft());
 		pDC->LineTo(rect.BottomRight());
 			
-		m_nDistance = sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2));
+		m_nDistance = (sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2))) / 100;
 		CString str;
-		str.Format(_T("%.2f"), m_nDistance);
+		str.Format(_T("%.2f inch"), m_nDistance);
 		//pDC->SetBkColor(RGB(256, 256, 0));
 		//pDC->SetTextColor(RGB(0, 0, 0));
 		pDC->TextOut(rect.left, rect.top, str);

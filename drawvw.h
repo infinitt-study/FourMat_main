@@ -70,7 +70,7 @@ protected:
 	CSize m_dragOffset;                 // offset between pt and drag object corner
 	DROPEFFECT m_prevDropEffect;
 	BOOL m_bDragDataAcceptable;
-	//float zoom = 1;
+	float m_zoom = 1.0f;
 
 	BOOL GetObjectInfo(COleDataObject* pDataObject, CSize* pSize, CSize* pOffset);
 	// end of drop-target additions

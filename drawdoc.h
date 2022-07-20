@@ -48,10 +48,6 @@ public:
 	/*LOWORD m_xPosition;
 	HIWORD m_yPosition;*/
 
-
-	float m_zoom;
-	
-
 // Operations
 public:
 	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
