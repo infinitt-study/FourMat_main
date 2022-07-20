@@ -1,4 +1,5 @@
 ﻿// CHistoryView.cpp: 구현 파일
+//줄기푸시테스트
 
 //#include "pch.h"
 #include "stdafx.h"
@@ -34,10 +35,9 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
-	ON_BN_CLICKED(IDC_BUTTON_SINGLE, &CHistoryView::OnClickedButtonSingle)
+	ON_BN_CLICKED(IDOK, &CHistoryView::OnClickedButtonSingle)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
 	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
-	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -65,6 +65,7 @@ void CHistoryView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
 	// 리스트 컨트롤에 이미지 연결
 	m_imgHistory.Create(48, 48, ILC_COLOR32, 5, 5);
 	//m_imgHistory.Add(AfxGetApp()->LoadIcon(IDR_MAINFRAME));
@@ -210,28 +211,4 @@ std::pair<bool, int> CHistoryView::IsFileExtDCMName(CString strFindDCM) {
 
 	int nIndex = strFindDCM.ReverseFind(TCHAR('.'));
 	return make_pair((nIndex != -1 && strFindDCM.Mid(nIndex) == _T(".DCM")), nIndex);
-}
-
-void CHistoryView::OnSize(UINT nType, int cx, int cy)
-{
-	CFormView::OnSize(nType, cx, cy);
-
-	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	if (NULL != m_lstHistory.GetSafeHwnd())
-	{
-		CRect clientRect;
-		GetClientRect(clientRect);
-
-		CRect lstHistoryRect;
-		m_lstHistory.GetWindowRect(lstHistoryRect);
-		ScreenToClient(lstHistoryRect);
-
-		lstHistoryRect.left = clientRect.left + 30;
-		lstHistoryRect.right = clientRect.right - 180;
-		lstHistoryRect.bottom = clientRect.bottom - 30;
-
-		m_lstHistory.MoveWindow(lstHistoryRect);
-		GetDlgItem(IDC_BUTTON_SINGLE)->MoveWindow(clientRect.right - 150, 20, 120, 40);
-		GetDlgItem(IDC_BUTTON_MULTI)->MoveWindow(clientRect.right - 150, 80, 120, 40);
-	}
 }

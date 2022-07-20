@@ -43,9 +43,7 @@ public:
 	void SearFileNotSub();
 	void SearFile(CString strStartFolder);
 	afx_msg void OnClickedButtonSelect();
-	//afx_msg void OnClickedButtonFilter();
-	afx_msg void OnNMDblclkListResult(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnClickedButtonFilter();
 };
 
 
