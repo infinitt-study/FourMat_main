@@ -40,6 +40,7 @@ public:
 
 	std::pair<bool, int> IsFileExtDCMName(CString strFindDCM);
 	//afx_msg void OnBnClickedButtonCompare();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 
