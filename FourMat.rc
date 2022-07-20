@@ -726,6 +726,7 @@ BEGIN
     BEGIN
         MENUITEM "&Select",                     ID_DRAW_SELECT
         MENUITEM "&Line",                       ID_DRAW_LINE
+        MENUITEM "Length(inch)",                ID_DRAW_LENGTH
         MENUITEM "&Rectangle",                  ID_DRAW_RECT
         MENUITEM "R&ound Rectangle",            ID_DRAW_ROUNDRECT
         MENUITEM "&Ellipse",                    ID_DRAW_ELLIPSE
