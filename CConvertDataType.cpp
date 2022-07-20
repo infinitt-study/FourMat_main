@@ -90,10 +90,10 @@ void FourMatDIBToFloatImage(const CFourMatDIB& dib, FloatImage& img)
 void FourMatGrayToDIBImage(const ByteImage& img, CFourMatDIB& dib)
 {
 	assert(dib.IsValid());
-	assert(dib.GetBitCount() == 24);
+	assert(dib.GetBitCount() == 24); //24 비트 확인  
 
-	int w = dib.GetWidth();
-	int h = dib.GetHeight();
+	int w = dib.GetWidth(); // w 
+	int h = dib.GetHeight();// h 
 	int ws = (w * 3 + 3) & ~3; // 이미지 보수 처리 
 	BYTE* pDIBits = dib.GetDIBitsAddr(); //dib 주소 값 
 	BYTE** pixels = img.GetPixels2D(); //2d pixel data 구하기 
