@@ -877,7 +877,7 @@ void CDrawDoc::OnAffinetranformMirror()
 
 void CDrawDoc::OnAffinetranformRotation()
 {
-	CRotationDlg dlg;
+	CRotationDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -922,7 +922,11 @@ void CDrawDoc::OnAffinetranformScaling()
 		case 1: ResizeBilinear(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
 		case 2: ResizeCubic(imgSrc, imgDst, dlg.m_nNewWidth, dlg.m_nNewHeight); break;
 		}
-		FourMatGrayToDIBImage(imgDst, dib);
+		CFourMatDIB newDIB;// 새로운 객체 생성 
+		newDIB.CreateRgbBitmap(dlg.m_nNewWidth, dlg.m_nNewHeight); // rgb bitmap 에 대한 
+		FourMatGrayToDIBImage(imgDst, newDIB); // 새로운 객체 생성  
+		dib = std::move(newDIB);  
+
 		//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);

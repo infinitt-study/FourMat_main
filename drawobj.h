@@ -172,7 +172,7 @@ protected:
 	Shape m_nShape;
 	CPoint m_roundness; // for roundRect corners
 	double m_nDistance;
-
+	
 	friend class CRectTool;
 };
 
