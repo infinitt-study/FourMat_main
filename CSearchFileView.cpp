@@ -9,8 +9,6 @@
 #include "drawvw.h"
 // CSearchFileView
 
-#define CONTROL_INTERVAL 40
-
 IMPLEMENT_DYNCREATE(CSearchFileView, CFormView)
 
 CSearchFileView::CSearchFileView()
@@ -29,7 +27,7 @@ CSearchFileView::~CSearchFileView()
 void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_BUTTON_FOLDER_SELECT, m_btnStart);
+	DDX_Control(pDX, IDC_BUTTON_START, m_btnStart);
 	DDX_Text(pDX, IDC_EDIT_FILENAME, m_strFileName);
 	DDX_Text(pDX, IDC_EDIT_FILELOCATION, m_strFileLocation);
 	DDX_Check(pDX, IDC_CHECK1, m_bSub);
@@ -37,10 +35,8 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CSearchFileView, CFormView)
-    ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonSelect)
-    //ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonFilter)
-    ON_NOTIFY(NM_DBLCLK, IDC_LIST_RESULT, &CSearchFileView::OnNMDblclkListResult)
-    ON_WM_SIZE()
+    ON_BN_CLICKED(IDC_BUTTON_START, &CSearchFileView::OnClickedButtonSelect)
+    ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonFilter)
 END_MESSAGE_MAP()
 
 
@@ -63,7 +59,7 @@ void CSearchFileView::Dump(CDumpContext& dc) const
 
 // CSearchFileView 메시지 처리기
 
-#include "mainfrm.h"
+
 void CSearchFileView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
@@ -79,9 +75,13 @@ void CSearchFileView::OnInitialUpdate()
 
 	// InsertColumn() : 리스트 컨트롤의 필드에 입력하는 함수
 	m_lstResult.InsertColumn(0, "이름", LVCFMT_LEFT, 150);
-	m_lstResult.InsertColumn(1, "위치", LVCFMT_LEFT, 500);
-	m_lstResult.InsertColumn(2, "크기(byte)", LVCFMT_RIGHT, 100);
-	m_lstResult.InsertColumn(3, "생성날짜", LVCFMT_CENTER, 200);
+	m_lstResult.InsertColumn(1, "위치", LVCFMT_LEFT, 200);
+	m_lstResult.InsertColumn(2, "크기(byte)", LVCFMT_RIGHT, 80);
+	m_lstResult.InsertColumn(3, "생성날짜", LVCFMT_CENTER, 150);
+
+    //체크박스 추가
+    DWORD dwExStyle = m_lstResult.GetExtendedStyle();
+    m_lstResult.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
 	// GetCurrentDirectory() : 프로그램이 실행되는 위치(폴더)를 얻어옴. 얻어진 결과는 m_strFileLocation에 입력
 	char pBuf[256];
@@ -226,52 +226,37 @@ void CSearchFileView::OnClickedButtonSelect()
     UpdateData(FALSE);
 }
 
-void CSearchFileView::OnNMDblclkListResult(NMHDR* pNMHDR, LRESULT* pResult)
+
+void CSearchFileView::OnClickedButtonFilter()
 {
-    LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+    const int nCount = m_lstResult.GetItemCount();
     CString strFolderName;
-    if (pNMItemActivate->iItem != -1)
-    {
-        strFolderName = m_lstResult.GetItemText(pNMItemActivate->iItem, 0);
 
-        //뷰 스위칭
-        CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-
-        CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-
-        pDrawDoc->setFolderPath(m_strFileLocation + "\\" + strFolderName);
-        pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);
-
-        pSplitFrame->SwitchView(VIEWID_HISTORY);
+    int nRow = 0;
+    for (int i = nCount - 1; i >= 0; --i) {
+        if (m_lstResult.GetCheck(i)) {
+            strFolderName = m_lstResult.GetItemText(i, 0);
+            nRow++;
+        }
+    }
+    if (strFolderName.IsEmpty()) {
+        AfxMessageBox(_T("폴더를 선택해 주세요"));
+        return;
     }
 
-    *pResult = 0;
-}
-
-
-void CSearchFileView::OnSize(UINT nType, int cx, int cy)
-{
-    CFormView::OnSize(nType, cx, cy);
-
-    // TODO: 여기에 메시지 처리기 코드를 추가합니다.
-    if (NULL != m_lstResult.GetSafeHwnd())
-    {
-        CRect clientRect;
-        GetClientRect(clientRect);
-
-        CRect lstResultRect;
-        m_lstResult.GetWindowRect(lstResultRect);
-        ScreenToClient(lstResultRect);
-
-        lstResultRect.left = clientRect.left + 30;
-        lstResultRect.right = clientRect.right - 30;
-        lstResultRect.bottom = clientRect.bottom - 30;
-
-        m_lstResult.MoveWindow(lstResultRect);
-        GetDlgItem(IDC_BUTTON_FOLDER_SELECT)->MoveWindow(clientRect.right - 150, 30, 120, 70);
-        GetDlgItem(IDC_EDIT_FILENAME)->MoveWindow(clientRect.left + 250, 30, clientRect.right - 450, 30);
-        GetDlgItem(IDC_EDIT_FILELOCATION)->MoveWindow(clientRect.left + 250, 70, clientRect.right - 450, 30);
-        GetDlgItem(IDC_CHECK1)->MoveWindow(clientRect.left + 250, 110, 200, 30);
+    if (nRow >= 2) {
+        AfxMessageBox(_T("폴더를 한 개만 선택해 주세요"));
+        return;
     }
+
+    //뷰 스위칭
+    CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
+
+    CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
+    pDrawDoc->setFolderPath(m_strFileLocation + "\\" + strFolderName);
+    pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);
+
+    pSplitFrame->SwitchView(VIEWID_HISTORY);
 }
