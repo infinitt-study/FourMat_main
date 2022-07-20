@@ -63,6 +63,7 @@
 #define IDB_RIBBON_FORMATLARGE          132
 #define IDC_BUTTON1                     132
 #define IDB_RIBBON_FORMATSMALL          133
+#define IDC_BUTTON_LEFT                 133
 #define IDB_LINEWEIGHT                  134
 #define IDD_LINEWEIGHT                  135
 #define IDB_STYLES                      136
@@ -137,7 +138,10 @@
 #define IDD_FEATUREEXTRACTION_HARRIS_CORNER 175
 #define IDC_HARRIS_THRESHOLD            176
 #define IDC_COMPARE_SLIDER              177
+#define IDD_HISTORY_ALBUM               177
 #define IDC_COMPARE_STATIC              178
+#define IDC_BUTTON_RIGHT                179
+#define IDC_BUTTON_ALBUM                180
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -233,9 +237,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        177
+#define _APS_NEXT_RESOURCE_VALUE        179
 #define _APS_NEXT_COMMAND_VALUE         32893
-#define _APS_NEXT_CONTROL_VALUE         179
+#define _APS_NEXT_CONTROL_VALUE         181
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

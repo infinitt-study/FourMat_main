@@ -1438,6 +1438,7 @@
   <ItemGroup>
     <ClCompile Include="AccessObject.cpp" />
     <ClCompile Include="CAddNoiseDlg.cpp" />
+    <ClCompile Include="CAlbumDlg.cpp" />
     <ClCompile Include="CBlurDlg.cpp" />
     <ClCompile Include="CAffineTransform.cpp" />
     <ClCompile Include="CBrightnessDlg.cpp" />
@@ -1855,6 +1856,7 @@
     <ClInclude Include="AccessObject.h" />
     <ClInclude Include="CAddNoiseDlg.h" />
     <ClInclude Include="CAffineTransform.h" />
+    <ClInclude Include="CAlbumDlg.h" />
     <ClInclude Include="CBlurDlg.h" />
     <ClInclude Include="CBrightnessDlg.h" />
     <ClInclude Include="CCannyEdgeDlg.h" />

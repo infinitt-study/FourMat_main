@@ -12,6 +12,7 @@
 #include "drawvw.h"
 #include <vector>
 #include "CCompareDlg.h"
+#include "CAlbumDlg.h"
 using namespace std;
 
 // CHistoryView
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
 	ON_BN_CLICKED(IDOK, &CHistoryView::OnClickedButtonSingle)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
 	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
+	ON_BN_CLICKED(IDC_BUTTON_ALBUM, &CHistoryView::OnBnClickedButtonAlbum)
 END_MESSAGE_MAP()
 
 
@@ -211,4 +213,51 @@ std::pair<bool, int> CHistoryView::IsFileExtDCMName(CString strFindDCM) {
 
 	int nIndex = strFindDCM.ReverseFind(TCHAR('.'));
 	return make_pair((nIndex != -1 && strFindDCM.Mid(nIndex) == _T(".DCM")), nIndex);
+}
+
+BOOL CHistoryView::IsFileExtDraw(CString strFileName, CString& strFilePath) {
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+
+	int nIndex = strFileName.ReverseFind(TCHAR('.'));
+	strFilePath = pDrawDoc->getFolderPath() + _T("\\") + strFileName.Left(nIndex) + _T(".drw");
+
+	return IsFileExists(strFilePath);
+}
+
+BOOL CHistoryView::IsFileExists(LPCTSTR szPath)
+{
+	DWORD dwAttrib = GetFileAttributes(szPath);
+
+	return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+void CHistoryView::OnBnClickedButtonAlbum()
+{
+	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
+	const int nCount = m_lstHistory.GetItemCount();
+	CString strFileName, strFilePath, strBefFileName;
+	strBefFileName = pDrawDoc->getFolderPath();
+	int nIndex = strBefFileName.ReverseFind((TCHAR*)("\\"));
+	strBefFileName = strBefFileName.Right(nIndex);
+
+	int nDrwCount = 0;
+
+	for (int i = 0; i < nCount; ++i) {
+		strFileName = m_lstHistory.GetItemText(i, 0);
+
+		if (!IsFileExtDraw(strFileName, strFilePath)) {
+			//파일이 존재하지 않으면 계속
+			continue;
+		}
+		CAccessObjectPtr pRefDrawObj = std::make_shared<CAccessObject>();
+		pRefDrawObj->LoadRefDraw(strFilePath, pDrawDoc);
+
+		m_listRefDrawObj.push_back(pRefDrawObj);
+		nDrwCount++;
+	}
+
+	CAlbumDlg dlg(pDrawDoc, m_listRefDrawObj, nDrwCount, strBefFileName);
+	if (dlg.DoModal() == IDOK) {
+
+	}
 }

@@ -288,13 +288,12 @@ void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC)
 	}
 	DIBInfoDraw(bClickedView, pDC, dib);
 }
-
 void CDrawDoc::DIBDraw(BOOL bClickedView, CDC* pDC, int x, int y, int w, int h)
 {
 	CFourMatDIB& dib = GetRefFourMatDIB(bClickedView); // 대표이미지로 불러옴
 	dib.Draw(pDC->m_hDC, x, y, w, h, 0, 0, dib.GetWidth(), dib.GetHeight(), SRCCOPY); // dlg -> paint dc  
-
 }
+
 void CDrawDoc::DIBRefDraw(CDC* pDC) {
 	SetTextColor(pDC->m_hDC, RGB(0, 0, 0)); // 글씨 검정
 	SetBkColor(pDC->m_hDC, RGB(255, 255, 0)); // 배경 노랑

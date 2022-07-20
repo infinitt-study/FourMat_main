@@ -359,7 +359,7 @@ void MorphologyGrayErosion(ByteImage& imgSrc, ByteImage& imgDst)
 					}
 				}
 
-			pDst[j][i] = pmin;
+			pDst[j][i] = static_cast<BYTE>(pmin);
 		}
 }
 
@@ -392,7 +392,7 @@ void MorphologyGrayDilation(ByteImage& imgSrc, ByteImage& imgDst)
 					}
 				}
 
-			pDst[j][i] = pmax;
+			pDst[j][i] = static_cast<BYTE>(pmax);
 		}
 }
 

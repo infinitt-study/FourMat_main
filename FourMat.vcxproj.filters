@@ -120,6 +120,7 @@
     <ClCompile Include="AccessObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CAlbumDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cntritem.h">
@@ -253,6 +254,7 @@
     <ClInclude Include="AccessObject.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CAlbumDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\drawdoc.ico">

@@ -36,6 +36,8 @@ public:
 
 	BOOL LoadDicomImage(DicomImage* ptrDicomImage, CDrawDoc* pDoc);
 	void LoadDraw(CDrawDoc* pDoc);
+	void LoadRefDraw(CString filePath, CDrawDoc* pDoc);
+
 	void SetCurrentFrameNo(int nDelta);
 
 	CString GetFileDCMName();
@@ -50,5 +52,7 @@ public:
 	// 영상처리 맴버변수 추가 설정 필요
 };
 
-typedef CAccessObject DrawObjInfo;
+//typedef CAccessObject DrawObjInfo;
 // LeftDrawObj RightDrawObj
+
+using CAccessObjectPtr = std::shared_ptr<CAccessObject>;
