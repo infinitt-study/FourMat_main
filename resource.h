@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -50,13 +50,13 @@
 #define IDC_BUTTON_START                126
 #define IDB_RIBBON_HOMESMALL            127
 #define IDC_BUTTON_STOP                 127
+#define IDC_BUTTON_FOLDER_SELECT        127
 #define IDB_RIBBON_VIEWSMALL            128
 #define IDC_CHECK1                      128
 #define IDB_RIBBON_VIEWLARGE            129
 #define IDC_LIST_RESULT                 129
 #define IDB_STATUSBAR_1                 130
 #define IDC_BUTTON_SINGLE               130
-#define IDC_BUTTON_FOLDER_SELECT        130
 #define IDB_STATUSBAR_2                 131
 #define IDC_LIST1                       131
 #define IDC_LIST_HISTORY                131
@@ -138,6 +138,8 @@
 #define IDC_HARRIS_THRESHOLD            176
 #define IDC_COMPARE_SLIDER              177
 #define IDC_COMPARE_STATIC              178
+#define IDC_STATIC1                     179
+#define IDC_STATIC2                     180
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -235,8 +237,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        177
+
 #define _APS_NEXT_COMMAND_VALUE         32894
-#define _APS_NEXT_CONTROL_VALUE         179
+#define _APS_NEXT_CONTROL_VALUE         181
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

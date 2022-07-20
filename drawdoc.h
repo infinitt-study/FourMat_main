@@ -151,7 +151,7 @@ public:
   
 	void HelperLoadDicom(BOOL bLeftView);
 	void EnableDrawView(CCmdUI* pCmdUI);
-
+	CRect m_clientRect;
 
 
 protected:
