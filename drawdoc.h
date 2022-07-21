@@ -48,7 +48,6 @@ public:
 	/*LOWORD m_xPosition;
 	HIWORD m_yPosition;*/
 
-// Operations
 public:
 	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
 	void Draw(BOOL bLeftView, CDC* pDC, CDrawView* pView);
@@ -98,7 +97,7 @@ protected:
 //	BOOL m_bCanDeactivateInplace;
 
 public:
-	// Å¬·¡½º ºĞÈ°
+	// í´ë˜ìŠ¤ ë¶„í™œ
 	CAccessObject m_leftDrawObj;
 	CAccessObject m_rightDrawObj;
 
@@ -108,20 +107,20 @@ public:
 	COLORREF m_paperColorLast;
   
 	CImage m_bmp;
-	LONG    m_nWidth;      // ºñÆ®¸Ê °¡·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	LONG    m_nHeight;     // ºñÆ®¸Ê ¼¼·Î Å©±â (ÇÈ¼¿ ´ÜÀ§)
-	WORD    m_nBitCount;   // ÇÈ¼¿ ´ç ºñÆ® ¼ö
-	DWORD   m_nDibSize;    // DIB ÀüÃ¼ Å©±â (BITMAPINFOHEADER + »ö»ó Å×ÀÌºí + ÇÈ¼¿ µ¥ÀÌÅÍ)
-	BYTE* m_pDib;        // DIB ½ÃÀÛ ÁÖ¼Ò (BITMAPINFOHEADER ½ÃÀÛ ÁÖ¼Ò)
+	LONG    m_nWidth;      // ë¹„íŠ¸ë§µ ê°€ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	LONG    m_nHeight;     // ë¹„íŠ¸ë§µ ì„¸ë¡œ í¬ê¸° (í”½ì…€ ë‹¨ìœ„)
+	WORD    m_nBitCount;   // í”½ì…€ ë‹¹ ë¹„íŠ¸ ìˆ˜
+	DWORD   m_nDibSize;    // DIB ì „ì²´ í¬ê¸° (BITMAPINFOHEADER + ìƒ‰ìƒ í…Œì´ë¸” + í”½ì…€ ë°ì´í„°)
+	BYTE* m_pDib;        // DIB ì‹œì‘ ì£¼ì†Œ (BITMAPINFOHEADER ì‹œì‘ ì£¼ì†Œ)
 	int m_nPitch;
 	BYTE* lpvBits;
 	BOOL m_bFirstLoad;
 
-	OFString m_strPatientName; // ÃÊ±âÈ­ ÇØÁÖ±â
+	OFString m_strPatientName;
   
 protected:
-	BOOL m_bClickedView;		//´ÙÁß È­¸é¿¡¼­ Å¬¸¯µÈ ºä È®ÀÎ
-	CString m_strFolderPath;	//È¯ÀÚ ÀÌ¸§ Æú´õÀÇ °æ·Î
+	BOOL m_bClickedView;		//ë‹¤ì¤‘ í™”ë©´ì—ì„œ í´ë¦­ëœ ë·° í™•ì¸
+	CString m_strFolderPath;	//í™˜ì ì´ë¦„ í´ë”ì˜ ê²½ë¡œ
 
 public:
 	void setClickedView(BOOL bClickedView)
@@ -145,7 +144,7 @@ public:
 	void ChagedSaveDraw();
 	void SaveDraw(CAccessObject& drawObj);
 
-	BOOL m_bChanged; // º¯°æ»çÇ× ÀÖÀÖÀ¸¸é true
+	BOOL m_bChanged; // ë³€ê²½ì‚¬í•­ ìˆìˆìœ¼ë©´ true
 	BOOL IsFrameChanged();
 	BOOL IsRefFrameNo(BOOL bClickedView);
   
@@ -184,7 +183,7 @@ public:
 	afx_msg void OnFilteringGamma();
 	afx_msg void OnFeatureextractionCannyedge();
 	afx_msg void OnFeatureextractionHarriscorner();
-	afx_msg void OnCompareCompare(); // ºñ±³ dlg
+	afx_msg void OnCompareCompare(); // ë¹„êµ dlg
 
 	afx_msg void OnUpdateActiveRibbon(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateCompareCompare(CCmdUI* pCmdUI);

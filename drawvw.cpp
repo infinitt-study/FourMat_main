@@ -1510,8 +1510,8 @@ void CDrawView::OnUpdateEditPaste(CCmdUI* pCmdUI)
 
 void CDrawView::OnFilePrint()
 {
-	CScrollView::OnFilePrint();
-	GetDocument()->ComputePageSize();
+	//CScrollView::OnFilePrint();
+	//GetDocument()->ComputePageSize();
 }
 
 /////////////////////////////////////////////////////////////////////////////

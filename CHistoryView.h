@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-
+#include "AccessObject.h"
 
 // CHistoryView 폼 보기
 
@@ -32,6 +32,10 @@ public:
 	CImageList m_imgHistory;
 	CString m_strPath;
 
+	// album 변수
+	std::vector <CAccessObjectPtr> m_listRefDrawObj;
+	std::vector<CString> m_listFileName;
+
 	virtual void OnInitialUpdate();
 	afx_msg void OnClickedButtonSingle();
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
@@ -39,7 +43,11 @@ public:
 	afx_msg void OnClickedButtonMulti();
 
 	std::pair<bool, int> IsFileExtDCMName(CString strFindDCM);
+	BOOL IsFileExtDraw(CString strFileName, CString& strFilePath);
+	BOOL IsFileExists(LPCTSTR szPath);
+
 	//afx_msg void OnBnClickedButtonCompare();
+	afx_msg void OnBnClickedButtonAlbum();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 

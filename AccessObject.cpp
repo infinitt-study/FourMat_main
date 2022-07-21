@@ -29,9 +29,6 @@ CAccessObject::~CAccessObject() {
 }
 
 void CAccessObject::Serialize(CArchive& ar) {
-
-	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
-	
 	CObject::Serialize(ar);
 
 	if (ar.IsStoring())
@@ -45,6 +42,8 @@ void CAccessObject::Serialize(CArchive& ar) {
 	{
 		ar >> m_nRepFrameNo;
 	}
+
+	m_listDIB[m_nRepFrameNo].Serialize(ar); // 영상처리 변화된 부분 저장
 }
 
 
@@ -92,14 +91,41 @@ void CAccessObject::LoadDraw(CDrawDoc* pDoc) {
 			ar >> size;
 			if (size == m_pageObjects.size()) { // .drw 받아드림
 				Serialize(ar);
+
 				for each (auto pDrawObjList in m_pageObjects) {
 					pDrawObjList->Serialize(ar);
 				}
 			}
-			// 사이즈가 다르면 .drw 안받아드림
+			else {// 사이즈가 다르면 .drw 새로 생성
+				pDoc->SaveDraw(*this);
+			}
 			ar.Close();
 			file.Close();
 		}
+		else { // .drw 파일이 없다면 새로 생성
+			pDoc->SaveDraw(*this);
+		}
+	}
+}
+void CAccessObject::LoadRefDraw(CString filePath, CDrawDoc* pDoc) {
+	CFile file;
+	CString strFilePath = filePath;
+
+	if (file.Open(strFilePath, CFile::modeRead | CFile::typeBinary)) {
+		CArchive ar(&file, CArchive::load);
+		ar.m_pDocument = pDoc;
+
+		size_t size;
+		ar >> size;
+		ar >> m_nRepFrameNo;
+
+		CFourMatDIB fourMatDIB;
+		m_listDIB.push_back(fourMatDIB);
+		m_listDIB[0].Serialize(ar); // ref 페이지와 대표이미지만 사용
+
+		ar.Close();
+		file.Close();
+		
 	}
 }
 
@@ -117,17 +143,31 @@ CString CAccessObject::GetFileDCMName() {
 
 void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	CString strFileName = GetFileDCMName();
-	CString strCurFrameNo, strTotFrameNo;
-	strCurFrameNo.Format(_T("%d"), m_nCurrentFrameNo + 1);
-	strTotFrameNo.Format(_T("%d"), m_nTotalFrameNo);
-	CString strPageInfo = strCurFrameNo + _T(" / ") + strTotFrameNo;
-	SetTextColor(pDC->m_hDC, RGB(255, 255, 255)); // 글씨 하양
+	CString strPageInfo;
+	strPageInfo.Format(_T("%d / %d"), m_nCurrentFrameNo + 1, m_nTotalFrameNo);
+	SetTextColor(pDC->m_hDC, RGB(220, 220, 0)); // 글씨 하양
 	SetBkMode(pDC->m_hDC, TRANSPARENT); // 배경 투명
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 60, strFileName, strFileName.GetLength());
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
 }
 
+#include <future>
 void CAccessObject::ResetDraw() {
-	BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
-	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);
+	// 본 코드
+	/*BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
+	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);*/
+
+	// new deep copy
+	std::async([this] {
+		// 복제해야할 코드를 작성
+		BYTE* newDIBits = this->m_listDIBOrigin[this->m_nCurrentFrameNo].GetDIBitsAddr();
+		this->m_listDIB[this->m_nCurrentFrameNo].SetDIBits(newDIBits);
+		});
+	/*
+	영상처리 초기화 부분 -> CFOURMATDIB 쓰레드 사용해서
+	프로그램이 동작하는 동안에 내부적으로 origin버전을 복재함
+	- future, promise 이것 두개 모두 async안에 숨어있음 -> 쓰레드 만들 필요없이 async를 사용하면 됨
+	- async(STL)
+
+	*/
 }
