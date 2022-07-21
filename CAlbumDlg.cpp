@@ -125,3 +125,22 @@ void CAlbumDlg::OnBnClickedOk()
 
 	CDialogEx::OnOK();
 }
+
+BOOL CAlbumDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_KEYDOWN) {
+		switch (pMsg->wParam) {
+		case VK_LEFT:
+			if (m_nCurrentNo == 0) break;
+			OnBnClickedButtonLeft();
+			break;
+		case VK_RIGHT:
+			if (m_nCurrentNo >= m_nDrwTotalNo - 1) break;
+			OnBnClickedButtonRight();
+			break;
+		}
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}

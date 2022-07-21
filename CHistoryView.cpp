@@ -259,6 +259,11 @@ void CHistoryView::OnBnClickedButtonAlbum()
 		nDrwCount++;
 	}
 
+	if (nDrwCount == 0) {
+		AfxMessageBox(_T("현재 한 번이라도 열어본 다이콤 파일이 없어서\n앨범을 확인할 수 없습니다."));
+		return;
+	}
+
 	CAlbumDlg dlg(pDrawDoc, m_listRefDrawObj, m_listFileName, nDrwCount, strBefFileName);
 	if (dlg.DoModal() == IDOK) {
 	}
@@ -277,6 +282,7 @@ void CHistoryView::OnSize(UINT nType, int cx, int cy)
 		m_lstHistory.GetWindowRect(lstHistoryRect);
 		ScreenToClient(lstHistoryRect);
 
+		lstHistoryRect.top = clientRect.top + 20;
 		lstHistoryRect.left = clientRect.left + 30;
 		lstHistoryRect.right = clientRect.right - 180;
 		lstHistoryRect.bottom = clientRect.bottom - 30;
