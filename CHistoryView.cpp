@@ -260,7 +260,7 @@ void CHistoryView::OnBnClickedButtonAlbum()
 	}
 
 	if (nDrwCount == 0) {
-		AfxMessageBox(_T("현재 한 번이라도 열어본 다이콤 파일이 없어서\n앨범을 확인할 수 없습니다."));
+		AfxMessageBox(_T("한 번이라도 열어 본 DICOM 파일이 없어서\n현재 앨범을 확인할 수 없습니다."));
 		return;
 	}
 

@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ì…ë‹ˆë‹¤.
-// FourMat.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìˆìŠµë‹ˆë‹¤.
+// Microsoft Visual C++¿¡¼­ »ı¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
+// FourMat.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -141,8 +141,9 @@
 #define IDD_HISTORY_ALBUM               178
 #define IDC_BUTTON_RIGHT                179
 #define IDC_BUTTON_ALBUM                180
-#define IDC_STATIC_INCLUDESTR           181
-#define IDC_STATIC_LOCATION             182
+#define IDC_PREVIEW                     181
+#define IDC_STATIC_INCLUDESTR           182
+#define IDC_STATIC_LOCATION             183
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
