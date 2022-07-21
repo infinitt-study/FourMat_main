@@ -37,4 +37,5 @@ public:
 	afx_msg void OnBnClickedButtonLeft();
 	afx_msg void OnBnClickedButtonRight();
 	afx_msg void OnBnClickedOk();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
