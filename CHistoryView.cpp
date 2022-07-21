@@ -284,5 +284,6 @@ void CHistoryView::OnSize(UINT nType, int cx, int cy)
 		m_lstHistory.MoveWindow(lstHistoryRect);
 		GetDlgItem(IDOK)->MoveWindow(clientRect.right - 150, 20, 120, 40);
 		GetDlgItem(IDC_BUTTON_MULTI)->MoveWindow(clientRect.right - 150, 80, 120, 40);
+		GetDlgItem(IDC_BUTTON_ALBUM)->MoveWindow(clientRect.right - 150, 140, 120, 40);
 	}
 }
