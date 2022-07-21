@@ -31,4 +31,5 @@ public:
 	CDrawDoc* m_pDrawDoc;
 
 	afx_msg void OnPaint();
+	afx_msg void OnBnClickedPreview();
 };

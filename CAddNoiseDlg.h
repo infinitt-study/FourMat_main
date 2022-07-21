@@ -15,8 +15,7 @@ public:
 	virtual ~CAddNoiseDlg();
 	int m_Histogram[256];
 
-	//void SetImage(CFourMatDIB& dib);
-
+	
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_FEATUREEXTRACTION_ADDNOISE };
@@ -34,6 +33,5 @@ public:
 	CDrawDoc* m_pDrawDoc;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
-//	afx_msg void OnEnVscrollNoiseAmount();
-	afx_msg void OnEnChangeNoiseAmount();
+	afx_msg void OnBnClickedPreview();
 };

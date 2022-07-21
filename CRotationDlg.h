@@ -32,5 +32,5 @@ public:
 	afx_msg void OnEnSetfocusAngle();
 	afx_msg void OnBnClickedRotateUser();
 	afx_msg void OnPaint();
-	afx_msg void OnEnChangeAngle();
+	afx_msg void OnBnClickedPreview();
 };

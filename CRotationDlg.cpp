@@ -45,7 +45,8 @@ BEGIN_MESSAGE_MAP(CRotationDlg, CDialogEx)
 	ON_EN_SETFOCUS(IDC_ANGLE, &CRotationDlg::OnEnSetfocusAngle)
 	ON_BN_CLICKED(IDC_ROTATE_USER, &CRotationDlg::OnBnClickedRotateUser)
 	ON_WM_PAINT()
-	ON_EN_CHANGE(IDC_ANGLE, &CRotationDlg::OnEnChangeAngle)
+//	ON_EN_CHANGE(IDC_ANGLE, &CRotationDlg::OnEnChangeAngle)
+ON_BN_CLICKED(IDC_PREVIEW, &CRotationDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 
@@ -84,21 +85,31 @@ void CRotationDlg::OnBnClickedRotateUser()
 
 void CRotationDlg::OnPaint()
 {
-	//CPaintDC dc(this); 
-	//m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
-	//m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
+	CPaintDC dc(this); 
+	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
+	m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
 
 }
 
-
-void CRotationDlg::OnEnChangeAngle()
+void CRotationDlg::OnBnClickedPreview()
 {
-	/*ByteImage imgSrc;
+	ByteImage imgSrc;
 	ByteImage imgDst;
+
 	FourMatDIBToByteImage(m_dib, imgSrc);
 
+	if (UpdateData() == FALSE) {
+		return;
+	}
 
+	switch (m_nRotate)
+	{
+	case 0: Rotate90(imgSrc, imgDst); break;
+	case 1: Rotate180(imgSrc, imgDst); break;
+	case 2: Rotate270(imgSrc, imgDst); break;
+	case 3: Rotate(imgSrc, imgDst, (double)m_fAngle); break;
+	}
 	FourMatGrayToDIBImage(imgDst, m_dib);
 
-	Invalidate(true);*/
+	Invalidate(true);
 }
