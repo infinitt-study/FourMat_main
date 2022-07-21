@@ -1,14 +1,17 @@
 ﻿#pragma once
+#include "CFourMatDIB.h"
 
 
 // CBrightnessDlg 대화 상자
+class CDrawDoc;
+
 
 class CBrightnessDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CBrightnessDlg)
 
 public:
-	CBrightnessDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CBrightnessDlg(CDrawDoc* DrawDoc, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CBrightnessDlg();
 
 // 대화 상자 데이터입니다.
@@ -27,4 +30,9 @@ public:
 	CSliderCtrl m_sliderBrightness;
 	int m_nContrast;
 	CSliderCtrl m_sliderContrast;
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
+	CDrawDoc* m_pDrawDoc;
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedPreview();
 };

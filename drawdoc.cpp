@@ -901,7 +901,7 @@ void CDrawDoc::OnAffinetranformRotation()
 
 void CDrawDoc::OnAffinetranformScaling()
 {
-	CScalingDlg dlg;
+	CScalingDlg dlg(this);
 	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
 	dlg.m_nOldWidth = dib.GetWidth();
 	dlg.m_nOldHeight = dib.GetHeight();
@@ -930,7 +930,7 @@ void CDrawDoc::OnAffinetranformScaling()
 
 void CDrawDoc::OnAffinetranformTranslation()
 {
-	CTranslationDlg dlg;
+	CTranslationDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1036,7 +1036,7 @@ void CDrawDoc::OnFeatureextractionSharpening()
 
 void CDrawDoc::OnFilteringBrightness()
 {
-	CBrightnessDlg dlg;
+	CBrightnessDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1217,7 +1217,7 @@ BOOL CDrawDoc::IsRefFrameNo(BOOL bClickedView) {
 
 void CDrawDoc::OnFilteringGamma()
 {
-	CGammaDlg dlg;
+	CGammaDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 
@@ -1252,7 +1252,7 @@ void CDrawDoc::OnUpdateActiveRibbon(CCmdUI* pCmdUI)
 
 void CDrawDoc::OnFeatureextractionCannyedge()
 {
-	CCannyEdgeDlg dlg;
+	CCannyEdgeDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 	CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1268,7 +1268,7 @@ void CDrawDoc::OnFeatureextractionCannyedge()
 
 void CDrawDoc::OnFeatureextractionHarriscorner()
 {
-	CHarrisCornerDlg dlg;
+	CHarrisCornerDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1288,7 +1288,7 @@ void CDrawDoc::OnFeatureextractionHarriscorner()
 			ptr[y + 1][x - 1] = ptr[y + 1][x] = ptr[y + 1][x + 1] = 0;
 		}
 		FourMatGrayToDIBImage(img, dib);
-		AfxMessageBox("확인");
+
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 }

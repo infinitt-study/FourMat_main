@@ -1,14 +1,15 @@
 ﻿#pragma once
-
-
+#include "CFourMatDIB.h"
 // CGammaDlg 대화 상자
+
+class CDrawDoc;
 
 class CGammaDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CGammaDlg)
 
 public:
-	CGammaDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CGammaDlg(CDrawDoc* DrawDoc, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CGammaDlg();
 
 // 대화 상자 데이터입니다.
@@ -23,8 +24,15 @@ protected:
 public:
 	CSliderCtrl m_sliderGamma;
 	float m_fGamma;
+	
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
+	CDrawDoc* m_pDrawDoc;
+	
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnEnChangeGammaEdit();
 	afx_msg void OnNMCustomdrawGammaSlider(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedPreview();
 };

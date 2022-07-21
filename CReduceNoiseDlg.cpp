@@ -48,6 +48,7 @@ void CReduceNoiseDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CReduceNoiseDlg, CDialogEx)
 //	ON_WM_PAINT()
 ON_WM_PAINT()
+ON_BN_CLICKED(IDC_PREVIEW, &CReduceNoiseDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 
@@ -59,4 +60,22 @@ void CReduceNoiseDlg::OnPaint()
 	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
 	m_dib.Draw(dc.m_hDC, 410, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
 
+}
+
+
+void CReduceNoiseDlg::OnBnClickedPreview()
+{
+	ByteImage imgSrc;
+	FloatImage imgDst;
+	FourMatDIBToByteImage(m_dib, imgSrc);
+
+	if (UpdateData() == FALSE) {
+		return;
+	}
+
+	FilterDiffusion(imgSrc, imgDst, m_fLambda, m_fK, m_nIteration);
+
+	FloatImageToFourMatDIB(imgDst, m_dib);
+
+	Invalidate(true);
 }
