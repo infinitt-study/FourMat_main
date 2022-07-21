@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
 	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
 	ON_BN_CLICKED(IDC_BUTTON_ALBUM, &CHistoryView::OnBnClickedButtonAlbum)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -260,6 +261,28 @@ void CHistoryView::OnBnClickedButtonAlbum()
 
 	CAlbumDlg dlg(pDrawDoc, m_listRefDrawObj, m_listFileName, nDrwCount, strBefFileName);
 	if (dlg.DoModal() == IDOK) {
+	}
+}
+void CHistoryView::OnSize(UINT nType, int cx, int cy)
+{
+	CFormView::OnSize(nType, cx, cy);
 
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	if (NULL != m_lstHistory.GetSafeHwnd())
+	{
+		CRect clientRect;
+		GetClientRect(clientRect);
+
+		CRect lstHistoryRect;
+		m_lstHistory.GetWindowRect(lstHistoryRect);
+		ScreenToClient(lstHistoryRect);
+
+		lstHistoryRect.left = clientRect.left + 30;
+		lstHistoryRect.right = clientRect.right - 180;
+		lstHistoryRect.bottom = clientRect.bottom - 30;
+
+		m_lstHistory.MoveWindow(lstHistoryRect);
+		GetDlgItem(IDOK)->MoveWindow(clientRect.right - 150, 20, 120, 40);
+		GetDlgItem(IDC_BUTTON_MULTI)->MoveWindow(clientRect.right - 150, 80, 120, 40);
 	}
 }

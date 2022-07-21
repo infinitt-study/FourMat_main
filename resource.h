@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ø°º≠ ª˝º∫«— ∆˜«‘ ∆ƒ¿œ¿‘¥œ¥Ÿ.
-// FourMat.rcø°º≠ ªÁøÎµ«∞Ì ¿÷Ω¿¥œ¥Ÿ.
+// Microsoft Visual C++ÏóêÏÑú ÏÉùÏÑ±Ìïú Ìè¨Ìï® ÌååÏùºÏûÖÎãàÎã§.
+// FourMat.rcÏóêÏÑú ÏÇ¨Ïö©ÎêòÍ≥† ÏûàÏäµÎãàÎã§.
 //
 #define IDR_MAINFRAME                   2
 #define IDR_DRAWCLTYPE                  3
@@ -138,8 +138,7 @@
 #define IDD_FEATUREEXTRACTION_HARRIS_CORNER 175
 #define IDC_HARRIS_THRESHOLD            176
 #define IDC_COMPARE_SLIDER              177
-#define IDD_HISTORY_ALBUM               177
-#define IDC_COMPARE_STATIC              178
+#define IDD_HISTORY_ALBUM               178
 #define IDC_BUTTON_RIGHT                179
 #define IDC_BUTTON_ALBUM                180
 #define IDD_ABOUTBOX                    999
@@ -232,14 +231,15 @@
 #define ID_IMAGEPROCESSING_COMPARE      32890
 #define ID_COMPARE_COMPARE              32891
 #define ID_OBJECT_RESETDRAW             32892
-#define ID_ACCELERATOR32896             32896
+#define ID_DRAW_LENGTH                  32893
+#define ID_ACCELERATOR32896             32894
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        180
-#define _APS_NEXT_COMMAND_VALUE         32898
+#define _APS_NEXT_COMMAND_VALUE         32895
 #define _APS_NEXT_CONTROL_VALUE         181
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

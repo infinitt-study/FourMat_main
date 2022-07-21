@@ -202,8 +202,6 @@ BOOL CDrawDoc::OnNewDocument() //doc 변수 초기화
 
 	m_strFolderPath.Empty();
   
-	m_zoom = 1.0f;
-
 	m_bFirstLoad = true;
 	m_bChanged = false;
 
@@ -218,7 +216,6 @@ BOOL CDrawDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		delete m_pSummInfo;
 	m_pSummInfo = new CSummInfo;
 	m_pSummInfo->StartEditTimeCount();
-	m_zoom = 1;
 
 	return COleDocument::OnOpenDocument(lpszPathName);
 }

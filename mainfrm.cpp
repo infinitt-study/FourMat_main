@@ -458,6 +458,7 @@ void CMainFrame::InitHomeCategory()
 
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_SELECT, _T("Select\ns"), 7));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_LINE, _T("Line\nl"), 8));
+	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_LENGTH, _T("Length (inch)\nl"), 8));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_RECT, _T("Rectangle\nr"), 9));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_ROUNDRECT, _T("Round Rectangle\nn"), 10));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_ELLIPSE, _T("Ellipse\ne"), 11));

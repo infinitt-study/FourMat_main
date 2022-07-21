@@ -275,7 +275,7 @@ void CDrawView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)
 	float zoom = 1.0f;
 
 	if (nullptr == pInfo) {
-		zoom = pDoc->m_zoom;
+		zoom = m_zoom;
 	}
 	//¸â¹ö º¯¼ö ctrl flag : 
 	TRACE("m_zoom : %f\n", zoom);
@@ -1835,10 +1835,10 @@ BOOL CDrawView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	else if ((nFlags & MK_CONTROL) == MK_CONTROL)
 	{
 		if (zDelta > 0) {
-			pDoc->m_zoom += 0.1f;
+			m_zoom += 0.1f;
 		}
 		else {
-			pDoc->m_zoom -= 0.1f;
+			m_zoom -= 0.1f;
 		}
 		Invalidate();
 	}
