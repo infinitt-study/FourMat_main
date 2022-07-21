@@ -277,6 +277,7 @@ void CHistoryView::OnSize(UINT nType, int cx, int cy)
 		m_lstHistory.GetWindowRect(lstHistoryRect);
 		ScreenToClient(lstHistoryRect);
 
+		lstHistoryRect.top = clientRect.top + 20;
 		lstHistoryRect.left = clientRect.left + 30;
 		lstHistoryRect.right = clientRect.right - 180;
 		lstHistoryRect.bottom = clientRect.bottom - 30;

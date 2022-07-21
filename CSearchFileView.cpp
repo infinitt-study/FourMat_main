@@ -302,14 +302,17 @@ void CSearchFileView::OnSize(UINT nType, int cx, int cy)
         m_lstResult.GetWindowRect(lstResultRect);
         ScreenToClient(lstResultRect);
 
+        lstResultRect.top = clientRect.top + 150;
         lstResultRect.left = clientRect.left + 30;
         lstResultRect.right = clientRect.right - 30;
         lstResultRect.bottom = clientRect.bottom - 30;
 
         m_lstResult.MoveWindow(lstResultRect);
+        GetDlgItem(IDC_STATIC_INCLUDESTR)->MoveWindow(clientRect.left + 30, 35, 80, 25);
+        GetDlgItem(IDC_STATIC_LOCATION)->MoveWindow(clientRect.left + 30, 80, 80, 25);
         GetDlgItem(IDC_BUTTON_START)->MoveWindow(clientRect.right - 150, 30, 120, 70);
-        GetDlgItem(IDC_EDIT_FILENAME)->MoveWindow(clientRect.left + 250, 30, clientRect.right - 450, 30);
-        GetDlgItem(IDC_EDIT_FILELOCATION)->MoveWindow(clientRect.left + 250, 70, clientRect.right - 450, 30);
-        GetDlgItem(IDC_CHECK1)->MoveWindow(clientRect.left + 250, 110, 200, 30);
+        GetDlgItem(IDC_EDIT_FILENAME)->MoveWindow(clientRect.left + 120, 30, clientRect.right - 300, 25);
+        GetDlgItem(IDC_EDIT_FILELOCATION)->MoveWindow(clientRect.left + 120, 75, clientRect.right - 300, 25);
+        GetDlgItem(IDC_CHECK1)->MoveWindow(clientRect.left + 120, 100, 200, 30);
     }
 }
