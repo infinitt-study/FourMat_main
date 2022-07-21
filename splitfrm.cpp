@@ -58,10 +58,10 @@ END_MESSAGE_MAP()
 
 void CSplitFrame::OnFilePrint ()
 {
-	if (m_dockManager.IsPrintPreviewValid ())
-	{
-		PostMessage (WM_COMMAND, AFX_ID_PREVIEW_PRINT);
-	}
+	//if (m_dockManager.IsPrintPreviewValid ())
+	//{
+	//	PostMessage (WM_COMMAND, AFX_ID_PREVIEW_PRINT);
+	//}
 }
 
 void CSplitFrame::OnFilePrintPreview()

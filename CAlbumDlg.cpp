@@ -15,10 +15,12 @@
 IMPLEMENT_DYNAMIC(CAlbumDlg, CDialogEx)
 
 CAlbumDlg::CAlbumDlg(CDrawDoc* pDrawDoc, std::vector <CAccessObjectPtr>& listRefDrawObj
+	, std::vector<CString> listFileName
 	, int nDrwCount, CString fileName, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HISTORY_ALBUM, pParent)
 	, m_pDrawDoc(pDrawDoc)
 	, m_listRefDrawObj(listRefDrawObj)
+	, m_listFileName(listFileName)
 	, m_nDrwTotalNo(nDrwCount)
 	, m_nCurrentNo(0)
 	, m_strFileName(fileName)
@@ -39,6 +41,7 @@ BEGIN_MESSAGE_MAP(CAlbumDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BUTTON_LEFT, &CAlbumDlg::OnBnClickedButtonLeft)
 	ON_BN_CLICKED(IDC_BUTTON_RIGHT, &CAlbumDlg::OnBnClickedButtonRight)
+	ON_BN_CLICKED(IDOK, &CAlbumDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
@@ -61,18 +64,20 @@ void CAlbumDlg::OnPaint()
 
 	CFourMatDIB& m_nCurrentDIB = m_listRefDrawObj[m_nCurrentNo]->m_listDIB[0];
 	
+	CRect rect;
+	GetClientRect(rect);
+	
 	//m_nCurrentDIB.Draw(dc.m_hDC, 150, 5, 400, 400, SRCCOPY);
-	m_nCurrentDIB.Draw(dc.m_hDC, 150, 405, 400, -400, SRCCOPY);
+	m_nCurrentDIB.Draw(dc.m_hDC, rect.Width() / 2 - 200, 405, 400, -400, SRCCOPY);
 
 	SetTextColor(dc.m_hDC, RGB(0, 0, 0)); // 글씨 검정
 	SetBkMode(dc.m_hDC, TRANSPARENT); // 배경 투명
 	SetTextAlign(dc.m_hDC, TA_CENTER);
 
-	CRect rect;
-	GetClientRect(rect);
 	CString strPageInfo;
 	strPageInfo.Format(_T("%d / %d"), m_nCurrentNo + 1, m_nDrwTotalNo);
-	TextOut(dc.m_hDC, rect.Width() / 2, rect.Height() - 40, m_strFileName, m_strFileName.GetLength());
+	TextOut(dc.m_hDC, rect.Width() / 2, rect.Height() - 60, m_strFileName, m_strFileName.GetLength());
+	TextOut(dc.m_hDC, rect.Width() / 2, rect.Height() - 40, m_listFileName[m_nCurrentNo], m_listFileName[m_nCurrentNo].GetLength());
 	TextOut(dc.m_hDC, rect.Width() / 2, rect.Height() - 20 , strPageInfo, strPageInfo.GetLength());
 	
 }
@@ -97,3 +102,26 @@ void CAlbumDlg::OnBnClickedButtonRight()
 	Invalidate();
 }
 
+
+#include "mainfrm.h"
+#include "splitfrm.h"
+void CAlbumDlg::OnBnClickedOk()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	CSplitFrame* pSplitFrame = (CSplitFrame*)pMainFrame->GetActiveFrame();
+	CHistoryView* pView = (CHistoryView*)pSplitFrame->GetActiveView();
+
+	const int nCount = pView->m_lstHistory.GetItemCount();
+	for (int i = nCount - 1; i >= 0; --i) {
+		if (pView->m_lstHistory.GetItemText(i, 0) == m_listFileName[m_nCurrentNo]) {
+			pView->m_lstHistory.SetCheck(i);
+			break;
+		}
+	}
+	
+	pView->OnClickedButtonSingle();
+
+
+	CDialogEx::OnOK();
+}

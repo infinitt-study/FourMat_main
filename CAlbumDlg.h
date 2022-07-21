@@ -10,6 +10,7 @@ class CAlbumDlg : public CDialogEx
 public:
 	CAlbumDlg(CDrawDoc* pDrawDoc
 		, std::vector <CAccessObjectPtr>& listRefDrawObj
+		, std::vector<CString> listFileName
 		, int nDrwCount, CString fileName
 		, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CAlbumDlg();
@@ -20,6 +21,7 @@ public:
 #endif
 	CDrawDoc* m_pDrawDoc;
 	std::vector <CAccessObjectPtr>& m_listRefDrawObj;
+	std::vector<CString> m_listFileName;
 
 	CString m_strFileName;
 	int m_nDrwTotalNo;
@@ -34,4 +36,5 @@ public:
 	afx_msg void OnPaint();
 	afx_msg void OnBnClickedButtonLeft();
 	afx_msg void OnBnClickedButtonRight();
+	afx_msg void OnBnClickedOk();
 };

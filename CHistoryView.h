@@ -32,7 +32,9 @@ public:
 	CImageList m_imgHistory;
 	CString m_strPath;
 
+	// album 변수
 	std::vector <CAccessObjectPtr> m_listRefDrawObj;
+	std::vector<CString> m_listFileName;
 
 	virtual void OnInitialUpdate();
 	afx_msg void OnClickedButtonSingle();

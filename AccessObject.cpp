@@ -151,7 +151,23 @@ void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
 }
 
+#include <future>
 void CAccessObject::ResetDraw() {
-	BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
-	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);
+	// 본 코드
+	/*BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
+	m_listDIB[m_nCurrentFrameNo].SetDIBits(newDIBits);*/
+
+	// new deep copy
+	std::async([this] {
+		// 복제해야할 코드를 작성
+		BYTE* newDIBits = this->m_listDIBOrigin[this->m_nCurrentFrameNo].GetDIBitsAddr();
+		this->m_listDIB[this->m_nCurrentFrameNo].SetDIBits(newDIBits);
+		});
+	/*
+	영상처리 초기화 부분 -> CFOURMATDIB 쓰레드 사용해서
+	프로그램이 동작하는 동안에 내부적으로 origin버전을 복재함
+	- future, promise 이것 두개 모두 async안에 숨어있음 -> 쓰레드 만들 필요없이 async를 사용하면 됨
+	- async(STL)
+
+	*/
 }

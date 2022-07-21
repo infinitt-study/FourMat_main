@@ -237,8 +237,8 @@ void CHistoryView::OnBnClickedButtonAlbum()
 	const int nCount = m_lstHistory.GetItemCount();
 	CString strFileName, strFilePath, strBefFileName;
 	strBefFileName = pDrawDoc->getFolderPath();
-	int nIndex = strBefFileName.ReverseFind((TCHAR*)("\\"));
-	strBefFileName = strBefFileName.Right(nIndex);
+	int nIndex = strBefFileName.ReverseFind(TCHAR('\\'));
+	strBefFileName = strBefFileName.Mid(nIndex+1);
 
 	int nDrwCount = 0;
 
@@ -253,10 +253,12 @@ void CHistoryView::OnBnClickedButtonAlbum()
 		pRefDrawObj->LoadRefDraw(strFilePath, pDrawDoc);
 
 		m_listRefDrawObj.push_back(pRefDrawObj);
+		m_listFileName.push_back(strFileName);
+
 		nDrwCount++;
 	}
 
-	CAlbumDlg dlg(pDrawDoc, m_listRefDrawObj, nDrwCount, strBefFileName);
+	CAlbumDlg dlg(pDrawDoc, m_listRefDrawObj, m_listFileName, nDrwCount, strBefFileName);
 	if (dlg.DoModal() == IDOK) {
 
 	}
