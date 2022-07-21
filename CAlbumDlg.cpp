@@ -87,6 +87,7 @@ void CAlbumDlg::OnBnClickedButtonLeft()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nCurrentNo--;
+
 	if(m_nCurrentNo == 0) GetDlgItem(IDC_BUTTON_LEFT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BUTTON_RIGHT)->ShowWindow(SW_SHOW);
 	Invalidate();
@@ -97,6 +98,7 @@ void CAlbumDlg::OnBnClickedButtonRight()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_nCurrentNo++;
+
 	if(m_nCurrentNo == m_nDrwTotalNo - 1) GetDlgItem(IDC_BUTTON_RIGHT)->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_BUTTON_LEFT)->ShowWindow(SW_SHOW);
 	Invalidate();
@@ -132,13 +134,15 @@ BOOL CAlbumDlg::PreTranslateMessage(MSG* pMsg)
 	if (pMsg->message == WM_KEYDOWN) {
 		switch (pMsg->wParam) {
 		case VK_LEFT:
-			if (m_nCurrentNo == 0) break;
-			OnBnClickedButtonLeft();
-			break;
+			if (m_nCurrentNo != 0) OnBnClickedButtonLeft();
+			GotoDlgCtrl(GetDlgItem(IDOK));
+			GetDlgItem(IDOK)->SetFocus();
+			return false;
 		case VK_RIGHT:
-			if (m_nCurrentNo >= m_nDrwTotalNo - 1) break;
-			OnBnClickedButtonRight();
-			break;
+			if (m_nCurrentNo < m_nDrwTotalNo - 1) OnBnClickedButtonRight();
+			GotoDlgCtrl(GetDlgItem(IDOK));
+			GetDlgItem(IDOK)->SetFocus();
+			return false;
 		}
 	}
 
