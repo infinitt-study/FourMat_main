@@ -149,4 +149,6 @@ void CScalingDlg::OnBnClickedPreview()
 	newDIB.CreateRgbBitmap(m_nNewWidth, m_nNewHeight); // rgb bitmap 에 대한 
 	FourMatGrayToDIBImage(imgDst, newDIB); // 새로운 객체 생성  
 	m_dib = std::move(newDIB);
+
+	Invalidate(true);
 }

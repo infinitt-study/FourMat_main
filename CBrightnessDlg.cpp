@@ -114,4 +114,6 @@ void CBrightnessDlg::OnBnClickedPreview()
 	Brightness(img, m_nBrightness);
 	Contrast(img, m_nContrast);
 	FourMatGrayToDIBImage(img, m_dib);
+
+	Invalidate(true);
 }
