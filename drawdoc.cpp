@@ -45,7 +45,6 @@
 #include "CReduceNoiseDlg.h"
 #include "CBrightnessDlg.h"
 #include "CHistogramDlg.h"
-#include "CWindowLevelDlg.h"
 #include "CGammaDlg.h"
 #include "CCannyEdgeDlg.h"
 #include "CHarrisCornerDlg.h"

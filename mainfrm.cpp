@@ -458,7 +458,6 @@ void CMainFrame::InitHomeCategory()
 
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_SELECT, _T("Select\ns"), 7));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_LINE, _T("Line\nl"), 8));
-	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_LENGTH, _T("Length (inch)\nl"), 8));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_RECT, _T("Rectangle\nr"), 9));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_ROUNDRECT, _T("Round Rectangle\nn"), 10));
 	pPanelDraw->Add(new CMFCRibbonButton(ID_DRAW_ELLIPSE, _T("Ellipse\ne"), 11));
@@ -530,7 +529,8 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 8));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_HISTOGRAM, _T("Histogram\nn"), 0, 9)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_GAMMA, _T("Gamma\nn"), 0, 10));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_WINDOWLEVEL, _T("Window_Level\nn"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 16)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 17)); // dlg
 
 
 	pPanelWindow = pCategory->AddPanel(_T("FeatureExtraction\nzw"), m_PanelImages.ExtractIcon(7));
@@ -539,8 +539,6 @@ void CMainFrame::InitImageProcessingCategory()
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_SHARPENING, _T("Sharpening\nn"), 0, 13)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_ADDNOISE, _T("Add Noise\nn"), 0, 14));
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_REDUCENOISE, _T("Reduce Noise\nn"), 0, 15)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 16)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 17)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_CANNYEDGE, _T("Canny Edge \nn"), 0, 18)); // dlg
 	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HARRISCORNER, _T("Harris Corner \nn"), 0, 19)); // dlg
 

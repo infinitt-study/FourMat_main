@@ -72,7 +72,6 @@
 #define IDC_SLIDER1                     137
 #define IDC_NEW_SX                      138
 #define IDC_SLIDER3                     138
-#define IDC_SLIDER2                     138
 #define IDB_BITMAP1                     139
 #define IDB_LIST                        139
 #define IDC_EDIT2                       139
@@ -85,9 +84,7 @@
 #define IDC_ROTATE270                   141
 #define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
-#define IDC_EDIT1                       143
 #define IDC_ANGLE                       143
-#define IDC_EDIT3                       144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
 #define IDC_EDIT4                       145
@@ -109,7 +106,6 @@
 #define IDC_BUTTON_MULTI                154
 #define IDD_FILTERING_GAMMA             154
 #define IDC_DIFFUSION_LAMBDA            155
-#define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158

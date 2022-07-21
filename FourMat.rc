@@ -119,23 +119,6 @@ BEGIN
     PUSHBUTTON      "미리보기",IDC_PREVIEW,235,255,50,14
 END
 
-IDD_FILTERING_WINDOW_LEVEL DIALOGEX 0, 0, 415, 380
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Window/Level"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "확인",IDOK,352,349,50,14
-    PUSHBUTTON      "취소",IDCANCEL,297,349,50,14
-    GROUPBOX        "Window ",IDC_STATIC,46,185,309,77
-    GROUPBOX        "Level ",IDC_STATIC,40,279,335,54
-    CONTROL         "",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,99,217,195,15
-    CONTROL         "",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,111,290,191,15
-    EDITTEXT        IDC_EDIT1,194,242,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT3,185,317,40,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "미리보기",IDC_PREVIEW,236,349,50,14
-    GROUPBOX        "Window/ Level 조절 ",IDC_STATIC,14,14,388,349
-END
-
 IDD_HISTOGRAM DIALOGEX 0, 0, 404, 237
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Dialog"
@@ -316,14 +299,6 @@ BEGIN
         BOTTOMMARGIN, 269
     END
 
-    IDD_FILTERING_WINDOW_LEVEL, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 402
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 363
-    END
-
     IDD_HISTOGRAM, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -428,11 +403,6 @@ BEGIN
 END
 
 IDD_FILTERING_GAMMA AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
-
-IDD_FILTERING_WINDOW_LEVEL AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -826,7 +796,6 @@ BEGIN
     BEGIN
         MENUITEM "&Select",                     ID_DRAW_SELECT
         MENUITEM "&Line",                       ID_DRAW_LINE
-        MENUITEM "Length(inch)",                ID_DRAW_LENGTH
         MENUITEM "&Rectangle",                  ID_DRAW_RECT
         MENUITEM "R&ound Rectangle",            ID_DRAW_ROUNDRECT
         MENUITEM "&Ellipse",                    ID_DRAW_ELLIPSE
@@ -864,43 +833,42 @@ BEGIN
         MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
         MENUITEM "&Windows...",                 ID_WINDOW_MANAGER
     END
-    POPUP "ImageProcessing"
+    POPUP "&ImageProcessing"
     BEGIN
-        POPUP "Affine Transform"
+        POPUP "&Affine Transform"
         BEGIN
-            MENUITEM "Rotation",                    ID_AFFINETRANFORM_ROTATION
-            MENUITEM "Translation",                 ID_AFFINETRANFORM_TRANSLATION
-            MENUITEM "Scaling",                     ID_AFFINETRANFORM_SCALING
-            MENUITEM "Mirror",                      ID_AFFINETRANFORM_MIRROR
-            MENUITEM "Flip",                        ID_AFFINETRANSFORM_FLIP
+            MENUITEM "&Rotation",                   ID_AFFINETRANFORM_ROTATION
+            MENUITEM "&Translation",                ID_AFFINETRANFORM_TRANSLATION
+            MENUITEM "&Scaling",                    ID_AFFINETRANFORM_SCALING
+            MENUITEM "&Mirror",                     ID_AFFINETRANFORM_MIRROR
+            MENUITEM "&Flip",                       ID_AFFINETRANSFORM_FLIP
         END
-        POPUP "Filtering"
+        POPUP "&Filtering"
         BEGIN
-            MENUITEM "Brightness",                  ID_FILTERING_BRIGHTNESS
-            MENUITEM "Inverse",                     ID_FILTERING_INVERSE
-            MENUITEM "Gamma",                       ID_FILTERING_GAMMA
-            MENUITEM "Histogram",                   ID_FILTERING_HISTOGRAM
-            MENUITEM "WindowLevel",                 ID_FILTERING_WINDOWLEVEL
+            MENUITEM "&Brightness",                 ID_FILTERING_BRIGHTNESS
+            MENUITEM "&Inverse",                    ID_FILTERING_INVERSE
+            MENUITEM "&Gamma",                      ID_FILTERING_GAMMA
+            MENUITEM "&Histogram",                  ID_FILTERING_HISTOGRAM
+            MENUITEM "&Histogram Equalization",     ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION
+            MENUITEM "&Histogram Stretching ",      ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING
         END
-        POPUP "FeatureExtraction"
+        POPUP "&FeatureExtraction"
         BEGIN
-            MENUITEM "Blur",                        ID_FEATUREEXTRACTION_BLUR
-            MENUITEM "Sharpening",                  ID_FEATUREEXTRACTION_SHARPENING
-            MENUITEM "Add Noise",                   ID_FEATUREEXTRACTION_ADDNOISE
-            MENUITEM "Reduce Noise",                ID_FEATUREEXTRACTION_REDUCENOISE
-            MENUITEM "Histogram Equalization",      ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION
-            MENUITEM "Histogram Stretching ",       ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING
-            MENUITEM "Canny Edge",                  ID_FEATUREEXTRACTION_CANNYEDGE
-            MENUITEM "Harris Corner",               ID_FEATUREEXTRACTION_HARRISCORNER
+            MENUITEM "&Blur",                       ID_FEATUREEXTRACTION_BLUR
+            MENUITEM "&Sharpening",                 ID_FEATUREEXTRACTION_SHARPENING
+            MENUITEM "&Add Noise",                  ID_FEATUREEXTRACTION_ADDNOISE
+            MENUITEM "&Reduce Noise",               ID_FEATUREEXTRACTION_REDUCENOISE
+            MENUITEM "&Canny Edge",                 ID_FEATUREEXTRACTION_CANNYEDGE
+            MENUITEM "&Harris Corner",              ID_FEATUREEXTRACTION_HARRISCORNER
         END
-        POPUP "Molphology"
+        POPUP "&Molphology"
         BEGIN
-            MENUITEM "Erosion",                     ID_MOLPHOLOGY_EROSION
-            MENUITEM "Dilation",                    ID_MOLPHOLOGY_DILATION
-            MENUITEM "Opening",                     ID_MOLPHOLOGY_OPENING
-            MENUITEM "Closing",                     ID_MOLPHOLOGY_CLOSING
+            MENUITEM "&Erosion",                    ID_MOLPHOLOGY_EROSION
+            MENUITEM "&Dilation",                   ID_MOLPHOLOGY_DILATION
+            MENUITEM "&Opening",                    ID_MOLPHOLOGY_OPENING
+            MENUITEM "&Closing",                    ID_MOLPHOLOGY_CLOSING
         END
-        POPUP "Compare"
+        POPUP "&Compare"
         BEGIN
             MENUITEM "Compare",                     ID_COMPARE_COMPARE
         END
