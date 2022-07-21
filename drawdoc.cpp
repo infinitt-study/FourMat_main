@@ -37,7 +37,6 @@
 #include "CFilter.h"
 #include "CImprovement.h"
 #include "CMorphology.h"
-//#include "CConvert.h"
 #include "CRotationDlg.h"
 #include "CScalingDlg.h"
 #include "CTranslationDlg.h"
@@ -47,8 +46,10 @@
 #include "CBrightnessDlg.h"
 #include "CHistogramDlg.h"
 #include "CWindowLevelDlg.h"
-#include"CGammaDlg.h"
-
+#include "CGammaDlg.h"
+#include "CCannyEdgeDlg.h"
+#include "CHarrisCornerDlg.h"
+#include "CCompareDlg.h"
 #include <math.h>
 
 const double PI = 3.14159265358979323846;
@@ -870,8 +871,6 @@ void CDrawDoc::OnAffinetranformMirror()
 	FourMatGrayToDIBImage(imgDst, dib);
 
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-	/*AfxPrintInfo(_T("[좌우 대칭] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);*/
 }
 
 
@@ -893,12 +892,7 @@ void CDrawDoc::OnAffinetranformRotation()
 		case 3: Rotate(imgSrc, imgDst, (double)dlg.m_fAngle); break;
 		}
 		FourMatGrayToDIBImage(imgDst, dib);
-		//TCHAR* rotate[] = { _T("90도"), _T("180도"), _T("270도") };
-		//if (dlg.m_nRotate != 3)
-			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %s"), GetTitle(), rotate[dlg.m_nRotate]);
-		//else
-			//AfxPrintInfo(_T("[회전 변환] 입력 영상: %s, 회전 각도: %4.2f도"), GetTitle(), dlg.m_fAngle);
-
+	
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 }
@@ -927,18 +921,8 @@ void CDrawDoc::OnAffinetranformScaling()
 		FourMatGrayToDIBImage(imgDst, newDIB); // 새로운 객체 생성  
 		dib = std::move(newDIB);  
 
-		//	AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로크기: % d, 보간법 : % s"),GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight[dlg.m_nInterpolation]);
-
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
-	/*	TCHAR* interpolation[] = { _T("최근방 이웃 보간법"), _T("양선형 보간법"
-			), _T("3차 회선 보간법") };
-		AfxPrintInfo(_T("[크기 변환] 입력 영상: %s, , 새 가로 크기: %d, 새 세로
-			크기: % d, 보간법 : % s"),
-			GetTitle(), dlg.m_nNewWidth, dlg.m_nNewHeight, interpolation[dlg.m_n
-			Interpolation]);
-		AfxNewBitmap(dib);
-	}*/
 
 }
 
@@ -972,8 +956,7 @@ void CDrawDoc::OnAffinetransformFlip()
 
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*AfxPrintInfo(_T("[상하 대칭] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);*/
+	
 }
 
 
@@ -997,17 +980,13 @@ void CDrawDoc::OnFeatureextractionAddnoise()
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-		/*TCHAR* noise[] = { _T("가우시안"), _T("소금&후추") };
-		AfxPrintInfo(_T("[잡음 추가] 입력 영상: %s, 잡음 종류: %s, 잡음 양: %d"),
-			GetTitle(), noise[dlg.m_nNoiseType], dlg.m_nAmount);
-		AfxNewBitmap(dib);*/
-	}
+		}
 }
 
 
 void CDrawDoc::OnFeatureextractionBlur()
 {
-	CBlurDlg dlg;
+	CBlurDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1019,15 +998,13 @@ void CDrawDoc::OnFeatureextractionBlur()
 		FloatImageToFourMatDIB(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-		/*AfxPrintInfo(_T("[가우시안 필터] 입력 영상: %s, Sigma: %4.2f"), GetTitle(), dlg.m_fSigma);
-		AfxNewBitmap(dib);*/
 	}
 }
 
 
 void CDrawDoc::OnFeatureextractionReducenoise()
 {
-	CReduceNoiseDlg dlg;
+	CReduceNoiseDlg dlg(this);
 	if (dlg.DoModal() == IDOK)
 	{
 		CFourMatDIB& dib = GetFourMatDIB(m_bClickedView);
@@ -1038,10 +1015,7 @@ void CDrawDoc::OnFeatureextractionReducenoise()
 		FloatImageToFourMatDIB(imgDst, dib);
 
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
-		/*
-			AfxPrintInfo(_T("[미디언 필터] 입력 영상: %s"), GetTitle());
-		AfxNewBitmap(dib);*/
-	}
+		}
 }
 
 
@@ -1056,9 +1030,6 @@ void CDrawDoc::OnFeatureextractionSharpening()
 
 	UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 
-	/*AfxPrintInfo(_T("[라플라시안 필터] 입력 영상: %s"), GetTitle());
-	AfxNewBitmap(dib);//bitmap new  
-	*/ 
 }
 
 
@@ -1278,7 +1249,6 @@ void CDrawDoc::OnUpdateActiveRibbon(CCmdUI* pCmdUI)
 	EnableDrawView(pCmdUI);
 }
 
-#include "CCannyEdgeDlg.h"
 void CDrawDoc::OnFeatureextractionCannyedge()
 {
 	CCannyEdgeDlg dlg;
@@ -1294,7 +1264,7 @@ void CDrawDoc::OnFeatureextractionCannyedge()
 	}
 }
 
-#include "CHarrisCornerDlg.h"
+
 void CDrawDoc::OnFeatureextractionHarriscorner()
 {
 	CHarrisCornerDlg dlg;
@@ -1321,8 +1291,6 @@ void CDrawDoc::OnFeatureextractionHarriscorner()
 		UpdateAllViews(NULL, HINT_DICOM_IMAGE_REDRAW);
 	}
 }
-
-#include "CCompareDlg.h"
 void CDrawDoc::OnCompareCompare() // 비교 dlg
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.

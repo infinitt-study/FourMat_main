@@ -1,14 +1,16 @@
 ﻿#pragma once
 
-
+#include "CFourMatDIB.h"
 // CReduceNoiseDlg 대화 상자
+
+class CDrawDoc;
 
 class CReduceNoiseDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CReduceNoiseDlg)
 
 public:
-	CReduceNoiseDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CReduceNoiseDlg(CDrawDoc* DrawDoc, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CReduceNoiseDlg();
 
 // 대화 상자 데이터입니다.
@@ -24,5 +26,9 @@ public:
 	float m_fLambda;
 	float m_fK;
 	int m_nIteration;
-//	afx_msg void OnPaint();
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
+	CDrawDoc* m_pDrawDoc;
+
+	afx_msg void OnPaint();
 };

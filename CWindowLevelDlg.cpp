@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CWindowLevelDlg, CDialogEx)
 CWindowLevelDlg::CWindowLevelDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FILTERING_WINDOW_LEVEL, pParent)
 	, m_nWindow(0)
-	, m_nContrast(0)
+	, m_nLevel(0)
 {
 
 }
@@ -29,9 +29,9 @@ void CWindowLevelDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SLIDER1, m_sliderWindow);
 	DDX_Control(pDX, IDC_SLIDER2, m_sliderLevel);
 	DDX_Text(pDX, IDC_EDIT1, m_nWindow);
-	DDV_MinMaxInt(pDX, m_nWindow, 0, 255);
-	DDX_Text(pDX, IDC_EDIT3, m_nContrast);
-	DDV_MinMaxInt(pDX, m_nContrast, 0, 255);
+	DDV_MinMaxInt(pDX, m_nWindow, -255, 255);
+	DDX_Text(pDX, IDC_EDIT3, m_nLevel);
+	DDV_MinMaxInt(pDX, m_nLevel, -100, 100);
 }
 
 
@@ -72,7 +72,7 @@ void CWindowLevelDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	// 명암비 조절 슬라이드바에서 발생한 WM_HSCROLL 메시지 처리
 	else if (m_sliderLevel.GetSafeHwnd() == pScrollBar->GetSafeHwnd())
 	{
-		m_nContrast = m_sliderLevel.GetPos();
+		m_nLevel = m_sliderLevel.GetPos();
 		UpdateData(FALSE);
 	}
 

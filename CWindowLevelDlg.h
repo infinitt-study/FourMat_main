@@ -24,7 +24,7 @@ public:
 	CSliderCtrl m_sliderWindow;
 	CSliderCtrl m_sliderLevel;
 	int m_nWindow;
-	int m_nContrast;
+	int m_nLevel;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };
