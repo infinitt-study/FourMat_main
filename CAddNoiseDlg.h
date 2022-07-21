@@ -15,7 +15,7 @@ public:
 	virtual ~CAddNoiseDlg();
 	int m_Histogram[256];
 
-	void SetImage(CFourMatDIB& dib);
+	//void SetImage(CFourMatDIB& dib);
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

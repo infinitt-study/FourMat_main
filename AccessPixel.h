@@ -152,14 +152,6 @@ typedef AccessPixel<float>   FloatImage;
 typedef AccessPixel<double>  DoubleImage;
 typedef AccessPixel<RGBBYTE> RgbImage;
 
-// 유용한 전역 함수 정의
-//ByteImage img1; // 일반적인 그레이스케일 영상
-//IntImage img2; // 정수형 영상
-//FloatImage img3; // 실수형 영상
-//DoubleImage img4; // 정교한 실수형 영상
-//RgbImage img5; // 트루컬러 영상
-
-
 template<typename T>
 inline T limit(const T& value)
 {

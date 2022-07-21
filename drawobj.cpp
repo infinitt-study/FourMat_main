@@ -529,6 +529,7 @@ CDrawRect::CDrawRect(const CRect& position)
 	m_nShape = rectangle;
 	m_roundness.x = 16;
 	m_roundness.y = 16;
+
 	m_nDistance = 0.0;
 }
 
@@ -631,8 +632,9 @@ void CDrawRect::Draw(CDC* pDC)
 		m_nDistance = (sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2))) / 100;
 		CString str;
 		str.Format(_T("%.2f inch"), m_nDistance);
-		//pDC->SetBkColor(RGB(256, 256, 0));
-		//pDC->SetTextColor(RGB(0, 0, 0));
+		pDC->SetBkMode(OPAQUE);
+		pDC->SetBkColor(RGB(255, 255, 255));
+		pDC->SetTextColor(RGB(0, 0, 0));
 		pDC->TextOut(rect.left, rect.top, str);
 
 
