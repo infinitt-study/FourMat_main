@@ -56,7 +56,6 @@
 #define IDC_LIST_RESULT                 129
 #define IDB_STATUSBAR_1                 130
 #define IDC_BUTTON_SINGLE               130
-#define IDC_BUTTON_FOLDER_SELECT        130
 #define IDB_STATUSBAR_2                 131
 #define IDC_LIST1                       131
 #define IDC_LIST_HISTORY                131

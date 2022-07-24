@@ -36,7 +36,6 @@ void CSearchFileView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CSearchFileView, CFormView)
     ON_BN_CLICKED(IDC_BUTTON_START, &CSearchFileView::OnClickedButtonSelect)
-    ON_BN_CLICKED(IDC_BUTTON_FOLDER_SELECT, &CSearchFileView::OnClickedButtonFilter)
     ON_NOTIFY(NM_DBLCLK, IDC_LIST_RESULT, &CSearchFileView::OnNMDblclkListResult)
     ON_WM_SIZE()
 END_MESSAGE_MAP()
@@ -81,10 +80,6 @@ void CSearchFileView::OnInitialUpdate()
 	m_lstResult.InsertColumn(2, "크기(byte)", LVCFMT_RIGHT, 200);
 	m_lstResult.InsertColumn(3, "생성날짜", LVCFMT_CENTER, 200);
 
-    //체크박스 추가
-    //DWORD dwExStyle = m_lstResult.GetExtendedStyle();
-    //m_lstResult.SetExtendedStyle(dwExStyle | LVS_EX_CHECKBOXES | LVS_EX_BORDERSELECT | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-
 	// GetCurrentDirectory() : 프로그램이 실행되는 위치(폴더)를 얻어옴. 얻어진 결과는 m_strFileLocation에 입력
 	char pBuf[256];
 	GetCurrentDirectory(256, pBuf);
@@ -94,7 +89,6 @@ void CSearchFileView::OnInitialUpdate()
 
 	m_strFileLocation.Format("%s", pBuf);
 	UpdateData(FALSE);
-
 
     //최초 1회는 자동으로 목록 출력
     m_lstResult.DeleteAllItems();
@@ -227,42 +221,6 @@ void CSearchFileView::OnClickedButtonSelect()
     }
     UpdateData(FALSE);
 }
-
-
-void CSearchFileView::OnClickedButtonFilter()
-{
-    // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-    const int nCount = m_lstResult.GetItemCount();
-    CString strFolderName;
-
-    int nRow = 0;
-    for (int i = nCount - 1; i >= 0; --i) {
-        if (m_lstResult.GetCheck(i)) {
-            strFolderName = m_lstResult.GetItemText(i, 0);
-            nRow++;
-        }
-    }
-    if (strFolderName.IsEmpty()) {
-        AfxMessageBox(_T("폴더를 선택해 주세요"));
-        return;
-    }
-
-    if (nRow >= 2) {
-        AfxMessageBox(_T("폴더를 한 개만 선택해 주세요"));
-        return;
-    }
-
-    //뷰 스위칭
-    CSplitFrame* pSplitFrame = (CSplitFrame*)GetParentFrame();
-
-    CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
-
-    pDrawDoc->setFolderPath(m_strFileLocation + "\\" + strFolderName);
-    pDrawDoc->UpdateAllViews(NULL, HINT_UPDATE_FOLDERPATH);
-
-    pSplitFrame->SwitchView(VIEWID_HISTORY);
-}
-
 
 void CSearchFileView::OnNMDblclkListResult(NMHDR* pNMHDR, LRESULT* pResult)
 {

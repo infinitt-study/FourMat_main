@@ -130,7 +130,7 @@ BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	pLeftView->setLeftView(TRUE);
 	pRightView->setLeftView(FALSE);
 
-	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
+	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_DRAW, pContext);
 	m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
 	return CMDIChildWndEx::OnCreateClient(lpcs, pContext);
