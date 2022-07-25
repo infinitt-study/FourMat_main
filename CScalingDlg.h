@@ -37,6 +37,4 @@ public:
 	afx_msg void OnEnChangeNewHeight();
 	afx_msg void OnBnClickedAspectRatio();
 	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void OnBnClickedPreview();
 };

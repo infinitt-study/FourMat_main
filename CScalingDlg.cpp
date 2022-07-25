@@ -54,8 +54,8 @@ BEGIN_MESSAGE_MAP(CScalingDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_NEW_WIDTH, &CScalingDlg::OnEnChangeNewWidth)
 	ON_EN_CHANGE(IDC_NEW_HEIGHT, &CScalingDlg::OnEnChangeNewHeight)
 	ON_BN_CLICKED(IDC_ASPECT_RATIO, &CScalingDlg::OnBnClickedAspectRatio)
-	ON_WM_PAINT()
-	ON_BN_CLICKED(IDC_PREVIEW, &CScalingDlg::OnBnClickedPreview)
+//	ON_WM_PAINT()
+//	ON_BN_CLICKED(IDC_PREVIEW, &CScalingDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 
@@ -115,40 +115,3 @@ void CScalingDlg::OnBnClickedAspectRatio()
 	}
 }
 
-
-
-void CScalingDlg::OnPaint()
-{
-	CPaintDC dc(this); 
-	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
-	m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
-
-}
-
-
-void CScalingDlg::OnBnClickedPreview()
-{
-	m_nOldWidth = m_dib.GetWidth();
-	m_nOldHeight = m_dib.GetHeight();
-
-	ByteImage imgSrc;
-	ByteImage imgDst;
-
-	FourMatDIBToByteImage(m_dib, imgSrc);
-
-	if (UpdateData() == FALSE) {
-		return;
-	}
-	switch (m_nInterpolation)
-	{
-	case 0: ResizeNearest(imgSrc, imgDst, m_nNewWidth, m_nNewHeight); break;
-	case 1: ResizeBilinear(imgSrc, imgDst, m_nNewWidth, m_nNewHeight); break;
-	case 2: ResizeCubic(imgSrc, imgDst, m_nNewWidth, m_nNewHeight); break;
-	}
-	CFourMatDIB newDIB;// 새로운 객체 생성 
-	newDIB.CreateRgbBitmap(m_nNewWidth, m_nNewHeight); // rgb bitmap 에 대한 
-	FourMatGrayToDIBImage(imgDst, newDIB); // 새로운 객체 생성  
-	m_dib = std::move(newDIB);
-
-	Invalidate(true);
-}

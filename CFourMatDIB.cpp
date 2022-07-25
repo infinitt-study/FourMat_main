@@ -101,7 +101,7 @@ BOOL CFourMatDIB::CreateRgbBitmap(LONG nWidth, LONG nHeight)
 	LPBITMAPINFOHEADER lpbmi = (LPBITMAPINFOHEADER)m_pDib;
 	lpbmi->biSize = sizeof(BITMAPINFOHEADER);
 	lpbmi->biWidth = m_nWidth;
-	lpbmi->biHeight = -m_nHeight;
+	lpbmi->biHeight = m_nHeight;
 	lpbmi->biPlanes = 1;
 	lpbmi->biBitCount = m_nBitCount;
 	lpbmi->biCompression = BI_RGB;
