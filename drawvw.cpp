@@ -809,13 +809,9 @@ void CDrawView::OnLButtonDown(UINT nFlags, CPoint point)
 		pTool->OnLButtonDown(this, nFlags, point);
 	}
 
-	TRACE("111 %d,%d\n", point.x, point.y);
 	ClientToDoc(point);
-	TRACE("222 %d,%d\n", point.x, point.y);
-
-	TRACE("%d,%d\n", point.x, point.y);
-
-	///
+	
+	
 	CDrawDoc* pDrawDoc = (CDrawDoc*)GetDocument();
 	pDrawDoc->setClickedView(m_bLeftView);
 }
