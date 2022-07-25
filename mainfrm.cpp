@@ -478,7 +478,8 @@ void CMainFrame::InitHomeCategory()
 	pCategory->AddHidden(pUndo);
 
 	pPanelArrange = pCategory->AddPanel(_T("File\nzj"), m_PanelImages.ExtractIcon(3));
-	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_SAVEDRAW, _T("Save Draw\nmf"), 15, 3));
+	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_SAVEDRAW, _T("Save Draw\nmf"), 19, 7));
+	pPanelArrange->Add(new CMFCRibbonButton(ID_OBJECT_RESETDRAW, _T("Reset Draw\nmf"), 20, 8));
 }
 
 void CMainFrame::InitViewCategory()
@@ -491,15 +492,14 @@ void CMainFrame::InitViewCategory()
 	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_GRID, _T("Grid Lines\ng")));
 
 	// Create "Window" panel:
-	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Window\nzw"), m_PanelImages.ExtractIcon(5));
+	//CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Window\nzw"), m_PanelImages.ExtractIcon(5));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_WINDOW_NEW, _T("New Window\nn"), 0, 0));
+	//pPanelWindow->Add(new CMFCRibbonButton(ID_WINDOW_NEW, _T("New Window\nn"), 0, 0));
 	
-
-	CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton(ID_WINDOWS_MENU, _T("Switch Windows\ns"), 1, 1);
-	pBtnWindows->SetMenu(IDR_WINDOWS_MENU, TRUE);
-	pBtnWindows->SetDefaultCommand(FALSE);
-	pPanelWindow->Add(pBtnWindows);
+	//CMFCRibbonButton* pBtnWindows = new CMFCRibbonButton(ID_WINDOWS_MENU, _T("Switch Windows\ns"), 1, 1);
+	//pBtnWindows->SetMenu(IDR_WINDOWS_MENU, TRUE);
+	//pBtnWindows->SetDefaultCommand(FALSE);
+	//pPanelWindow->Add(pBtnWindows);
 
 #ifdef ENABLE_RIBBON_LAUNCH_BUTTON
 	// Add the launch button at the bottom of the panel:
@@ -516,37 +516,41 @@ void CMainFrame::InitImageProcessingCategory()
 	CMFCRibbonPanel* pPanelWindow = pCategory->AddPanel(_T("Affine Transformation\nzw"), m_PanelImages.ExtractIcon(6));
 
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("Rotation\ng"), 0, 0)); //90,-90, 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSLATION, _T("Translation\ng"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SCALING, _T("Scaling\ng"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_MIRROR, _T("Mirror\ng"), 0, 0)); // 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANSFORM_FLIP, _T("Flip\ng"), 0, 0)); // 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_ROTATION, _T("Rotation\ng"), 0, 2)); //90,-90, 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_TRANSLATION, _T("Translation\ng"), 0, 3));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_SCALING, _T("Scaling\ng"), 0, 4));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANFORM_MIRROR, _T("Mirror\ng"), 0, 5)); // 
+	pPanelWindow->Add(new CMFCRibbonButton(ID_AFFINETRANSFORM_FLIP, _T("Flip\ng"), 0, 6)); // 
 
 
 	pPanelWindow = pCategory->AddPanel(_T("Filtering\nzw"), m_PanelImages.ExtractIcon(7));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_BRIGHTNESS, _T("Brightness\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_HISTOGRAM, _T("Histogram\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_GAMMA, _T("Gamma\nn"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_WINDOWLEVEL, _T("Window_Level\nn"), 0, 0));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_BRIGHTNESS, _T("Brightness\nn"), 0, 7)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_INVERSE, _T("Inverse\nn"), 0, 8));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_HISTOGRAM, _T("Histogram\nn"), 0, 9)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FILTERING_GAMMA, _T("Gamma\nn"), 0, 10));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 16)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 17)); // dlg
 
 
 	pPanelWindow = pCategory->AddPanel(_T("FeatureExtraction\nzw"), m_PanelImages.ExtractIcon(7));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_BLUR, _T("Blur\nn"), 0, 0)); //dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_SHARPENING, _T("Sharpening\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_ADDNOISE, _T("Add Noise\nn"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_REDUCENOISE, _T("Reduce Noise\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMEQUALIZATION, _T("Histogram Equalization\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HISTOGRAMSTRETCHING, _T("Histogram Stretching \nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_BLUR, _T("Blur\nn"), 0, 12)); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_SHARPENING, _T("Sharpening\nn"), 0, 13)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_ADDNOISE, _T("Add Noise\nn"), 0, 14));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_REDUCENOISE, _T("Reduce Noise\nn"), 0, 15)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_CANNYEDGE, _T("Canny Edge \nn"), 0, 18)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_FEATUREEXTRACTION_HARRISCORNER, _T("Harris Corner \nn"), 0, 19)); // dlg
 
-	pPanelWindow = pCategory->AddPanel(_T("Molphology\nzw"), m_PanelImages.ExtractIcon(7));
+	pPanelWindow = pCategory->AddPanel(_T("Morphology\nzw"), m_PanelImages.ExtractIcon(7));
 
-	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_EROSION, _T("Erosion\nn"), 0, 0)); //dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_DILATION, _T("Dilation\nn"), 0, 0)); // dlg
-	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_OPENING, _T("Opening\nn"), 0, 0));
-	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_CLOSING, _T("Closing\nn"), 0, 0)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_EROSION, _T("Erosion\nn"), 0, 20)); //dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_DILATION, _T("Dilation\nn"), 0, 21)); // dlg
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_OPENING, _T("Opening\nn"), 0, 22));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_MOLPHOLOGY_CLOSING, _T("Closing\nn"), 0, 23)); // dlg
+
+	pPanelWindow = pCategory->AddPanel(_T("Compare\nzw"), m_PanelImages.ExtractIcon(7));
+	pPanelWindow->Add(new CMFCRibbonButton(ID_COMPARE_COMPARE, _T("Compare\nn"), 0, 24)); // dlg
 }
 
 

@@ -27,6 +27,7 @@
 #ifndef SHARED_HANDLERS
 #include "rectdlg.h"
 #endif
+#include "math.h"
 
 IMPLEMENT_SERIAL(CDrawObj, CObject, 0)
 
@@ -145,7 +146,8 @@ void CDrawObj::MoveTo(const CRect& position, CDrawView* pView)
 	if (pView == NULL)
 	{
 		Invalidate();
-		m_position = position;
+		m_position = position; 
+		// double distance = sqrt(pow(x2-x1, 2)  + pow (y2 - y1, 2));
 		Invalidate();
 	}
 	else
@@ -156,8 +158,7 @@ void CDrawObj::MoveTo(const CRect& position, CDrawView* pView)
 		pView->InvalObj(this);
 #endif
 	}
-	m_pDocument->SetModifiedFlag(false);
-	m_pDocument->m_bIsChange = true;
+	m_pDocument->m_bChanged = true;
 }
 
 // Note: if bSelected, hit-codes start at one for the top-left
@@ -425,8 +426,7 @@ void CDrawObj::OnEditProperties()
 	}
 
 	Invalidate();
-	m_pDocument->SetModifiedFlag(false);
-	m_pDocument->m_bIsChange = true;
+	m_pDocument->m_bChanged = true;
 #endif
 }
 
@@ -445,8 +445,7 @@ void CDrawObj::SetLineColor(COLORREF color, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 }
 
@@ -460,8 +459,7 @@ void CDrawObj::SetFillColor(COLORREF color, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 }
 
@@ -484,8 +482,7 @@ void CDrawObj::SetLineWeight(int nWidth, BOOL bPreview)
 
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 }
 
@@ -494,8 +491,7 @@ void CDrawObj::EnableFill(BOOL bEnable, BOOL bPreview/* = FALSE*/)
 	m_bBrush = bEnable;
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 }
 
@@ -504,8 +500,7 @@ void CDrawObj::EnableLine(BOOL bEnable, BOOL bPreview/* = FALSE*/)
 	m_bPen = bEnable;
 	if (!bPreview)
 	{
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 }
 
@@ -534,13 +529,15 @@ CDrawRect::CDrawRect(const CRect& position)
 	m_nShape = rectangle;
 	m_roundness.x = 16;
 	m_roundness.y = 16;
+
+	m_nDistance = 0.0;
 }
 
 CDrawRect::CDrawRect(const CRect& position,
 	BOOL bPen,
 	const LOGPEN& logpen,
 	BOOL bBrush,
-	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) , m_nShape(rectangle), m_roundness(16,16) {
+	const LOGBRUSH& logbrush) :CDrawObj(position, bPen, logpen, bBrush, logbrush) , m_nShape(rectangle), m_roundness(16,16), m_nDistance(0.0) {
 
 
 }
@@ -555,12 +552,14 @@ void CDrawRect::Serialize(CArchive& ar)
 	{
 		ar <<(WORD) m_nShape;
 		ar << m_roundness;
+		ar << m_nDistance;
 	}
 	else
 	{
 		WORD wTemp;
 		ar >> wTemp; m_nShape = (Shape)wTemp;
 		ar >> m_roundness;
+		ar >> m_nDistance;
 	}
 }
 
@@ -624,15 +623,28 @@ void CDrawRect::Draw(CDC* pDC)
 		{
 			rect.left += (m_logpen.lopnWidth.x + 1) / 2;
 			rect.right -= m_logpen.lopnWidth.x / 2;
+			
 		}
 
 		pDC->MoveTo(rect.TopLeft());
 		pDC->LineTo(rect.BottomRight());
+			
+		m_nDistance = (sqrt(pow(rect.left - rect.right, 2) + pow(rect.top - rect.bottom, 2))) / 100;
+		CString str;
+		str.Format(_T("%.2f inch"), m_nDistance);
+		pDC->SetBkMode(OPAQUE);
+		pDC->SetBkColor(RGB(255, 255, 255));
+		pDC->SetTextColor(RGB(0, 0, 0));
+		pDC->TextOut(rect.left, rect.top, str);
+
+
 		break;
 	}
 
 	pDC->SelectObject(pOldBrush);
 	pDC->SelectObject(pOldPen);
+
+	
 }
 
 int CDrawRect::GetHandleCount()
@@ -695,8 +707,7 @@ void CDrawRect::MoveHandleTo(int nHandle, CPoint point, CDrawView* pView)
 			point.y = rect.top + rect.Height() / 2;
 		m_roundness.x = 2 *(rect.right - point.x);
 		m_roundness.y = 2 *(rect.bottom - point.y);
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 		if (pView == NULL)
 			Invalidate();
 		else
@@ -762,7 +773,7 @@ BOOL CDrawRect::Intersects(const CRect& rect)
 				points[2].x -= x;
 				points[3].x += x;
 			}
-
+			//  
 			if (fixed.top < fixed.bottom)
 			{
 				points[0].y -= y;
@@ -778,7 +789,9 @@ BOOL CDrawRect::Intersects(const CRect& rect)
 				points[3].y += y;
 			}
 			rgn.CreatePolygonRgn(points, 4, ALTERNATE);
-		}
+		//dc.textout
+	
+	}
 		break;
 	}
 	return rgn.RectInRegion(fixed);
@@ -911,8 +924,7 @@ void CDrawPoly::MoveTo(const CRect& position, CDrawView* pView)
 	else
 		pView->InvalObj(this);
 #endif
-	m_pDocument->SetModifiedFlag(false);
-	m_pDocument->m_bIsChange = true;
+	m_pDocument->m_bChanged = true;
 }
 void CDrawPoly::MoveTo (const CPoint& position)
 {
@@ -957,8 +969,7 @@ void CDrawPoly::MoveHandleTo(int nHandle, CPoint point, CDrawView* pView)
 		Invalidate();
 	else
 		pView->InvalObj(this);
-	m_pDocument->SetModifiedFlag(false);
-	m_pDocument->m_bIsChange = true;
+	m_pDocument->m_bChanged = true;
 #endif
 }
 
@@ -1024,8 +1035,7 @@ void CDrawPoly::AddPoint(const CPoint& point, CDrawView* pView)
 			else
 				pView->InvalObj(this);
 		}
-		m_pDocument->SetModifiedFlag(false);
-		m_pDocument->m_bIsChange = true;
+		m_pDocument->m_bChanged = true;
 	}
 #endif
 }
@@ -1192,7 +1202,7 @@ void CDrawOleObj::Draw(CDC* pDC)
 			CRectTracker tracker;
 			tracker.m_rect = m_position;
 			pDC->LPtoDP(tracker.m_rect);
-
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 			if (c_bShowItems)
 			{
 				// put correct border depending on item type

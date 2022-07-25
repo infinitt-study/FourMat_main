@@ -12,14 +12,6 @@
 class CDrawView;
 #include "drawobj.h"
 
-//#include "CHistoryView.h"
-//#include "CSearchFileView.h"
-//
-//#define VIEWID_DEFAULT AFX_IDW_PANE_FIRST
-//#define VIEWID_SEARCH AFX_IDW_PANE_FIRST + 10
-//#define VIEWID_HISTORY AFX_IDW_PANE_FIRST + 20
-
-
 #define ID_FORMAT_CONTEXT_TAB 1
 
 class CMainFrame : public CMDIFrameWndEx
@@ -121,8 +113,6 @@ public:
 	CView* m_pWndHistoryView;
 	CView* m_pWndSearchFileView;
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	//void SwitchView(int nID);
-	//void OnDrawTest();
 };
 
 

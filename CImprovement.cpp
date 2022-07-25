@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CImprovement.h"
-
 #include "stdafx.h"
 #include <math.h>
 

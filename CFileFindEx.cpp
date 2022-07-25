@@ -16,9 +16,3 @@ CString CFileFindEx::GetCreationTimeString(CString strTmp) {
 
     return str;
 }
-
-CString CFileFindEx::GetLengthString() {
-    CString str;
-    str.Format("%lu", GetLength());
-    return str;
-}

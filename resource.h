@@ -56,13 +56,13 @@
 #define IDC_LIST_RESULT                 129
 #define IDB_STATUSBAR_1                 130
 #define IDC_BUTTON_SINGLE               130
-#define IDC_BUTTON_FOLDER_SELECT        130
 #define IDB_STATUSBAR_2                 131
 #define IDC_LIST1                       131
 #define IDC_LIST_HISTORY                131
 #define IDB_RIBBON_FORMATLARGE          132
 #define IDC_BUTTON1                     132
 #define IDB_RIBBON_FORMATSMALL          133
+#define IDC_BUTTON_LEFT                 133
 #define IDB_LINEWEIGHT                  134
 #define IDD_LINEWEIGHT                  135
 #define IDB_STYLES                      136
@@ -71,7 +71,6 @@
 #define IDC_SLIDER1                     137
 #define IDC_NEW_SX                      138
 #define IDC_SLIDER3                     138
-#define IDC_SLIDER2                     138
 #define IDB_BITMAP1                     139
 #define IDB_LIST                        139
 #define IDC_EDIT2                       139
@@ -84,15 +83,14 @@
 #define IDC_ROTATE270                   141
 #define IDB_BITMAP2                     142
 #define IDC_ROTATE_USER                 142
-#define IDC_EDIT1                       143
 #define IDC_ANGLE                       143
-#define IDC_EDIT3                       144
 #define IDD_MultiImage                  145
 #define IDC_SLIDER4                     145
 #define IDC_EDIT4                       145
 #define IDC_DIFFUSION_K                 145
 #define IDC_CONTRAST_SLIDER             145
 #define IDD_HISTORY_COMPARE             145
+#define IDC_HIGH_THRESHOLD              145
 #define IDD_AFFINETRANSFORM_TRANSLATION 147
 #define IDC_SPIN_HEIGHT                 147
 #define IDC_INTERPOLATION               148
@@ -107,7 +105,6 @@
 #define IDC_BUTTON_MULTI                154
 #define IDD_FILTERING_GAMMA             154
 #define IDC_DIFFUSION_LAMBDA            155
-#define IDD_FILTERING_WINDOW_LEVEL      156
 #define IDC_DIFFUSION_ITER              156
 #define IDC_NOISE_RADIO1                157
 #define IDD_HISTOGRAM                   158
@@ -129,6 +126,19 @@
 #define IDC_COMPARE_EDIT                169
 #define IDC_GAMMA_SLIDER                170
 #define IDC_GAMMA_EDIT                  171
+#define IDD_FEATUREEXTRACTION_CANNY_EDGE 171
+#define IDC_RADIO1                      172
+#define IDC_CANNY_SIGMA                 174
+#define IDC_LOW_THRESHOLD               175
+#define IDD_FEATUREEXTRACTION_HARRIS_CORNER 175
+#define IDC_HARRIS_THRESHOLD            176
+#define IDC_COMPARE_SLIDER              177
+#define IDD_HISTORY_ALBUM               178
+#define IDC_BUTTON_RIGHT                179
+#define IDC_BUTTON_ALBUM                180
+#define IDC_PREVIEW                     181
+#define IDC_STATIC_INCLUDESTR           182
+#define IDC_STATIC_LOCATION             183
 #define IDD_ABOUTBOX                    999
 #define ID_CANCEL_EDIT                  32768
 #define ID_VIEW_GRID                    32769
@@ -213,14 +223,22 @@
 #define ID_MOLPHOLOGY_CLOSING           32884
 #define ID_OBJECT_SAVEDRAW              32885
 #define ID_FILTERING_GAMMA              32886
+#define ID_FEATUREEXTRACTION_CANNYEDGE  32887
+#define ID_FEATUREEXTRACTION_HARRISCOR  32888
+#define ID_FEATUREEXTRACTION_HARRISCORNER 32889
+#define ID_IMAGEPROCESSING_COMPARE      32890
+#define ID_COMPARE_COMPARE              32891
+#define ID_OBJECT_RESETDRAW             32892
+#define ID_DRAW_LENGTH                  32893
+#define ID_ACCELERATOR32896             32894
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32887
-#define _APS_NEXT_CONTROL_VALUE         172
+#define _APS_NEXT_RESOURCE_VALUE        180
+#define _APS_NEXT_COMMAND_VALUE         32895
+#define _APS_NEXT_CONTROL_VALUE         184
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

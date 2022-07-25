@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CInverse.h"
+
 void CInverse(RgbImage& img)
 {
 	int size = img.GetSize();

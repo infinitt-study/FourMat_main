@@ -5,13 +5,19 @@
 #include "FourMat.h"
 #include "CScalingDlg.h"
 #include "afxdialogex.h"
+#include "drawdoc.h"
+#include "mainfrm.h"
+#include "CFourMatDIB.h"
+#include "CConvertDataType.h"
+#include "CAffineTransform.h"
+#include "drawvw.h"
 
 
 // CScalingDlg 대화 상자
 
 IMPLEMENT_DYNAMIC(CScalingDlg, CDialogEx)
 
-CScalingDlg::CScalingDlg(CWnd* pParent /*=nullptr*/)
+CScalingDlg::CScalingDlg(CDrawDoc* pDrawDoc, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_AFFINETRANSFORM_SCALING, pParent)
 	, m_nOldWidth(0)
 	, m_nOldHeight(0)
@@ -19,6 +25,9 @@ CScalingDlg::CScalingDlg(CWnd* pParent /*=nullptr*/)
 	, m_nNewHeight(0)
 	, m_bAspectRatio(FALSE)
 	, m_nInterpolation(0)
+	, m_pDrawDoc(pDrawDoc)
+	, m_dibRef(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
+	, m_dib(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
 {
 
 }

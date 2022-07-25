@@ -16,9 +16,6 @@
 #include <afxext.h>
 #endif
 
-#include "CHistoryView.h"
-#include "CSearchFileView.h"
-
 #define VIEWID_DEFAULT AFX_IDW_PANE_FIRST
 #define VIEWID_SEARCH AFX_IDW_PANE_FIRST + 10
 #define VIEWID_HISTORY AFX_IDW_PANE_FIRST + 20
@@ -49,28 +46,23 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+
+
+public:
 	CView* m_pWndSearchFileView;
 	CView* m_pWndHistoryView;
 	CView* m_pDrawView;
-
-public:
 	CSplitterWnd m_wndSplitter;
 
-
-public:
 	CString m_strTmpPath;
 
-
 public:
-	//void SetDrawView(CView* pView) {
-	//	m_pDrawView = pView;
-	//}
-	void SetSearchFileView(CView* pView) {
+	void SetSearchFileView(CView* pView) 
+	{
 		m_pWndSearchFileView = pView;
 	}
-
 	void SwitchView(int nID);
-	//void OnDrawTest();
+
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnClose();

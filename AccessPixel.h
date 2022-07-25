@@ -1,11 +1,10 @@
 #pragma once
 #include <memory.h>
 #include "RGBBYTE.h"
-//#include "drawdoc.h"
 
 
 template<typename T>
-class AccessPixel // 다양한 자료형의 ippimage 
+class AccessPixel // 다양한 자료형의 image 
 {
 protected:
 	int     width;  // 영상의 가로 크기 (픽셀 단위)
@@ -151,14 +150,6 @@ typedef AccessPixel<int>     IntImage;
 typedef AccessPixel<float>   FloatImage;
 typedef AccessPixel<double>  DoubleImage;
 typedef AccessPixel<RGBBYTE> RgbImage;
-
-// 유용한 전역 함수 정의
-//IppByteImage img1; // 일반적인 그레이스케일 영상
-//IppIntImage img2; // 정수형 영상
-//IppFloatImage img3; // 실수형 영상
-//IppDoubleImage img4; // 정교한 실수형 영상
-//IppRgbImage img5; // 트루컬러 영상
-
 
 template<typename T>
 inline T limit(const T& value)

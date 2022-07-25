@@ -5,16 +5,25 @@
 #include "FourMat.h"
 #include "CBrightnessDlg.h"
 #include "afxdialogex.h"
-
+#include "drawdoc.h"
+#include "mainfrm.h"
+#include "CFourMatDIB.h"
+#include "CConvertDataType.h"
+#include "CImprovement.h"
+#include "drawvw.h"
 
 // CBrightnessDlg 대화 상자
 
 IMPLEMENT_DYNAMIC(CBrightnessDlg, CDialogEx)
 
-CBrightnessDlg::CBrightnessDlg(CWnd* pParent /*=nullptr*/)
+CBrightnessDlg::CBrightnessDlg(CDrawDoc* pDrawDoc, CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_FILTERING_BRIGHTNESS, pParent)
 	, m_nBrightness(0)
 	, m_nContrast(0)
+	, m_pDrawDoc(pDrawDoc)
+	, m_dibRef(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
+	, m_dib(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
+
 {
 
 }
@@ -37,6 +46,8 @@ void CBrightnessDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CBrightnessDlg, CDialogEx)
 	ON_WM_HSCROLL()
+	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_PREVIEW, &CBrightnessDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 
@@ -79,4 +90,30 @@ void CBrightnessDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	}
 
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void CBrightnessDlg::OnPaint()
+{
+	CPaintDC dc(this);
+
+	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
+	m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
+}
+
+
+void CBrightnessDlg::OnBnClickedPreview()
+{
+	ByteImage img;
+
+	if (UpdateData() == FALSE) {
+		return;
+	}
+
+	FourMatDIBToByteImage(m_dib, img);
+	Brightness(img, m_nBrightness);
+	Contrast(img, m_nContrast);
+	FourMatGrayToDIBImage(img, m_dib);
+
+	Invalidate(true);
 }

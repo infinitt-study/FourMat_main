@@ -26,7 +26,8 @@ public:
 		pixels.clear();
 	}
 };
-
+void EdgeCanny(ByteImage& imgSrc, ByteImage& imgEdge, float sigma, float th_low, float th_high);
+void HarrisCorner(ByteImage& img, std::vector<Point>& corners, double th);
 
 void MorphologyErosion(ByteImage& imgSrc, ByteImage& imgDst);
 void MorphologyDilation(ByteImage& imgSrc, ByteImage& imgDst);

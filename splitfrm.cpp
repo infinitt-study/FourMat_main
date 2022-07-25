@@ -14,6 +14,8 @@
 #include "drawdoc.h"
 #include "drawvw.h"
 #include "splitfrm.h"
+#include "CSearchFileView.h"
+#include "CHistoryView.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -28,18 +30,12 @@ IMPLEMENT_DYNCREATE(CSplitFrame, CMDIChildWndEx)
 CSplitFrame::CSplitFrame()
 {
 	m_pDrawView = new CDrawView();
-	//m_pWndSearchFileView = new CSearchFileView();
 	m_pWndHistoryView = new CHistoryView();
 }
 
 CSplitFrame::~CSplitFrame()
 {
 }
-
-//BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
-//{
-//	return m_wndSplitter.Create(this, 2, 2, CSize(10, 10), pContext);
-//}
 
 BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	//{{AFX_MSG_MAP(CSplitFrame)
@@ -49,18 +45,16 @@ BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, OnUpdateFilePrintPreview)
 	//}}AFX_MSG_MAP
 
-
-	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 void CSplitFrame::OnFilePrint ()
 {
-	if (m_dockManager.IsPrintPreviewValid ())
-	{
-		PostMessage (WM_COMMAND, AFX_ID_PREVIEW_PRINT);
-	}
+	//if (m_dockManager.IsPrintPreviewValid ())
+	//{
+	//	PostMessage (WM_COMMAND, AFX_ID_PREVIEW_PRINT);
+	//}
 }
 
 void CSplitFrame::OnFilePrintPreview()
@@ -76,7 +70,6 @@ void CSplitFrame::OnUpdateFilePrintPreview(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck (m_dockManager.IsPrintPreviewValid ());
 }
 
-#include "CHistoryView.h"
 void CSplitFrame::SwitchView(int nID)
 {
 	CView* pOldView = GetActiveFrame()->GetActiveView();
@@ -90,9 +83,6 @@ void CSplitFrame::SwitchView(int nID)
 
 	case VIEWID_HISTORY:
 		pNewView = (CView*)m_pWndHistoryView;
-		//pHistoryView = (CHistoryView*)m_pWndHistoryView;
-		//pHistoryView->m_strPath = _T("res\\*.*");
-		//pHistoryView->Invalidate(TRUE);
 		break;
 
 	case VIEWID_DRAW:
@@ -105,7 +95,6 @@ void CSplitFrame::SwitchView(int nID)
 		Invalidate(TRUE);
 		break;
 	}
-
 	if (pNewView)
 	{
 		if (pOldView == pNewView)			return;
@@ -122,7 +111,6 @@ void CSplitFrame::SwitchView(int nID)
 
 BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	m_wndSplitter.CreateStatic(this, 1, 2);
 	
 	CRect rect;
@@ -135,9 +123,7 @@ BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	pLeftView->setLeftView(TRUE);
 	pRightView->setLeftView(FALSE);
 
-
-	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
-	//m_pWndSearchFileView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_SEARCH, pContext);
+	m_pDrawView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_DRAW, pContext);
 	m_pWndHistoryView->Create(NULL, NULL, WS_CHILD, CFrameWnd::rectDefault, this, VIEWID_HISTORY, pContext);
 
 	return CMDIChildWndEx::OnCreateClient(lpcs, pContext);
@@ -157,9 +143,9 @@ void CSplitFrame::OnClose()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	CDrawDoc* pDoc = (CDrawDoc*)GetActiveDocument();
-	if (pDoc->m_bIsChange) {
-		if (IDYES == AfxMessageBox(_T("변경 내용을 저장하시겠습니까 ?"), MB_YESNO)) {
-			pDoc->OnObjectSavedraw();
+	if (pDoc->m_bChanged || pDoc->IsFrameChanged()) {
+		if (IDYES == AfxMessageBox(_T("변경 내용을 저장하시겠습니까?"), MB_YESNO)) {
+			pDoc->ChagedSaveDraw();
 		}
 	}
 

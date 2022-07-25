@@ -1,16 +1,17 @@
 ﻿#pragma once
-
+#include "CFourMatDIB.h"
 
 // CTranslationDlg 대화 상자
+class CDrawDoc;
 
 class CTranslationDlg : public CDialogEx // dlg이름 변경 
 {
 	DECLARE_DYNAMIC(CTranslationDlg)
 
 public:
-	CTranslationDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CTranslationDlg(CDrawDoc* DrawDoc, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CTranslationDlg();
-	//void Translate(ByteImage& imgSrc, ByteImage& imgDst, int sx, int sy)
+
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_AFFINETRANSFORM_TRANSLATION };
@@ -23,4 +24,11 @@ protected:
 public:
 	int m_nNewSX;
 	int m_nNewSY;
+
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
+	CDrawDoc* m_pDrawDoc;
+
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedPreview();
 };

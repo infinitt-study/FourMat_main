@@ -7,6 +7,10 @@
 #include "afxdialogex.h"
 #include "drawdoc.h"
 #include "mainfrm.h"
+#include "CFourMatDIB.h"
+#include "CConvertDataType.h"
+#include "CFilter.h"
+#include "drawvw.h"
 
 // CAddNoiseDlg 대화 상자
 
@@ -17,7 +21,8 @@ CAddNoiseDlg::CAddNoiseDlg(CDrawDoc* pDrawDoc, CWnd* pParent /*=nullptr*/)
 	, m_nNoiseType(0)
 	, m_nAmount(0)
 	,m_pDrawDoc(pDrawDoc)
-
+	, m_dibRef(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
+	, m_dib(pDrawDoc->GetFourMatDIB(pDrawDoc->getClickedView()))
 {
 	
 }
@@ -37,6 +42,10 @@ void CAddNoiseDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CAddNoiseDlg, CDialogEx)
 	ON_WM_PAINT()
+//	ON_EN_VSCROLL(IDC_NOISE_AMOUNT, &CAddNoiseDlg::OnEnVscrollNoiseAmount)
+//ON_EN_VSCROLL(IDC_NOISE_AMOUNT, &CAddNoiseDlg::OnEnVscrollNoiseAmount)
+//ON_EN_CHANGE(IDC_NOISE_AMOUNT, &CAddNoiseDlg::OnEnChangeNoiseAmount)
+ON_BN_CLICKED(IDC_PREVIEW, &CAddNoiseDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 
@@ -54,23 +63,32 @@ BOOL CAddNoiseDlg::OnInitDialog()
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
 
-
 void CAddNoiseDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	//CFourMatDIB::
-	//Cdrawdoc doc;
-	//CDrawDoc* pDrawDoc = (CDrawDoc*)((CMainFrame*)AfxGetMainWnd())->GetActiveFrame()->GetActiveDocument();//
-	//이미지 정보 접근 
 	
-	m_pDrawDoc->DIBDraw(true,&dc,100,260,200,-200);
+	m_dibRef.Draw(dc.m_hDC, 100, 300, 200, -200, 0, 0, m_dibRef.GetWidth(), m_dibRef.GetHeight(), SRCCOPY); // 바뀌기 전 
+	m_dib.Draw(dc.m_hDC, 450, 300, 200, -200, 0, 0, m_dib.GetWidth(), m_dib.GetHeight(), SRCCOPY); // 바뀐 후 
 
-
-	
-	
 }
 
 
-
-
-
+void CAddNoiseDlg::OnBnClickedPreview()
+{
+	ByteImage imgSrc;
+	ByteImage imgDst;
+	FourMatDIBToByteImage(m_dib, imgSrc);
+	
+	if (UpdateData() == FALSE) {
+		return;
+	}
+	
+	if (m_nNoiseType == 0)
+		NoiseGaussian(imgSrc, imgDst, m_nAmount);
+	else
+		NoiseSaltNPepper(imgSrc, imgDst, m_nAmount);
+	
+	FourMatGrayToDIBImage(imgDst, m_dib);
+	
+	Invalidate(true);
+}

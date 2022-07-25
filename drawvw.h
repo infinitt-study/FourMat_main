@@ -19,6 +19,7 @@
 #define HINT_LAOD_DICOMIMAGE		6
 #define HINT_UPDATE_MULTIFILEPATH	7
 #define HINT_DICOM_IMAGE_REDRAW		8
+#define HINT_DICOM_IMAGE_RESET		9
 
 class CDrawObj;
 
@@ -52,13 +53,10 @@ public:
 	void Remove(CDrawObj* pObj);
 	void PasteNative(COleDataObject& dataObject);
 	void PasteEmbedded(COleDataObject& dataObject, CPoint point );
-
 	void PreviewFillColor(COLORREF color);
 	void PreviewLineColor(COLORREF color);
 	void PreviewLineWeight(int nWeight);
-
 	void PreviewStyle(COLORREF clrFill, COLORREF clrLine);
-
 	void StorePreviewState();
 	void RestorePreviewState(BOOL bReset = TRUE);
 	void ResetPreviewState();
@@ -72,7 +70,7 @@ protected:
 	CSize m_dragOffset;                 // offset between pt and drag object corner
 	DROPEFFECT m_prevDropEffect;
 	BOOL m_bDragDataAcceptable;
-	//float zoom = 1;
+	float m_zoom = 1.0f;
 
 	BOOL GetObjectInfo(COleDataObject* pDataObject, CSize* pSize, CSize* pOffset);
 	// end of drop-target additions
@@ -149,8 +147,6 @@ protected:
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnDrawSelect();
 	afx_msg void OnDrawRoundRect();
-	//afx_msg void OnDrawTest();
-
 	afx_msg void OnDrawRect();
 	afx_msg void OnDrawLine();
 	afx_msg void OnDrawEllipse();
@@ -201,6 +197,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnUpdateSelection(CCmdUI* pCmdUI);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
@@ -208,13 +205,17 @@ protected:
 private:
 	//COLORREF GetColorFromColorButton(int nButtonID);
 
-public:
-	CString m_strPath;
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-
+private:
 	BOOL m_bLeftView;
+
+public:
 	void setLeftView(BOOL bLeftView)
 	{
 		m_bLeftView = bLeftView;
+	}
+	
+	BOOL getLeftView()
+	{
+		return m_bLeftView;
 	}
 };

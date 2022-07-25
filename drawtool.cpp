@@ -15,7 +15,6 @@
 #include "drawvw.h"
 #include "drawobj.h"
 #include "drawtool.h"
-
 #include "mainfrm.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -135,7 +134,7 @@ void CSelectTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& poi
 	// See if the click was on an object, select and start move if so
 	if (selectMode == none)
 	{
-		pObj = pView->GetDocument()->ObjectAt(pView->m_bLeftView, local);
+		pObj = pView->GetDocument()->ObjectAt(pView->getLeftView(), local);
 
 		if (pObj != NULL)
 		{
@@ -177,7 +176,7 @@ void CSelectTool::OnLButtonDblClk(CDrawView* pView, UINT nFlags, const CPoint& p
 		// Shift+DblClk deselects object...
 		CPoint local = point;
 		pView->ClientToDoc(local);
-		CDrawObj* pObj = pView->GetDocument()->ObjectAt(pView->m_bLeftView, local);
+		CDrawObj* pObj = pView->GetDocument()->ObjectAt(pView->getLeftView(), local);
 		if (pObj != NULL)
 			pView->Deselect(pObj);
 	}
@@ -314,7 +313,7 @@ void CRectTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& point
 	switch (m_drawShape)
 	{
 	default:
-		ASSERT(FALSE); // unsuported shape!
+		ASSERT(FALSE); // unsupported shape!
 
 	case rect:
 		pObj->m_nShape = CDrawRect::rectangle;
@@ -330,9 +329,10 @@ void CRectTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& point
 
 	case line:
 		pObj->m_nShape = CDrawRect::line;
+
 		break;
 	}
-	pView->GetDocument()->Add(pView->m_bLeftView, pObj);
+	pView->GetDocument()->Add(pView->getLeftView(), pObj);
 	pView->Select(pObj);
 
 	selectMode = size;
@@ -353,7 +353,7 @@ void CRectTool::OnLButtonUp(CDrawView* pView, UINT nFlags, const CPoint& point)
 	{
 		// Don't create empty objects...
 		CDrawObj *pObj = pView->m_selection.GetTail();
-		pView->GetDocument()->Remove(pView->m_bLeftView, pObj);
+		pView->GetDocument()->Remove(pView->getLeftView(), pObj);
 		pObj->Remove();
 		selectTool.OnLButtonDown(pView, nFlags, point); // try a select!
 	}
@@ -388,7 +388,7 @@ void CPolyTool::OnLButtonDown(CDrawView* pView, UINT nFlags, const CPoint& point
 		pView->SetCapture();
 
 		m_pDrawObj = new CDrawPoly(CRect(local, CSize(0, 0)));
-		pView->GetDocument()->Add(pView->m_bLeftView, m_pDrawObj);
+		pView->GetDocument()->Add(pView->getLeftView(), m_pDrawObj);
 		pView->Select(m_pDrawObj);
 		m_pDrawObj->AddPoint(local, pView);
 	}

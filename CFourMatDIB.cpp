@@ -8,7 +8,7 @@ CFourMatDIB::CFourMatDIB()
 {
 }
 
-CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
+CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib) // 깊은 복사 생성자 
 	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(NULL)
 {
 	if (dib.m_pDib != NULL)
@@ -18,7 +18,7 @@ CFourMatDIB::CFourMatDIB(const CFourMatDIB& dib)
 	}
 }
 
-CFourMatDIB::CFourMatDIB(CFourMatDIB&& dib)
+CFourMatDIB::CFourMatDIB(CFourMatDIB&& dib)  //sementic move 
 	: m_nWidth(dib.m_nWidth), m_nHeight(dib.m_nHeight), m_nBitCount(dib.m_nBitCount), m_nDibSize(dib.m_nDibSize), m_pDib(dib.m_pDib)
 {
 	dib.m_pDib = nullptr;
@@ -179,6 +179,8 @@ void CFourMatDIB::Draw(HDC hdc, int dx, int dy) //출력 위치
 	LPBITMAPINFO lpbi = (LPBITMAPINFO)m_pDib;
 	LPVOID lpBits = (LPVOID)GetDIBitsAddr();
 
+	SetStretchBltMode(hdc, HALFTONE);
+
 	::SetDIBitsToDevice(hdc,	// hdc
 		dx,					// DestX
 		dy,					// DestY
@@ -207,7 +209,7 @@ void CFourMatDIB::Draw(HDC hdc, int dx, int dy, int dw, int dh,
 	LPBITMAPINFO lpbi = (LPBITMAPINFO)m_pDib;
 	LPSTR lpDIBBits = (LPSTR)GetDIBitsAddr();
 
-	SetStretchBltMode(hdc, COLORONCOLOR);
+	SetStretchBltMode(hdc, HALFTONE);
 	::StretchDIBits(hdc,	// hdc
 		dx,					// XDest
 		dy,					// YDest
@@ -344,5 +346,32 @@ int CFourMatDIB::GetPaletteNums() const
 	case 4:     return 16;
 	case 8:     return 256;
 	default:    return 0;
+	}
+}
+void CFourMatDIB::SetDIBits(BYTE* pDib) {
+
+	DWORD dwWidthStep = (m_nWidth * m_nBitCount / 8 + 3) & ~3;
+	DWORD dwSizeImage = (m_nHeight * dwWidthStep);
+	BYTE* pData = GetDIBitsAddr();
+
+	memcpy(pData, pDib, dwSizeImage);
+}
+
+void CFourMatDIB::Serialize(CArchive& ar)    // overridden for document i/o
+{
+	if (ar.IsStoring()) {
+		ar << m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
+		ar << m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
+		ar << m_nBitCount;   // 픽셀 당 비트 수
+		ar << m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
+		ar.Write(m_pDib, m_nDibSize);        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
+	}
+	else {
+		ar >> m_nWidth;      // 비트맵 가로 크기 (픽셀 단위)
+		ar >> m_nHeight;     // 비트맵 세로 크기 (픽셀 단위)
+		ar >> m_nBitCount;   // 픽셀 당 비트 수
+		ar >> m_nDibSize;    // DIB 전체 크기 (BITMAPINFOHEADER + 색상 테이블 + 픽셀 데이터)
+		m_pDib = new BYTE[m_nDibSize];
+		ar.Read(m_pDib, m_nDibSize);        // DIB 시작 주소 (BITMAPINFOHEADER 시작 주소)
 	}
 }

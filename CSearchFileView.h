@@ -36,14 +36,14 @@ public:
 	CString m_strFileName;
 	CString m_strFileLocation;
 	BOOL m_bSub;
-	//CListCtrl m_lstResult;
 	CListCtrlEx m_lstResult;
 	virtual void OnInitialUpdate();
 
 	void SearFileNotSub();
 	void SearFile(CString strStartFolder);
-	afx_msg void OnClickedButtonStart();
-	afx_msg void OnClickedButtonSingle();
+	afx_msg void OnClickedButtonSelect();
+	afx_msg void OnNMDblclkListResult(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 

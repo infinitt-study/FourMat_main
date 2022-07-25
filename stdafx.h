@@ -71,4 +71,6 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include <utility> // pair 템플릿구조체
+#include <future>

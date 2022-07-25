@@ -1,14 +1,15 @@
 ﻿#pragma once
-
-
+#include "CFourMatDIB.h"
 // CScalingDlg 대화 상자
+
+class CDrawDoc;
 
 class CScalingDlg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CScalingDlg)
 
 public:
-	CScalingDlg(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	CScalingDlg(CDrawDoc* pDrawDoc, CWnd* pParent = nullptr);   // 표준 생성자입니다.
 	virtual ~CScalingDlg();
 
 // 대화 상자 데이터입니다.
@@ -27,6 +28,11 @@ public:
 	int m_nNewHeight;
 	BOOL m_bAspectRatio;
 	int m_nInterpolation;
+	
+	CFourMatDIB& m_dibRef;
+	CFourMatDIB  m_dib;
+	CDrawDoc* m_pDrawDoc;
+	
 	afx_msg void OnEnChangeNewWidth();
 	afx_msg void OnEnChangeNewHeight();
 	afx_msg void OnBnClickedAspectRatio();
