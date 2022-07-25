@@ -102,7 +102,6 @@ BEGIN_MESSAGE_MAP(CDrawView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, OnFilePrint)
 
-	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	//}}AFX_MSG_MAP
 
     ON_WM_MOUSEWHEEL()
@@ -116,7 +115,6 @@ CDrawView::CDrawView()
 	m_bGrid = TRUE;
 	m_gridColor = RGB(0, 0, 128);
 	m_bActive = FALSE;
-	//m_bLeftView = TRUE;
 	m_bLeftView = true;
 
 	// new

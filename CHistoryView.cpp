@@ -1,7 +1,5 @@
 ﻿// CHistoryView.cpp: 구현 파일
-//줄기푸시테스트
 
-//#include "pch.h"
 #include "stdafx.h"
 #include "FourMat.h"
 #include "CHistoryView.h"
@@ -14,8 +12,6 @@
 #include "CCompareDlg.h"
 #include "CAlbumDlg.h"
 using namespace std;
-
-// CHistoryView
 
 IMPLEMENT_DYNCREATE(CHistoryView, CFormView)
 
@@ -38,13 +34,9 @@ void CHistoryView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHistoryView, CFormView)
 	ON_BN_CLICKED(IDOK, &CHistoryView::OnClickedButtonSingle)
 	ON_BN_CLICKED(IDC_BUTTON_MULTI, &CHistoryView::OnClickedButtonMulti)
-	//ON_BN_CLICKED(IDC_BUTTON_COMPARE, &CHistoryView::OnBnClickedButtonCompare)
 	ON_BN_CLICKED(IDC_BUTTON_ALBUM, &CHistoryView::OnBnClickedButtonAlbum)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
-
-
-// CHistoryView 진단
 
 #ifdef _DEBUG
 void CHistoryView::AssertValid() const
@@ -71,7 +63,6 @@ void CHistoryView::OnInitialUpdate()
 
 	// 리스트 컨트롤에 이미지 연결
 	m_imgHistory.Create(48, 48, ILC_COLOR32, 5, 5);
-	//m_imgHistory.Add(AfxGetApp()->LoadIcon(IDR_MAINFRAME));
 
 	CImage image;
 	image.Load(_T("res\\image1.bmp"));

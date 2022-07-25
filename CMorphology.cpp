@@ -2,7 +2,6 @@
 #include "CMorphology.h"
 #include "CImprovement.h"
 #include "CFilter.h"
-
 #include <map>
 
 const double PI = 3.14159265358979323846;
@@ -160,9 +159,7 @@ void HarrisCorner(ByteImage& img, std::vector<Point>& corners, double th)
 
 	BYTE** ptr = img.GetPixels2D();
 
-	//-------------------------------------------------------------------------
 	// 1. (fx)*(fx), (fx)*(fy), (fy)*(fy) 계산
-	//-------------------------------------------------------------------------
 
 	FloatImage imgDx2(w, h);
 	FloatImage imgDy2(w, h);
@@ -186,9 +183,7 @@ void HarrisCorner(ByteImage& img, std::vector<Point>& corners, double th)
 			dxy[j][i] = tx * ty;
 		}
 
-	//-------------------------------------------------------------------------
 	// 2. 가우시안 필터링
-	//-------------------------------------------------------------------------
 
 	FloatImage imgGdx2(w, h);
 	FloatImage imgGdy2(w, h);
@@ -225,9 +220,7 @@ void HarrisCorner(ByteImage& img, std::vector<Point>& corners, double th)
 			gdxy[j][i] = txy;
 		}
 
-	//-------------------------------------------------------------------------
 	// 3. 코너 응답 함수 생성
-	//-------------------------------------------------------------------------
 
 	FloatImage imgCrf(w, h);
 	float** crf = imgCrf.GetPixels2D();
@@ -240,9 +233,7 @@ void HarrisCorner(ByteImage& img, std::vector<Point>& corners, double th)
 				- k * (gdx2[j][i] + gdy2[j][i]) * (gdx2[j][i] + gdy2[j][i]);
 		}
 
-	//-------------------------------------------------------------------------
 	// 4. 임계값보다 큰 국지적 최대값을 찾아 코너 포인트로 결정
-	//-------------------------------------------------------------------------
 
 	corners.clear();
 	float cvf_value;

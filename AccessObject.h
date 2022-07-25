@@ -16,19 +16,15 @@ public:
 
 public:
 	std::vector<CDrawObjList*> m_pageObjects;
-	// m_pageLeftObjects, m_pageRightObjects
+
 	CDrawObjList* m_pObjects;
-	// m_pObjects, m_pRightObjects
 
 	CString m_strFilePath;
 	CString m_strFileName;
-	// m_strFilePath, m_strRightFilePath
 
 	std::vector <CFourMatDIB> m_listDIB;
 	std::vector <CFourMatDIB> m_listDIBOrigin;
-	//m_listLeftDIB, m_listRightDIB
 
-	// m_nCurrentFrameNo, m_nCurrentRightFrameNo
 	long m_nCurrentFrameNo; // 다이콤 내부 이미지 현재페이지
 	long m_nTotalFrameNo; // 다이콤 내부 이미지 전체페이지
 	long m_nRepFrameNo; // 다이콤 내부 대표 이미지

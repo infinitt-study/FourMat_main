@@ -349,9 +349,6 @@ int CFourMatDIB::GetPaletteNums() const
 	}
 }
 void CFourMatDIB::SetDIBits(BYTE* pDib) {
-	//CreateRgbBitmap(m_nWidth, m_nHeight, pDib);
-	/*delete[] m_pDib;
-	m_pDib = new BYTE[m_nDibSize];*/
 
 	DWORD dwWidthStep = (m_nWidth * m_nBitCount / 8 + 3) & ~3;
 	DWORD dwSizeImage = (m_nHeight * dwWidthStep);

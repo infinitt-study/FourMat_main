@@ -1,10 +1,8 @@
 #include "drawobj.h"
 #include "summinfo.h"
-
 #include "AccessPixel.h"
 #include "RGBBYTE.h"
 #include "CFourMatDIB.h"
-
 #include "AccessObject.h"
 
 class CDrawView;
@@ -45,8 +43,6 @@ public:
 	LOGPEN m_logpen;
 	BOOL m_bBrush;
 	LOGBRUSH m_logbrush;
-	/*LOWORD m_xPosition;
-	HIWORD m_yPosition;*/
 
 public:
 	CDrawObj* ObjectAt(BOOL bLeftView, const CPoint& point);
@@ -94,10 +90,8 @@ protected:
 	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
 	virtual void OnUnloadHandler();
 
-//	BOOL m_bCanDeactivateInplace;
-
 public:
-	// 클래스 분활
+	// 클래스 분할
 	CAccessObject m_leftDrawObj;
 	CAccessObject m_rightDrawObj;
 

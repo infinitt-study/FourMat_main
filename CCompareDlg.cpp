@@ -15,19 +15,12 @@
 
 IMPLEMENT_DYNAMIC(CCompareDlg, CDialogEx)
 
-//CCompareDlg::CCompareDlg(CWnd* pParent /*=nullptr*/)
-//	: CDialogEx(IDD_HISTORY_COMPARE, pParent)
-//{
-//
-//}
-
 CCompareDlg::CCompareDlg(CDrawDoc* pDrawDoc, CWnd* pParent)
 	: CDialogEx(IDD_HISTORY_COMPARE, pParent)
 	, m_pDrawDoc(pDrawDoc)
 	, m_dibLeftRef(pDrawDoc->GetFourMatDIB(TRUE))
 	, m_dibRightRef(pDrawDoc->GetFourMatDIB(FALSE))
 	, m_dib(pDrawDoc->GetFourMatDIB(TRUE))
-	//, m_nCompare(50)
 {
 	FourMatDIBToByteImage(m_dibLeftRef, m_imgLeftSrc);
 	FourMatDIBToByteImage(m_dibRightRef, m_imgRightSrc);

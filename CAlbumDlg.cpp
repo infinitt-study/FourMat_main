@@ -5,10 +5,10 @@
 #include "FourMat.h"
 #include "CHistoryView.h"
 #include "drawdoc.h"
-
 #include "CAlbumDlg.h"
 #include "afxdialogex.h"
-
+#include "mainfrm.h"
+#include "splitfrm.h"
 
 // CAlbumDlg 대화 상자
 
@@ -66,8 +66,7 @@ void CAlbumDlg::OnPaint()
 	
 	CRect rect;
 	GetClientRect(rect);
-	
-	//m_nCurrentDIB.Draw(dc.m_hDC, 150, 5, 400, 400, SRCCOPY);
+
 	m_nCurrentDIB.Draw(dc.m_hDC, rect.Width() / 2 - 200, 405, 400, -400, SRCCOPY);
 
 	SetTextColor(dc.m_hDC, RGB(0, 0, 0)); // 글씨 검정
@@ -104,9 +103,6 @@ void CAlbumDlg::OnBnClickedButtonRight()
 	Invalidate();
 }
 
-
-#include "mainfrm.h"
-#include "splitfrm.h"
 void CAlbumDlg::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.

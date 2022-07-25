@@ -54,8 +54,6 @@ BEGIN_MESSAGE_MAP(CScalingDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_NEW_WIDTH, &CScalingDlg::OnEnChangeNewWidth)
 	ON_EN_CHANGE(IDC_NEW_HEIGHT, &CScalingDlg::OnEnChangeNewHeight)
 	ON_BN_CLICKED(IDC_ASPECT_RATIO, &CScalingDlg::OnBnClickedAspectRatio)
-//	ON_WM_PAINT()
-//	ON_BN_CLICKED(IDC_PREVIEW, &CScalingDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()
 
 

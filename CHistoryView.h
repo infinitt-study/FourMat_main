@@ -46,7 +46,6 @@ public:
 	BOOL IsFileExtDraw(CString strFileName, CString& strFilePath);
 	BOOL IsFileExists(LPCTSTR szPath);
 
-	//afx_msg void OnBnClickedButtonCompare();
 	afx_msg void OnBnClickedButtonAlbum();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CFourMatDIB.h"
 
-
 // CBlurDlg 대화 상자
 class CDrawDoc;
 

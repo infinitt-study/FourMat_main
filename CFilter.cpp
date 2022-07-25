@@ -285,10 +285,7 @@ void FilterDiffusion(ByteImage& imgSrc, FloatImage& imgDst, float lambda, float 
 	float** pCpy = imgCpy.GetPixels2D();
 	float** pDst = imgDst.GetPixels2D();
 
-	//-------------------------------------------------------------------------
 	// iter 횟수만큼 비등방성 확산 알고리즘 수행
-	//-------------------------------------------------------------------------
-
 	register int i, x, y;
 	float gradn, grads, grade, gradw;
 	float gcn, gcs, gce, gcw;

@@ -53,14 +53,6 @@
 
 const double PI = 3.14159265358979323846;
 
-//#define CONVERT_DIB_TO_BYTEIMAGE(m_Dib, img) \
-//	ByteImage img; \ 
-//	DibToImage(m_Dib, img);
-//
-//#define CONVERT_IMAGE_TO_DIB(img, dib) \
-//	Dib dib; \
-//	ImageToDib(img, dib);
-
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
@@ -98,7 +90,6 @@ BEGIN_MESSAGE_MAP(CDrawDoc, COleDocument)
 	ON_COMMAND(ID_FEATUREEXTRACTION_SHARPENING, &CDrawDoc::OnFeatureextractionSharpening)
 	ON_COMMAND(ID_FILTERING_BRIGHTNESS, &CDrawDoc::OnFilteringBrightness)
 	ON_COMMAND(ID_FILTERING_INVERSE, &CDrawDoc::OnFilteringInverse)
-	//	ON_COMMAND(ID_FILTERING_TOGRAYSCALE, &CDrawDoc::OnFilteringTograyscale)
 
 	ON_COMMAND(ID_FILTERING_HISTOGRAM, &CDrawDoc::OnFilteringHistogram)
 	ON_COMMAND(ID_FILTERING_WINDOWLEVEL, &CDrawDoc::OnFilteringWindowlevel)
@@ -1069,12 +1060,7 @@ void CDrawDoc::OnFilteringHistogram()
 
 void CDrawDoc::OnFilteringWindowlevel()
 {
-	/*CWindowLevel dlg;
-	if (dlg.DoModal() == IDOK)
-	{
 
-	}*/
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
 

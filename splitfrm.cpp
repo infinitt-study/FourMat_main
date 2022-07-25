@@ -37,11 +37,6 @@ CSplitFrame::~CSplitFrame()
 {
 }
 
-//BOOL CSplitFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
-//{
-//	return m_wndSplitter.Create(this, 2, 2, CSize(10, 10), pContext);
-//}
-
 BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	//{{AFX_MSG_MAP(CSplitFrame)
 	ON_COMMAND(ID_FILE_PRINT, OnFilePrint)
@@ -50,8 +45,6 @@ BEGIN_MESSAGE_MAP(CSplitFrame, CMDIChildWndEx)
 	ON_UPDATE_COMMAND_UI(ID_FILE_PRINT_PREVIEW, OnUpdateFilePrintPreview)
 	//}}AFX_MSG_MAP
 
-
-	//ON_COMMAND(ID_DRAW_TEST, OnDrawTest)
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()

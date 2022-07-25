@@ -54,14 +54,9 @@ void FourMatGrayToDIBImage(const ByteImage& img, CFourMatDIB& dib)
 
 	int w = dib.GetWidth(); // w 
 	int h = dib.GetHeight();// h 
-	//int _w = img.GetWidth(); // w 
-	//int _h = img.GetHeight();// h 
-	/*w = _w;
-	h = _h;*/
 
 	int ws = (w * 3 + 3) & ~3; // 이미지 보수 처리 4의 배수, 패딩 
 	BYTE* pDIBits = dib.GetDIBitsAddr(); //dib 주소 값 
-//	BYTE* pDIBits = img.GetDIBitsAddr();
 	BYTE** pixels = img.GetPixels2D(); //2d pixel data 구하기 
 
 	for (int i = 0; i < h; i++)
@@ -91,28 +86,6 @@ void ByteImageToFourMatDIB(ByteImage& img, CFourMatDIB& dib)
 		memcpy(&pDIBits[(h - 1 - i) * ws], pixels[i], w);
 	}
 }
-
-//void FloatImageToFourMatDIB(FloatImage& img, CFourMatDIB& dib)
-//{
-//	assert(img.IsValid());
-//
-//
-//	int w = img.GetWidth();
-//	int h = img.GetHeight();
-//	int ws = (w + 3) & ~3;
-//
-//	float** pixels = img.GetPixels2D();
-//
-//	dib.CreateGrayBitmap(w, h);
-//	BYTE* pDIBits = dib.GetDIBitsAddr();
-//
-//	int i, j;
-//	for (j = 0; j < h; j++)
-//		for (i = 0; i < w; i++)
-//		{
-//			pDIBits[(h - 1 - j) * ws + i] = static_cast<BYTE>(limit(pixels[j][i] + 0.5f));
-//		}
-//}
 
 void FloatImageToFourMatDIB(FloatImage& img, CFourMatDIB& dib)
 {

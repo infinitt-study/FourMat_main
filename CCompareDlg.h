@@ -32,16 +32,12 @@ public:
 	CFourMatDIB& m_dibLeftRef;
 	CFourMatDIB& m_dibRightRef;
 	CFourMatDIB  m_dib;
-
 	CSliderCtrl m_sliderCompare;
-	//int m_nCompare;
-
-	void CompareImage();
-
 	ByteImage m_imgLeftSrc;
 	ByteImage m_imgRightSrc;
 	ByteImage m_imgDst;
 
+	void CompareImage();
 	afx_msg void OnPaint();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnNMReleasedcaptureCompareSlider(NMHDR* pNMHDR, LRESULT* pResult);

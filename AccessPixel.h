@@ -1,7 +1,6 @@
 #pragma once
 #include <memory.h>
 #include "RGBBYTE.h"
-//#include "drawdoc.h"
 
 
 template<typename T>

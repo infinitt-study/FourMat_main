@@ -1,5 +1,4 @@
 ﻿// CReduceNoiseDlg.cpp: 구현 파일
-//
 
 #include "stdafx.h"
 #include "FourMat.h"
@@ -46,7 +45,6 @@ void CReduceNoiseDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CReduceNoiseDlg, CDialogEx)
-//	ON_WM_PAINT()
 ON_WM_PAINT()
 ON_BN_CLICKED(IDC_PREVIEW, &CReduceNoiseDlg::OnBnClickedPreview)
 END_MESSAGE_MAP()

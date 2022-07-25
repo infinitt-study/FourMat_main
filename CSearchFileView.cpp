@@ -7,6 +7,7 @@
 #include "CHistoryView.h"
 #include "drawdoc.h"
 #include "drawvw.h"
+
 // CSearchFileView
 
 IMPLEMENT_DYNCREATE(CSearchFileView, CFormView)

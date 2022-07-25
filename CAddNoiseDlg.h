@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CFourMatDIB.h"
-//#include "DrawDoc.h"
 
 // CAddNoiseDlg 대화 상자
 

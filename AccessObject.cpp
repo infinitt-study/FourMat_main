@@ -125,7 +125,6 @@ void CAccessObject::LoadRefDraw(CString filePath, CDrawDoc* pDoc) {
 
 		ar.Close();
 		file.Close();
-		
 	}
 }
 
@@ -151,7 +150,6 @@ void CAccessObject::DIBInfoDraw(CDC* pDC, CSize& size, CFourMatDIB& dib) {
 	TextOut(pDC->m_hDC, -size.cx / 2 + 5, size.cy / 2 - dib.GetHeight() + 20, strPageInfo, strPageInfo.GetLength());
 }
 
-#include <future>
 void CAccessObject::ResetDraw() {
 	// º» ÄÚµå
 	/*BYTE* newDIBits = m_listDIBOrigin[m_nCurrentFrameNo].GetDIBitsAddr();
